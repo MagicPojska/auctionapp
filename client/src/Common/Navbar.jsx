@@ -3,7 +3,7 @@ import { SiFacebook, SiInstagram, SiTwitter } from "react-icons/si";
 const Navbar = () => {
   return (
     <header>
-      <div className="bg-black text-white h-9 flex items-center justify-between px-48 text-sm">
+      <div className="bg-black text-white h-9 flex items-center justify-between lg:px-48 md:px-24 sm:px-10 px-4 text-sm">
         <div className="flex items-center space-x-4 text-gray-400">
           <a
             href="https://www.facebook.com/magicpojska/"
