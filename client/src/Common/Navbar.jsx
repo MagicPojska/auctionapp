@@ -49,66 +49,78 @@ const Navbar = () => {
         )}
       </div>
 
-      <div className="flex flex-col xl:flex-row   justify-between items-center px-20 md:px-44 pt-4 pb-9">
-        <Link to="/" className="logo-link">
-          <img
-            src="/images/auction-app-logo.png"
-            alt="logo"
-            className="min-w-[163px] h-[56px]"
-          ></img>
-        </Link>
-
-        <div className="flex flex-col lg:flex-row items-center">
-          <form
-            action="submit"
-            className="flex justify-between w-[200px] md:w-[548px] 2xl:w-[1000px] h-12 border-2 "
-          >
-            <input
-              type="text"
-              placeholder="Try enter: Shoes"
-              className="w-full pl-5 font-light text-base focus:outline-none"
-            />
-            <button className="text-lg mr-5">
-              <AiOutlineSearch />
-            </button>
-          </form>
-
-          <ul className="flex justify-start w-[262px] text-base leading-5 font-light ml-6 space-x-[30px] mt-5 lg:mt-0">
-            <li>
-              <NavLink
-                to="/"
-                className={
-                  "/" === location.pathname ? "text-purple font-bold" : ""
-                }
-              >
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/shop"
-                className={
-                  "/shop" === location.pathname ? "text-purple font-bold" : ""
-                }
-              >
-                Shop
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/account"
-                className={
-                  "/account" === location.pathname
-                    ? "text-purple font-bold"
-                    : ""
-                }
-              >
-                My Account
-              </NavLink>
-            </li>
-          </ul>
+      {"/login" === location.pathname || "/register" === location.pathname ? (
+        <div className="flex justify-center items-center py-[18px] border-b-2">
+          <Link to="/" className="logo-link">
+            <img
+              src="/images/auction-app-logo.png"
+              alt="logo"
+              className="min-w-[163px] h-[56px]"
+            ></img>
+          </Link>
         </div>
-      </div>
+      ) : (
+        <div className="flex flex-col xl:flex-row   justify-between items-center px-20 md:px-44 pt-4 pb-9">
+          <Link to="/" className="logo-link">
+            <img
+              src="/images/auction-app-logo.png"
+              alt="logo"
+              className="min-w-[163px] h-[56px]"
+            ></img>
+          </Link>
+
+          <div className="flex flex-col lg:flex-row items-center">
+            <form
+              action="submit"
+              className="flex justify-between w-[200px] md:w-[548px] 2xl:w-[1000px] h-12 border-2 "
+            >
+              <input
+                type="text"
+                placeholder="Try enter: Shoes"
+                className="w-full pl-5 font-light text-base focus:outline-none"
+              />
+              <button className="text-lg mr-5">
+                <AiOutlineSearch />
+              </button>
+            </form>
+
+            <ul className="flex justify-start w-[262px] text-base leading-5 font-light ml-6 space-x-[30px] mt-5 lg:mt-0">
+              <li>
+                <NavLink
+                  to="/"
+                  className={
+                    "/" === location.pathname ? "text-purple font-bold" : ""
+                  }
+                >
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/shop"
+                  className={
+                    "/shop" === location.pathname ? "text-purple font-bold" : ""
+                  }
+                >
+                  Shop
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/account"
+                  className={
+                    "/account" === location.pathname
+                      ? "text-purple font-bold"
+                      : ""
+                  }
+                >
+                  My Account
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
