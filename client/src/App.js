@@ -1,7 +1,11 @@
-import "./App.css";
+import Navbar from "./Common/Navbar";
 
-function App() {
-  return <div>App js</div>;
-}
+const App = () => {
+  return (
+    <div className="font-lato font-bold">
+      <Navbar />
+    </div>
+  );
+};
 
 export default App;
