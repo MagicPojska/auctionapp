@@ -47,8 +47,8 @@ const Navbar = () => {
           <div className="text-[14px] leading-[17px]">Hi, Jon Doe</div>
         ) : (
           <div className="text-[14px]">
-            <Link to="/">Login</Link>{" "}
-            <span className="text-gray-400 px-5">or</span>{" "}
+            <Link to="/">Login</Link>
+            <span className="text-gray-400 px-5">{" or "}</span>
             <Link to="/">Create an account</Link>
           </div>
         )}
