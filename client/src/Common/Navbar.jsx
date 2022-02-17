@@ -69,11 +69,13 @@ const Navbar = () => {
             </button>
           </form>
 
-          <ul className="flex justify-between space-x-[30px] text-base leading-4 font-bold ml-6">
+          <ul className="flex justify-start w-[262px] text-base leading-5 font-light ml-6 space-x-[30px]">
             <li>
               <NavLink
                 to="/"
-                className={"/" === location.pathname ? "text-violet-400" : ""}
+                className={
+                  "/" === location.pathname ? "text-purple font-bold" : ""
+                }
               >
                 Home
               </NavLink>
@@ -82,7 +84,7 @@ const Navbar = () => {
               <NavLink
                 to="/shop"
                 className={
-                  "/shop" === location.pathname ? "text-violet-400" : ""
+                  "/shop" === location.pathname ? "text-purple font-bold" : ""
                 }
               >
                 Shop
@@ -92,7 +94,9 @@ const Navbar = () => {
               <NavLink
                 to="/account"
                 className={
-                  "/account" === location.pathname ? "text-violet-400" : ""
+                  "/account" === location.pathname
+                    ? "text-purple font-bold"
+                    : ""
                 }
               >
                 My Account

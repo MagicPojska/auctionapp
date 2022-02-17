@@ -5,6 +5,9 @@ module.exports = {
       fontFamily: {
         lato: "sans-serif",
       },
+      colors: {
+        purple: "#8367D8",
+      },
     },
   },
   plugins: [],
