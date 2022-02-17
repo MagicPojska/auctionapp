@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className=" flex-end h-96 bg-[#252525] w-full text-white flex justify-between py-8 px-40">
+    <footer className="h-96 bg-[#252525] w-full text-white flex justify-between py-8 px-40 mt-20">
       <div className="">
         <h5 className="pb-6 text-gray-400">AUCTION</h5>
         <ul className="space-y-[12px] text-base">
