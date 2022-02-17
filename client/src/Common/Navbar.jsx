@@ -6,8 +6,13 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 const Navbar = () => {
   //State to show login or create account if user is not logged in and Hi, Jon Doe if user is logged in
   const [user, setUser] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(searchTerm);
+  };
   return (
     <header>
       <div className="bg-black text-white h-10 flex items-center justify-between lg:pl-44 lg:pr-40 md:px-24 sm:px-10 px-4 text-sm">
@@ -72,12 +77,14 @@ const Navbar = () => {
           <div className="flex flex-col lg:flex-row items-center">
             <form
               action="submit"
+              onSubmit={handleSubmit}
               className="flex justify-between w-[200px] md:w-[548px] 2xl:w-[1000px] h-12 border-2 "
             >
               <input
                 type="text"
                 placeholder="Try enter: Shoes"
                 className="w-full pl-5 font-light text-base focus:outline-none"
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
               <button className="text-lg mr-5">
                 <AiOutlineSearch />
