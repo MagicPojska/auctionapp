@@ -62,22 +62,41 @@ const Navbar = () => {
             <input
               type="text"
               placeholder="Try enter: Shoes"
-              className="w-full pl-5 font-light text-base"
+              className="w-full pl-5 font-light text-base focus:outline-none"
             />
             <button className="text-lg mr-5">
               <AiOutlineSearch />
             </button>
           </form>
 
-          <ul className="flex justify-between space-x-[30px]">
+          <ul className="flex justify-between space-x-[30px] text-base leading-4 font-bold ml-6">
             <li>
-              <NavLink to="/">Home</NavLink>
+              <NavLink
+                to="/"
+                className={"/" === location.pathname ? "text-violet-400" : ""}
+              >
+                Home
+              </NavLink>
             </li>
             <li>
-              <NavLink to="/shop">Shop</NavLink>
+              <NavLink
+                to="/shop"
+                className={
+                  "/shop" === location.pathname ? "text-violet-400" : ""
+                }
+              >
+                Shop
+              </NavLink>
             </li>
             <li>
-              <NavLink to="/account">My Account</NavLink>
+              <NavLink
+                to="/account"
+                className={
+                  "/account" === location.pathname ? "text-violet-400" : ""
+                }
+              >
+                My Account
+              </NavLink>
             </li>
           </ul>
         </div>
