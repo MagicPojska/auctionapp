@@ -1,10 +1,13 @@
 import { SiFacebook, SiInstagram, SiTwitter } from "react-icons/si";
+import { AiOutlineSearch } from "react-icons/ai";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   //State to show login or create account if user is not logged in and Hi, Jon Doe if user is logged in
   const [user, setUser] = useState(true);
+  const location = useLocation();
+
   return (
     <header>
       <div className="bg-black text-white h-10 flex items-center justify-between lg:pl-44 lg:pr-40 md:px-24 sm:px-10 px-4 text-sm">
@@ -46,7 +49,39 @@ const Navbar = () => {
         )}
       </div>
 
-      <div>White nav</div>
+      <div className="flex justify-between items-center px-44 pt-4 pb-9">
+        <Link to="/" className="logo-link">
+          <img src="/images/auction-app-logo.png" alt="logo"></img>
+        </Link>
+
+        <div className="flex items-center">
+          <form
+            action="submit"
+            className="flex justify-between w-[548px] h-12 border-2 "
+          >
+            <input
+              type="text"
+              placeholder="Try enter: Shoes"
+              className="w-full pl-5 font-light text-base"
+            />
+            <button className="text-lg mr-5">
+              <AiOutlineSearch />
+            </button>
+          </form>
+
+          <ul className="flex justify-between space-x-[30px]">
+            <li>
+              <NavLink to="/">Home</NavLink>
+            </li>
+            <li>
+              <NavLink to="/shop">Shop</NavLink>
+            </li>
+            <li>
+              <NavLink to="/account">My Account</NavLink>
+            </li>
+          </ul>
+        </div>
+      </div>
     </header>
   );
 };
