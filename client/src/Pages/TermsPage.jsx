@@ -1,10 +1,10 @@
 const TermsPage = () => {
   return (
-    <div className="container mt-7 mx-auto text-base font-light leading-relaxed text-gray-800">
-      <h1 className="font-medium leading-tight text-4xl">
+    <div className="container mt-16 mx-auto w-[556px] text-base font-light leading-relaxed text-gray-400">
+      <h1 className="font-normal leading-tight text-4xl text-black">
         Terms and Conditions for Atlantbh
       </h1>
-      <h4 className="font-medium leading-tight text-2xl mt-2 mb-2">
+      <h4 className="font-normal leading-tight text-lg mt-8 mb-6 text-black">
         Introduction
       </h4>
       <p>
@@ -23,7 +23,7 @@ const TermsPage = () => {
       <p>
         Minors or people below 18 years old are not allowed to use this Website.
       </p>
-      <h4 className="font-medium leading-tight text-2xl mt-2 mb-2">
+      <h4 className="font-normal leading-tight text-2xl mt-8 mb-6 text-black">
         Intellectual Property Rights
       </h4>
       <p>
@@ -35,11 +35,11 @@ const TermsPage = () => {
         You are granted limited license only for purposes of viewing the
         material contained on this Website.
       </p>
-      <h4 className="font-medium leading-tight text-2xl mt-2 mb-2">
+      <h4 className="font-normal leading-tight text-2xl mt-8 mb-6 text-black">
         Restrictions
       </h4>
       <p>You are specifically restricted from all of the following:</p>
-      <ul className="list-disc text-base font-light leading-relaxed mt-0 mb-4 text-gray-800 ml-8">
+      <ul className="list-disc text-base font-light leading-relaxed mt-0 mb-4 ml-8">
         <li>publishing any Website material in any other media;</li>
         <li>
           selling, sublicensing and/or otherwise commercializing any Website
@@ -72,7 +72,7 @@ const TermsPage = () => {
         you may have for this Website are confidential and you must maintain
         confidentiality as well.
       </p>
-      <h4 className="font-medium leading-tight text-2xl mt-2 mb-2">
+      <h4 className="font-normal leading-tight text-2xl mt-8 mb-6 text-black">
         Your Content
       </h4>
       <p>
@@ -85,7 +85,7 @@ const TermsPage = () => {
         third-party’s rights. Atlantbh reserves the right to remove any of Your
         Content from this Website at any time without notice.
       </p>
-      <h4 className="font-medium leading-tight text-2xl mt-2 mb-2">
+      <h4 className="font-normal leading-tight text-2xl mt-8 mb-6 text-black">
         Your Privacy
       </h4>
       Please read Privacy Policy. No warranties This Website is provided "as
@@ -93,7 +93,7 @@ const TermsPage = () => {
       warranties, of any kind related to this Website or the materials contained
       on this Website. Also, nothing contained on this Website shall be
       interpreted as advising you.
-      <h4 className="font-medium leading-tight text-2xl mt-2 mb-2">
+      <h4 className="font-normal leading-tight text-2xl mt-8 mb-6 text-black">
         Limitation of liability
       </h4>
       <p>
@@ -105,7 +105,7 @@ const TermsPage = () => {
         special liability arising out of or in any way related to your use of
         this Website.
       </p>
-      <h4 className="font-medium leading-tight text-2xl mt-2 mb-2">
+      <h4 className="font-normal leading-tight text-2xl mt-8 mb-6 text-black">
         Indemnification
       </h4>
       <p>
@@ -114,7 +114,7 @@ const TermsPage = () => {
         expenses arising in any way related to your breach of any of the
         provisions of these Terms.
       </p>
-      <h4 className="font-medium leading-tight text-2xl mt-2 mb-2">
+      <h4 className="font-normal leading-tight text-2xl mt-8 mb-6 text-black">
         Severability
       </h4>
       <p>
@@ -124,7 +124,7 @@ const TermsPage = () => {
         revise these Terms at any time as it sees fit, and by using this Website
         you are expected to review these Terms on a regular basis.
       </p>
-      <h4 className="font-medium leading-tight text-2xl mt-2 mb-2">
+      <h4 className="font-normal leading-tight text-2xl mt-8 mb-6 text-black">
         Assignment
       </h4>
       <p>
@@ -133,7 +133,7 @@ const TermsPage = () => {
         you are not allowed to assign, transfer, or subcontract any of your
         rights and/or obligations under these Terms.
       </p>
-      <h4 className="font-medium leading-tight text-2xl mt-2 mb-2">
+      <h4 className="font-normal leading-tight text-2xl mt-8 mb-6 text-black">
         Entire Agreement
       </h4>
       <p>
@@ -141,7 +141,7 @@ const TermsPage = () => {
         relation to your use of this Website, and supersede all prior agreements
         and understandings.
       </p>
-      <h4 className="font-medium leading-tight text-2xl mt-2 mb-2">
+      <h4 className="font-normal leading-tight text-2xl mt-8 mb-6 text-black">
         Governing Law & Jurisdiction
       </h4>
       <p>
