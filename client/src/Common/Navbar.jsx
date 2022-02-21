@@ -72,15 +72,15 @@ const Navbar = () => {
             <img
               src="/images/auction-app-logo.png"
               alt="logo"
-              className="min-w-[163px] h-[56px]"
+              className="min-w-[163px] h-[56px] xl:mr-20"
             ></img>
           </Link>
 
-          <div className="flex flex-col lg:flex-row items-center justify-end w-full md:w-3/4">
+          <div className="flex flex-col lg:flex-row items-center justify-end w-full">
             <form
               action="submit"
               onSubmit={handleSearch}
-              className="flex justify-between w-full md:w-4/6 h-12 border-2 "
+              className="flex justify-between w-full  h-12 border-2 "
             >
               <input
                 type="text"
@@ -93,7 +93,7 @@ const Navbar = () => {
               </button>
             </form>
 
-            <ul className="flex justify-start w-[262px] text-base leading-5 font-light ml-6 space-x-[30px] mt-5 lg:mt-0">
+            <ul className="flex justify-start w-[262px] min-w-fit text-base leading-5 font-light ml-6 space-x-[30px] mt-5 lg:mt-0">
               <li>
                 <NavLink
                   to="/"
