@@ -1,6 +1,7 @@
 import { SiFacebook, SiInstagram, SiTwitter } from "react-icons/si";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import SocialMedia from "../components/SocialMedia";
 
 const Navbar = () => {
   //State to show login or create account if user is not logged in and Hi, Jon Doe if user is logged in
@@ -8,33 +9,7 @@ const Navbar = () => {
   return (
     <header>
       <div className="bg-black text-white h-10 flex items-center justify-between lg:pl-44 lg:pr-40 md:px-24 sm:px-10 px-4 text-sm">
-        <div className="flex items-center space-x-[16.4px] text-gray-400 pl-[3px]">
-          <a
-            href="https://www.facebook.com/magicpojska/"
-            rel="noreferrer"
-            target="_blank"
-            className="text-[24px]"
-          >
-            <SiFacebook />
-          </a>
-          <a
-            href="https://www.instagram.com/magic_pojska/"
-            rel="noreferrer"
-            target="_blank"
-            className="p-1 text-[16px] rounded-full bg-gray-400 text-black"
-          >
-            <SiInstagram />
-          </a>
-
-          <a
-            href="https://twitter.com/magicpojska"
-            rel="noreferrer"
-            target="_blank"
-            className="p-1 text-[16px] rounded-full bg-gray-400 text-black"
-          >
-            <SiTwitter />
-          </a>
-        </div>
+        <SocialMedia />
         {user ? (
           <div className="text-[14px] leading-[17px]">Hi, Jon Doe</div>
         ) : (
