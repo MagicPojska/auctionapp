@@ -9,7 +9,10 @@ const Navbar = () => {
   return (
     <header>
       <div className="bg-black text-white h-10 flex items-center justify-between lg:pl-44 lg:pr-40 md:px-24 sm:px-10 px-4 text-sm">
-        <SocialMedia />
+        <div className="pl-[3px]">
+          <SocialMedia />
+        </div>
+
         {user ? (
           <div className="text-[14px] leading-[17px]">Hi, Jon Doe</div>
         ) : (
