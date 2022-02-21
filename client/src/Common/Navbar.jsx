@@ -67,7 +67,7 @@ const Navbar = () => {
           </Link>
         </div>
       ) : (
-        <div className="flex flex-col xl:flex-row justify-between items-center px-20 md:px-44 pt-4 pb-9">
+        <div className="flex flex-col xl:flex-row justify-between items-center px-20 md:px-48 pt-4 pb-9">
           <Link to="/" className="logo-link">
             <img
               src="/images/auction-app-logo.png"
