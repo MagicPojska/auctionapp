@@ -2,6 +2,7 @@ import { SiFacebook, SiInstagram, SiTwitter } from "react-icons/si";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { loginPath, registrationPath } from "../utilities/paths";
 
 const Navbar = () => {
   //State to show login or create account if user is not logged in and Hi, Jon Doe if user is logged in
@@ -54,7 +55,8 @@ const Navbar = () => {
         )}
       </div>
 
-      {"/login" === location.pathname || "/register" === location.pathname ? (
+      {loginPath === location.pathname ||
+      registrationPath === location.pathname ? (
         <div className="flex justify-center items-center py-[18px] border-b-2">
           <Link to="/" className="logo-link">
             <img
