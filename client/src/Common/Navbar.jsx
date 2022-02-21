@@ -9,7 +9,7 @@ const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
 
-  const handleSubmit = (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
     console.log(searchTerm);
   };
@@ -65,7 +65,7 @@ const Navbar = () => {
           </Link>
         </div>
       ) : (
-        <div className="flex flex-col xl:flex-row   justify-between items-center px-20 md:px-44 pt-4 pb-9">
+        <div className="flex flex-col xl:flex-row justify-between items-center px-20 md:px-44 pt-4 pb-9">
           <Link to="/" className="logo-link">
             <img
               src="/images/auction-app-logo.png"
@@ -74,11 +74,11 @@ const Navbar = () => {
             ></img>
           </Link>
 
-          <div className="flex flex-col lg:flex-row items-center">
+          <div className="flex flex-col lg:flex-row items-center justify-end w-full md:w-3/4">
             <form
               action="submit"
-              onSubmit={handleSubmit}
-              className="flex justify-between w-[200px] md:w-[548px] 2xl:w-[1000px] h-12 border-2 "
+              onSubmit={handleSearch}
+              className="flex justify-between w-full md:w-4/6 h-12 border-2 "
             >
               <input
                 type="text"
@@ -99,7 +99,7 @@ const Navbar = () => {
                     "/" === location.pathname ? "text-purple font-bold" : ""
                   }
                 >
-                  Home
+                  HOME
                 </NavLink>
               </li>
               <li>
@@ -109,7 +109,7 @@ const Navbar = () => {
                     "/shop" === location.pathname ? "text-purple font-bold" : ""
                   }
                 >
-                  Shop
+                  SHOP
                 </NavLink>
               </li>
               <li>
@@ -121,7 +121,7 @@ const Navbar = () => {
                       : ""
                   }
                 >
-                  My Account
+                  MY ACCOUNT
                 </NavLink>
               </li>
             </ul>
