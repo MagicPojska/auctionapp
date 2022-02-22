@@ -5,6 +5,10 @@ module.exports = {
       fontFamily: {
         lato: "sans-serif",
       },
+      colors: {
+        purple: "#8367D8",
+        blackPrimary: "#252525",
+      },
     },
   },
   plugins: [],

@@ -8,7 +8,7 @@ const Navbar = () => {
   const [user, setUser] = useState(true);
   return (
     <header>
-      <div className="bg-black text-white h-10 flex items-center justify-between lg:pl-44 lg:pr-40 md:px-24 sm:px-10 px-4 text-sm">
+      <div className="bg-blackPrimary text-white h-10 flex items-center justify-between lg:pl-44 lg:pr-40 md:px-24 sm:px-10 px-4 text-sm">
         <div className="pl-[3px]">
           <SocialMedia />
         </div>

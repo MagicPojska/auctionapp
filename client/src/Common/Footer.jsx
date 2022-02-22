@@ -3,7 +3,7 @@ import SocialMedia from "../components/SocialMedia";
 
 const Footer = () => {
   return (
-    <footer className="h-96 bg-[#252525] w-full text-white flex flex-col md:flex-row justify-between py-8 px-10 sm:px-48 md:px-40 mt-20">
+    <footer className="h-96 bg-blackPrimary w-full text-white flex flex-col md:flex-row justify-between py-8 px-10 sm:px-48 md:px-40 mt-20">
       <div className="">
         <h5 className="pb-6 text-gray-400">AUCTION</h5>
         <ul className="space-y-[12px] text-base text-[#D8D8D8] ">
