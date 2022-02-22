@@ -1,11 +1,19 @@
 import { SiFacebook, SiInstagram, SiTwitter } from "react-icons/si";
+import { AiOutlineSearch } from "react-icons/ai";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import SocialMedia from "../components/SocialMedia";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { loginPath, registrationPath } from "../utilities/paths";
 
 const Navbar = () => {
   //State to show login or create account if user is not logged in and Hi, Jon Doe if user is logged in
   const [user, setUser] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const location = useLocation();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    console.log(searchTerm);
+  };
   return (
     <header>
       <div className="bg-blackPrimary text-white h-10 flex items-center justify-between lg:pl-44 lg:pr-40 md:px-24 sm:px-10 px-4 text-sm">
@@ -17,14 +25,88 @@ const Navbar = () => {
           <div className="text-[14px] leading-[17px]">Hi, Jon Doe</div>
         ) : (
           <div className="text-[14px]">
-            <Link to="/">Login</Link>{" "}
-            <span className="text-gray-400 px-5">or</span>{" "}
+            <Link to="/">Login</Link>
+            <span className="text-gray-400 px-5">{" or "}</span>
             <Link to="/">Create an account</Link>
           </div>
         )}
       </div>
 
-      <div>White nav</div>
+      {loginPath === location.pathname ||
+      registrationPath === location.pathname ? (
+        <div className="flex justify-center items-center py-[18px] border-b-2">
+          <Link to="/" className="logo-link">
+            <img
+              src="/images/auction-app-logo.png"
+              alt="logo"
+              className="min-w-[163px] h-[56px]"
+            ></img>
+          </Link>
+        </div>
+      ) : (
+        <div className="flex flex-col xl:flex-row justify-between items-center px-20 md:px-48 pt-4 pb-9">
+          <Link to="/" className="logo-link">
+            <img
+              src="/images/auction-app-logo.png"
+              alt="logo"
+              className="min-w-[163px] h-[56px] xl:mr-20"
+            ></img>
+          </Link>
+
+          <div className="flex flex-col lg:flex-row items-center justify-end w-full">
+            <form
+              action="submit"
+              onSubmit={handleSearch}
+              className="flex justify-between w-full  h-12 border-2 "
+            >
+              <input
+                type="text"
+                placeholder="Try enter: Shoes"
+                className="w-full pl-5 font-light text-base focus:outline-none"
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button className="text-lg mr-5">
+                <AiOutlineSearch />
+              </button>
+            </form>
+
+            <ul className="flex justify-start w-[262px] min-w-fit text-base leading-5 font-light ml-6 space-x-[30px] mt-5 lg:mt-0">
+              <li>
+                <NavLink
+                  to="/"
+                  className={
+                    "/" === location.pathname ? "text-purple font-bold" : ""
+                  }
+                >
+                  HOME
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/shop"
+                  className={
+                    "/shop" === location.pathname ? "text-purple font-bold" : ""
+                  }
+                >
+                  SHOP
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/account"
+                  className={
+                    "/account" === location.pathname
+                      ? "text-purple font-bold"
+                      : ""
+                  }
+                >
+                  MY ACCOUNT
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
