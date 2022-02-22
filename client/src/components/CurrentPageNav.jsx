@@ -4,7 +4,7 @@ const CurrentPageNav = ({ props }) => {
       <span>{props}</span>
       <div className="font-normal text-base flex text-textTetriary">
         <span>Home &nbsp;</span>
-        <p className>&#10132; &nbsp;</p>
+        <p>&#10132; &nbsp;</p>
         <span className="text-purple font-bold">{props}</span>
       </div>
     </div>
