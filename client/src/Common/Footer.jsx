@@ -1,12 +1,12 @@
-import { SiFacebook, SiInstagram, SiTwitter } from "react-icons/si";
 import { Link } from "react-router-dom";
+import SocialMedia from "../components/SocialMedia";
 
 const Footer = () => {
   return (
-    <footer className="h-96 bg-[#252525] w-full text-white flex flex-col md:flex-row justify-between py-8 px-10 sm:px-48 md:px-40 mt-20">
+    <footer className="h-96 bg-blackPrimary w-full text-white flex flex-col md:flex-row justify-between py-8 px-10 sm:px-48 md:px-40 mt-20">
       <div className="">
         <h5 className="pb-6 text-gray-400">AUCTION</h5>
-        <ul className="space-y-[12px] text-base text-[#D8D8D8] ">
+        <ul className="space-y-[12px] text-base text-textSecondary ">
           <li>
             <Link to="/about" className="hover:text-white">
               About Us
@@ -27,7 +27,7 @@ const Footer = () => {
 
       <div className="">
         <h5 className="pb-6 text-gray-400">GET IN TOUCH</h5>
-        <ul className="space-y-[12px] text-[#D8D8D8]">
+        <ul className="space-y-[12px] text-textSecondary">
           <li>
             <span>Call Us at +123 797-567-2535</span>
           </li>
@@ -35,33 +35,7 @@ const Footer = () => {
             <span>support@auction.com</span>
           </li>
           <li>
-            <div className="flex items-center space-x-[16.4px] text-gray-400">
-              <a
-                href="https://www.facebook.com/magicpojska/"
-                rel="noreferrer"
-                target="_blank"
-                className="text-[24px]"
-              >
-                <SiFacebook />
-              </a>
-              <a
-                href="https://www.instagram.com/magic_pojska/"
-                rel="noreferrer"
-                target="_blank"
-                className="p-1 text-[16px] rounded-full bg-gray-400 text-black"
-              >
-                <SiInstagram />
-              </a>
-
-              <a
-                href="https://twitter.com/magicpojska"
-                rel="noreferrer"
-                target="_blank"
-                className="p-1 text-[16px] rounded-full bg-gray-400 text-black"
-              >
-                <SiTwitter />
-              </a>
-            </div>
+            <SocialMedia />
           </li>
         </ul>
       </div>
