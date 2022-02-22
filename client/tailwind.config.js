@@ -8,6 +8,7 @@ module.exports = {
       colors: {
         purple: "#8367D8",
         blackPrimary: "#252525",
+        textSecondary: "#D8D8D8",
       },
     },
   },

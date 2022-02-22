@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="h-96 bg-blackPrimary w-full text-white flex flex-col md:flex-row justify-between py-8 px-10 sm:px-48 md:px-40 mt-20">
       <div className="">
         <h5 className="pb-6 text-gray-400">AUCTION</h5>
-        <ul className="space-y-[12px] text-base text-[#D8D8D8] ">
+        <ul className="space-y-[12px] text-base text-textSecondary ">
           <li>
             <Link to="/about" className="hover:text-white">
               About Us
@@ -27,7 +27,7 @@ const Footer = () => {
 
       <div className="">
         <h5 className="pb-6 text-gray-400">GET IN TOUCH</h5>
-        <ul className="space-y-[12px] text-[#D8D8D8]">
+        <ul className="space-y-[12px] text-textSecondary">
           <li>
             <span>Call Us at +123 797-567-2535</span>
           </li>
