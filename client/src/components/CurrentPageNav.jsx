@@ -1,11 +1,11 @@
 const CurrentPageNav = ({ props }) => {
   return (
-    <div className="h-[60px] bg-[#FCFCFC] flex justify-between items-center px-[160px] font-normal text-base">
+    <div className="h-[60px] bg-bgWhite flex justify-between items-center px-[160px] font-normal text-base">
       <span>{props}</span>
-      <div className="font-normal text-base flex text-[#9B9B9B]">
+      <div className="font-normal text-base flex text-textTetriary">
         <span>Home &nbsp;</span>
         <p className>&#10132; &nbsp;</p>
-        <span className="text-violet-400">{props}</span>
+        <span className="text-purple font-bold">{props}</span>
       </div>
     </div>
   );
