@@ -3,9 +3,27 @@ import useBreadcrumbs from "use-react-router-breadcrumbs";
 const CurrentPageNav = ({ props }) => {
   const breadcrumbs = useBreadcrumbs();
   let lastElement =
-    breadcrumbs[breadcrumbs.length - 1].breadcrumb.props.children;
+    breadcrumbs[breadcrumbs.length - 1].breadcrumb.props.children.split(" ");
   let secondToLastElement =
-    breadcrumbs[breadcrumbs.length - 2].breadcrumb.props.children;
+    breadcrumbs[breadcrumbs.length - 2].breadcrumb.props.children.split(" ");
+
+  const capitalize = (words) => {
+    if (words.length === 1) {
+      return words;
+    }
+    return words
+      .map((word) => {
+        if (word === "or" || word === "and") {
+          return word;
+        } else {
+          return word[0].toUpperCase() + word.substring(1);
+        }
+      })
+      .join(" ");
+  };
+
+  lastElement = capitalize(lastElement);
+  secondToLastElement = capitalize(secondToLastElement);
 
   return (
     <div className="h-[60px] bg-bgWhite flex justify-between items-center px-[160px] font-normal text-base">
