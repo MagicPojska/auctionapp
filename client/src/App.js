@@ -5,6 +5,7 @@ import AboutPage from "./Pages/AboutPage";
 import TermsPage from "./Pages/TermsPage";
 import PrivacyPolicyPage from "./Pages/PrivacyPolicyPage";
 import PageLayout from "./components/PageLayout";
+import { aboutUsPath, privacyPolicyPath, termsPath } from "./utilities/paths";
 
 const App = () => {
   return (
@@ -12,7 +13,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route
-          path="/about"
+          path={aboutUsPath}
           element={
             <PageLayout>
               <AboutPage />
@@ -20,7 +21,7 @@ const App = () => {
           }
         />
         <Route
-          path="/terms-and-conditions"
+          path={termsPath}
           element={
             <PageLayout>
               <TermsPage />
@@ -28,10 +29,10 @@ const App = () => {
           }
         />
         <Route
-          path="/privacy-and-policy"
+          path={privacyPolicyPath}
           element={
             <PageLayout>
-              <PrivacyPolicyPage />{" "}
+              <PrivacyPolicyPage />
             </PageLayout>
           }
         />
