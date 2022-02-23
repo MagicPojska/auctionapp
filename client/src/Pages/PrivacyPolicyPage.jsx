@@ -3,7 +3,6 @@ import CurrentPageNav from "../components/CurrentPageNav";
 const PrivacyPolicyPage = () => {
   return (
     <>
-      <CurrentPageNav props={"Privacy and Policy"} />
       <div className="container mt-16 mx-auto w-[556px] text-base font-light leading-relaxed text-gray-400">
         <h1 className="font-normal leading-tight text-4xl text-black mb-8">
           Privacy Policy
