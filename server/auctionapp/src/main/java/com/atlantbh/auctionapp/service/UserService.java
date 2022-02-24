@@ -2,6 +2,7 @@ package com.atlantbh.auctionapp.service;
 
 import com.atlantbh.auctionapp.model.User;
 import com.atlantbh.auctionapp.repository.UserRepository;
+import com.atlantbh.auctionapp.request.LoginRequest;
 import com.atlantbh.auctionapp.request.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,15 @@ public class UserService {
                 registerRequest.getEmail(),
                 passwordEncoder.encode(registerRequest.getPassword())
         ));
+        user.setPassword(null);
+        return user;
+    }
+
+    public User login(LoginRequest loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.getEmail());
+        if (user == null || !passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new RuntimeException("The email address or password you entered is not valid");
+        }
         user.setPassword(null);
         return user;
     }
