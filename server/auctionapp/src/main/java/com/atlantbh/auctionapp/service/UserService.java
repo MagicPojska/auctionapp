@@ -3,7 +3,9 @@ package com.atlantbh.auctionapp.service;
 import com.atlantbh.auctionapp.model.User;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.LoginRequest;
+import com.atlantbh.auctionapp.request.LogoutRequest;
 import com.atlantbh.auctionapp.request.RegisterRequest;
+import com.atlantbh.auctionapp.security.JsonWebToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,5 +42,11 @@ public class UserService {
         }
         user.setPassword(null);
         return user;
+    }
+
+    public String logout(LogoutRequest logoutRequest){
+        String token = logoutRequest.getToken();
+        JsonWebToken.invalidateToken(token);
+        return "User has been logged out!";
     }
 }

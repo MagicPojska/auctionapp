@@ -37,7 +37,7 @@ public class JsonWebToken {
         return new Date(new Date().getTime() + JsonWebToken.jwtExpiration * 1000);
     }
 
-    private Claims getAllClaimsFromToken(String token) {
+    private static Claims getAllClaimsFromToken(String token) {
         Claims claims;
         try {
             claims = Jwts.parser()
@@ -75,6 +75,16 @@ public class JsonWebToken {
     public boolean isTokenExpired(String token) {
         Date expireDate=getExpirationDate(token);
         return expireDate.before(new Date());
+    }
+
+    public static void invalidateToken(String token){
+        Date expireDate = new Date();
+        try {
+            final Claims claims = JsonWebToken.getAllClaimsFromToken(token);
+            claims.setExpiration(expireDate);
+        } catch (Exception e) {
+            expireDate = new Date();
+        }
     }
 
     public Date getIssuedAtDateFromToken(String token) {
