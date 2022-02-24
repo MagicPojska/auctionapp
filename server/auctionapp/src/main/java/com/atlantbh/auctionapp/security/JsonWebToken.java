@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Component
@@ -47,6 +48,54 @@ public class JsonWebToken {
             claims = null;
         }
         return claims;
+    }
+
+    public String getIdFromToken(String token) {
+        String id;
+        try {
+            final Claims claims = this.getAllClaimsFromToken(token);
+            id = claims.getSubject();
+        } catch (Exception e) {
+            id = null;
+        }
+        return id;
+    }
+
+    private Date getExpirationDate(String token) {
+        Date expireDate;
+        try {
+            final Claims claims = this.getAllClaimsFromToken(token);
+            expireDate = claims.getExpiration();
+        } catch (Exception e) {
+            expireDate = null;
+        }
+        return expireDate;
+    }
+
+    public boolean isTokenExpired(String token) {
+        Date expireDate=getExpirationDate(token);
+        return expireDate.before(new Date());
+    }
+
+    public Date getIssuedAtDateFromToken(String token) {
+        Date issuedAt;
+        try {
+            final Claims claims = this.getAllClaimsFromToken(token);
+            issuedAt = claims.getIssuedAt();
+        } catch (Exception e) {
+            issuedAt = null;
+        }
+        return issuedAt;
+    }
+
+    public String getToken( HttpServletRequest request ) {
+
+        String authHeader = request.getHeader("Authorization");
+        if ( authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+
+        return null;
     }
 
     public static String generateJWTToken(User user) {
