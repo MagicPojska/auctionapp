@@ -83,7 +83,7 @@ public class JsonWebToken {
             final Claims claims = JsonWebToken.getAllClaimsFromToken(token);
             claims.setExpiration(expireDate);
         } catch (Exception e) {
-            expireDate = new Date();
+            expireDate = null;
         }
     }
 
