@@ -18,7 +18,7 @@ public class JsonWebToken {
     private static int jwtExpiration;
     private static SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
-    @Value("${app.app}")
+    @Value("${app.appName}")
     public void setAppName(String appName) {
         JsonWebToken.appName = appName;
     }
