@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
-public class JsonWebToken {
+public class JwtUtil {
 
     private static String appName;
     private static String jwtSecret;
@@ -24,21 +24,21 @@ public class JsonWebToken {
 
     @Value("${app.appName}")
     public void setAppName(String appName) {
-        JsonWebToken.appName = appName;
+        JwtUtil.appName = appName;
     }
 
     @Value("${app.jwtSecret}")
     public void setJwtSecret(String jwtSecret) {
-        JsonWebToken.jwtSecret = jwtSecret;
+        JwtUtil.jwtSecret = jwtSecret;
     }
 
     @Value("${app.jwtExpiration}")
     public void setJwtExpiration(int jwtExpiration) {
-        JsonWebToken.jwtExpiration = jwtExpiration;
+        JwtUtil.jwtExpiration = jwtExpiration;
     }
 
     private static Date generateExpirationDate() {
-        return new Date(new Date().getTime() + JsonWebToken.jwtExpiration * 1000);
+        return new Date(new Date().getTime() + JwtUtil.jwtExpiration * 1000);
     }
 
     //retrieve email from jwt token
