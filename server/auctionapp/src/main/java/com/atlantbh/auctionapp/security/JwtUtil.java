@@ -93,32 +93,10 @@ public class JwtUtil {
                 .compact();
     }
 
-    public static String generateJWTToken(User user) {
-        long timestamp = System.currentTimeMillis();
-        return Jwts.builder()
-                .setIssuer(appName)
-                .setIssuedAt(new Date(timestamp))
-                .setExpiration(generateExpirationDate())
-                .signWith(SIGNATURE_ALGORITHM, jwtSecret)
-                .claim("email", user.getEmail())
-                .compact();
-    }
-
     //validate token
     public Boolean validateToken(String token, UserDetails user) {
         final String email = getEmailFromToken(token);
         return (email.equals(user.getUsername()) && !isTokenExpired(token));
     }
-
-    public String getToken( HttpServletRequest request ) {
-
-        String authHeader = request.getHeader("Authorization");
-        if ( authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7);
-        }
-
-        return null;
-    }
-
 
 }
