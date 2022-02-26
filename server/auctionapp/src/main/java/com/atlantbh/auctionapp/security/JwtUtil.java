@@ -1,6 +1,5 @@
 package com.atlantbh.auctionapp.security;
 
-import com.atlantbh.auctionapp.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,8 +17,8 @@ public class JwtUtil {
 
     private static String appName;
     private static String jwtSecret;
-    private static int jwtExpiration;
-    private static SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
+    private static long jwtExpiration;
+    private final static SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
     @Value("${app.appName}")
     public void setAppName(String appName) {
@@ -74,17 +72,14 @@ public class JwtUtil {
 
     public void invalidateToken(String token){
         Date expireDate = new Date();
-        try {
-            final Claims claims = getAllClaimsFromToken(token);
-            claims.setExpiration(expireDate);
-        } catch (Exception e) {
-            expireDate = null;
-        }
+        final Claims claims = getAllClaimsFromToken(token);
+        claims.setExpiration(expireDate);
     }
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder()
+                .setIssuer(appName)
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
