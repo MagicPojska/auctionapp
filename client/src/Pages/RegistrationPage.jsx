@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContextProvider";
 import { loginPath } from "../utilities/paths";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const RegistrationPage = () => {
   const { register } = useUserContext();
   const [user, setUser] = useState({
@@ -18,7 +21,9 @@ const RegistrationPage = () => {
     e.preventDefault();
     const data = await register(user);
     if (data === null) {
-      alert("Please enter all fields");
+      toast.error("User already exists!", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     } else {
       navigate(loginPath);
     }
@@ -26,6 +31,8 @@ const RegistrationPage = () => {
 
   return (
     <div className="mx-[22rem] pt-10">
+      <ToastContainer />
+
       <div className="border-2">
         <div className="w-full h-20 flex justify-center items-center bg-gray-50">
           <h1 className="font-bold leading-tight text-2xl text-black">

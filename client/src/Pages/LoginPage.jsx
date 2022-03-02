@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContextProvider";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const LoginPage = () => {
   const { login } = useUserContext();
   const [user, setUser] = useState({
@@ -15,7 +18,9 @@ const LoginPage = () => {
     e.preventDefault();
     const data = await login(user);
     if (data === null) {
-      alert("Wrong email or password!");
+      toast.error("Wrong username or password!", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     } else {
       navigate("/");
     }
@@ -23,6 +28,7 @@ const LoginPage = () => {
 
   return (
     <div className="mx-[22rem] pt-10">
+      <ToastContainer />
       <div className="border-2">
         <div className="w-full h-20 flex justify-center items-center bg-gray-50">
           <h1 className="font-bold leading-tight text-2xl text-black">LOGIN</h1>

@@ -26,8 +26,8 @@ export const UserContextProvider = ({ children }) => {
 
   const register = async (user) => {
     try {
-      await axios.post(baseURL + "/register", user);
-      return user;
+      const data = await axios.post(baseURL + "/register", user);
+      return data;
     } catch (error) {
       console.log(error);
       return null;
