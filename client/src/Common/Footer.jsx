@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import SocialMedia from "../components/SocialMedia";
+import { aboutUsPath, privacyPolicyPath, termsPath } from "../utilities/paths";
 
 const Footer = () => {
   return (
@@ -8,17 +9,17 @@ const Footer = () => {
         <h5 className="pb-6 text-gray-400">AUCTION</h5>
         <ul className="space-y-[12px] text-base text-textSecondary ">
           <li>
-            <Link to="/about" className="hover:text-white">
+            <Link to={aboutUsPath} className="hover:text-white">
               About Us
             </Link>
           </li>
           <li>
-            <Link to="/terms-and-conditions" className="hover:text-white">
+            <Link to={termsPath} className="hover:text-white">
               Terms and Conditions
             </Link>
           </li>
           <li>
-            <Link to="/privacy-and-policy" className="hover:text-white">
+            <Link to={privacyPolicyPath} className="hover:text-white">
               Privacy and Policy
             </Link>
           </li>
