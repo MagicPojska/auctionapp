@@ -4,20 +4,26 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { loginPath, registrationPath } from "../utilities/paths";
 import SocialMedia from "../components/SocialMedia";
 import { getUser } from "../utilities/auth";
+import { useUserContext } from "../contexts/UserContextProvider";
 
 const Navbar = () => {
   //State to show login or create account if user is not logged in and Hi, Jon Doe if user is logged in
   const [user, setUser] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
+  const { logout } = useUserContext();
 
   useEffect(() => {
     setUser(getUser());
-  }, [location]);
+  }, [location, user]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     console.log(searchTerm);
+  };
+
+  const handleLogout = () => {
+    logout();
   };
   return (
     <header>
@@ -27,8 +33,16 @@ const Navbar = () => {
         </div>
 
         {user ? (
-          <div className="text-[14px] leading-[17px]">
-            Hi, {user.firstName} {user.lastName}
+          <div className="text-[14px] leading-[17px] flex space-x-10">
+            <p>
+              Hi, {user.firstName} {user.lastName}
+            </p>
+            <button
+              onClick={handleLogout}
+              className="text-[14px] leading-[17px] font-bold hover:text-gray-400"
+            >
+              Logout
+            </button>
           </div>
         ) : (
           <div className="text-[14px]">
