@@ -1,8 +1,8 @@
-import { SiFacebook, SiInstagram, SiTwitter } from "react-icons/si";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { loginPath, registrationPath } from "../utilities/paths";
+import SocialMedia from "../components/SocialMedia";
 
 const Navbar = () => {
   //State to show login or create account if user is not logged in and Hi, Jon Doe if user is logged in
