@@ -27,7 +27,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="mx-[22rem] pt-10">
+    <div className="mx-[22rem] pt-10 2xl:mx-[28rem]">
       <ToastContainer />
       <div className="border-2">
         <div className="w-full h-20 flex justify-center items-center bg-gray-50">

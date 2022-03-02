@@ -30,7 +30,7 @@ const RegistrationPage = () => {
   };
 
   return (
-    <div className="mx-[22rem] pt-10">
+    <div className="mx-[22rem] 2xl:mx-[28rem] pt-10">
       <ToastContainer />
 
       <div className="border-2">
