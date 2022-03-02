@@ -1,14 +1,19 @@
 import { AiOutlineSearch } from "react-icons/ai";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { loginPath, registrationPath } from "../utilities/paths";
 import SocialMedia from "../components/SocialMedia";
+import { getUser } from "../utilities/auth";
 
 const Navbar = () => {
   //State to show login or create account if user is not logged in and Hi, Jon Doe if user is logged in
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
+
+  useEffect(() => {
+    setUser(getUser());
+  }, [location]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -22,12 +27,14 @@ const Navbar = () => {
         </div>
 
         {user ? (
-          <div className="text-[14px] leading-[17px]">Hi, Jon Doe</div>
+          <div className="text-[14px] leading-[17px]">
+            Hi, {user.firstName} {user.lastName}
+          </div>
         ) : (
           <div className="text-[14px]">
-            <Link to="/">Login</Link>
+            <Link to={loginPath}>Login</Link>
             <span className="text-gray-400 px-5">{" or "}</span>
-            <Link to="/">Create an account</Link>
+            <Link to={registrationPath}>Create an account</Link>
           </div>
         )}
       </div>
