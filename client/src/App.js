@@ -4,8 +4,9 @@ import Navbar from "./Common/Navbar";
 import AboutPage from "./Pages/AboutPage";
 import TermsPage from "./Pages/TermsPage";
 import PrivacyPolicyPage from "./Pages/PrivacyPolicyPage";
-import { loginPath } from "./utilities/paths";
+import { loginPath, registrationPath } from "./utilities/paths";
 import LoginPage from "./Pages/LoginPage";
+import RegistrationPage from "./Pages/RegistrationPage";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path={loginPath} element={<LoginPage />} />
+        <Route path={registrationPath} element={<RegistrationPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/terms-and-conditions" element={<TermsPage />} />
         <Route path="/privacy-and-policy" element={<PrivacyPolicyPage />} />
