@@ -27,9 +27,9 @@ const Navbar = () => {
     console.log(searchTerm);
   };
 
-  const handleLogout = () => {
-    setUser(null);
-    logout();
+  const handleLogout = async () => {
+    setUser("");
+    await logout();
   };
   return (
     <header>
