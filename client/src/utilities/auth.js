@@ -3,7 +3,7 @@ const setUser = (user, token) => {
   localStorage.setItem("user", JSON.stringify(user));
 };
 
-const removeSession = () => {
+const removeUser = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
 };
@@ -22,4 +22,4 @@ const getToken = () => {
   return localStorage.getItem("token") || null;
 };
 
-export { setUser, removeSession, getUser, getUserId, getToken };
+export { setUser, removeUser, getUser, getUserId, getToken };
