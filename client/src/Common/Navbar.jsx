@@ -1,7 +1,13 @@
 import { AiOutlineSearch } from "react-icons/ai";
 import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { loginPath, registrationPath } from "../utilities/paths";
+import {
+  accountPath,
+  homePath,
+  loginPath,
+  registrationPath,
+  shopPath,
+} from "../utilities/paths";
 import SocialMedia from "../components/SocialMedia";
 import { getUser } from "../utilities/auth";
 import { useUserContext } from "../contexts/UserContextProvider";
@@ -94,9 +100,11 @@ const Navbar = () => {
             <ul className="flex justify-start w-[262px] min-w-fit text-base leading-5 font-light ml-6 space-x-[30px] mt-5 lg:mt-0">
               <li>
                 <NavLink
-                  to="/"
+                  to={homePath}
                   className={
-                    "/" === location.pathname ? "text-purple font-bold" : ""
+                    homePath === location.pathname
+                      ? "text-purple font-bold"
+                      : ""
                   }
                 >
                   HOME
@@ -104,9 +112,11 @@ const Navbar = () => {
               </li>
               <li>
                 <NavLink
-                  to="/shop"
+                  to={shopPath}
                   className={
-                    "/shop" === location.pathname ? "text-purple font-bold" : ""
+                    shopPath === location.pathname
+                      ? "text-purple font-bold"
+                      : ""
                   }
                 >
                   SHOP
@@ -114,9 +124,9 @@ const Navbar = () => {
               </li>
               <li>
                 <NavLink
-                  to="/account"
+                  to={accountPath}
                   className={
-                    "/account" === location.pathname
+                    accountPath === location.pathname
                       ? "text-purple font-bold"
                       : ""
                   }
