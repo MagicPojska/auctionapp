@@ -38,7 +38,6 @@ export const UserContextProvider = ({ children }) => {
     try {
       await axios.get(baseURL + "/logout", config);
       removeUser();
-      return "User has been logged out!";
     } catch (error) {
       console.log(error);
       return null;

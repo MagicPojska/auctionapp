@@ -7,7 +7,6 @@ import { getUser } from "../utilities/auth";
 import { useUserContext } from "../contexts/UserContextProvider";
 
 const Navbar = () => {
-  //State to show login or create account if user is not logged in and Hi, Jon Doe if user is logged in
   const [user, setUser] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
@@ -15,7 +14,7 @@ const Navbar = () => {
 
   useEffect(() => {
     setUser(getUser());
-  }, [location, user]);
+  }, [location]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -23,6 +22,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
+    setUser(null);
     logout();
   };
   return (
