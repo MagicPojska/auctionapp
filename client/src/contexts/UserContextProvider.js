@@ -17,7 +17,7 @@ export const UserContextProvider = ({ children }) => {
     try {
       const data = await axios.post(baseURL + "/login", user);
       setUser(data.data.user, data.data.token);
-      return data.data;
+      return data;
     } catch (error) {
       console.log(error);
       return null;
