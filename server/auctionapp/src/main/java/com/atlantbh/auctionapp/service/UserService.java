@@ -28,6 +28,9 @@ public class UserService  {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    public final String AUTHORIZATION = "Authorization";
+    public final String BEARER = "Bearer ";
+
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
@@ -55,12 +58,12 @@ public class UserService  {
     }
 
     public String logout(HttpServletRequest request){
-        final String requestTokenHeader = request.getHeader("Authorization");
+        final String requestTokenHeader = request.getHeader(AUTHORIZATION);
         String token = null;
 
 
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            token = requestTokenHeader.substring(7);
+        if (requestTokenHeader != null && requestTokenHeader.startsWith(BEARER)) {
+            token = requestTokenHeader.substring(BEARER.length());
         }
 
         jsonWebToken.invalidateToken(token);
