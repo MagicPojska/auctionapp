@@ -1,6 +1,5 @@
 package com.atlantbh.auctionapp.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +14,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Entity
 @Table(name = "User", schema="auction")
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -38,7 +37,7 @@ public class User {
     @Size(max = 255)
     private String password;
 
-    public User(String firstName, String lastName, String email, String password){
+    public UserEntity(String firstName, String lastName, String email, String password){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

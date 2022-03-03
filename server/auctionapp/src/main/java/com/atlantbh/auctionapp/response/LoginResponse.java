@@ -1,6 +1,6 @@
 package com.atlantbh.auctionapp.response;
 
-import com.atlantbh.auctionapp.model.User;
+import com.atlantbh.auctionapp.domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

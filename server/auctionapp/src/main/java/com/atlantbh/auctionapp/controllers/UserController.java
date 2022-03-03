@@ -1,12 +1,10 @@
 package com.atlantbh.auctionapp.controllers;
 
-import com.atlantbh.auctionapp.model.User;
+import com.atlantbh.auctionapp.domain.model.User;
 import com.atlantbh.auctionapp.request.LoginRequest;
 import com.atlantbh.auctionapp.request.RegisterRequest;
 import com.atlantbh.auctionapp.response.LoginResponse;
-import com.atlantbh.auctionapp.response.LogoutResponse;
 import com.atlantbh.auctionapp.security.JwtUtil;
-import com.atlantbh.auctionapp.security.JwtUserDetailsService;
 import com.atlantbh.auctionapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +22,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/auth")
 public class UserController {
-    @Autowired
-    private JwtUserDetailsService userServiceDetails;
-
     @Autowired
     private UserService userService;
 
@@ -47,7 +42,7 @@ public class UserController {
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) throws Exception{
         try {
             userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
-            final UserDetails userDetails = userServiceDetails.loadUserByUsername(loginRequest.getEmail());
+            final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getEmail());
 
             User user = userService.login(loginRequest);
             return ResponseEntity.ok(new LoginResponse(user, jwtUtil.generateToken(userDetails)));
@@ -57,9 +52,7 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {
-        String message = userService.logout(request);
-        return ResponseEntity.ok(new LogoutResponse(message));
+    public void logout(HttpServletRequest request) {
+        userService.logout(request);
     }
-
 }
