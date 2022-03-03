@@ -61,7 +61,6 @@ public class UserService  {
         final String requestTokenHeader = request.getHeader(AUTHORIZATION);
         String token = null;
 
-
         if (requestTokenHeader != null && requestTokenHeader.startsWith(BEARER)) {
             token = requestTokenHeader.substring(BEARER.length());
         }
