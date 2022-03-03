@@ -40,6 +40,7 @@ export const UserContextProvider = ({ children }) => {
       removeUser();
     } catch (error) {
       console.log(error);
+      removeUser();
       return null;
     }
   };

@@ -6,3 +6,4 @@ export const termsPath = "/terms-and-conditions";
 export const homePath = "/";
 export const shopPath = "/shop";
 export const accountPath = "/account";
+export const forgotPasswordPath = "/forgot-password";

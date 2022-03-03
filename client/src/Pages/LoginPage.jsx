@@ -4,6 +4,7 @@ import { useUserContext } from "../contexts/UserContextProvider";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { forgotPasswordPath, homePath } from "../utilities/paths";
 
 const LoginPage = () => {
   const { login } = useUserContext();
@@ -22,7 +23,7 @@ const LoginPage = () => {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else {
-      navigate("/");
+      navigate(homePath);
     }
   };
 
@@ -75,7 +76,7 @@ const LoginPage = () => {
         </form>
 
         <div className="text-purple font-bold text-base text-center mt-12 mb-16 leading-7 mx-24">
-          <Link to={"forgot-password"}>Forgot password?</Link>
+          <Link to={forgotPasswordPath}>Forgot password?</Link>
         </div>
       </div>
     </div>
