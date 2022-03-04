@@ -9,12 +9,14 @@ import java.util.Collection;
 
 public class User implements UserDetails {
 
+    private long id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(long id, String firstName, String lastName, String email, String password) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -22,9 +24,13 @@ public class User implements UserDetails {
     }
 
     public static User createFromEntity(UserEntity entity) {
-        User user = new User(entity.getFirstName(), entity.getLastName(), entity.getEmail(), entity.getPassword());
+        User user = new User(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getEmail(), entity.getPassword());
 
         return user;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setFirstName(String firstName) {
@@ -41,6 +47,10 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getFirstName() {
