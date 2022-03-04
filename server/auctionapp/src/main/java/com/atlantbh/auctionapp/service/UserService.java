@@ -1,6 +1,7 @@
 package com.atlantbh.auctionapp.service;
 
 import com.atlantbh.auctionapp.domain.model.User;
+import com.atlantbh.auctionapp.exceptions.UserAlreadyExistsException;
 import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.LoginRequest;
@@ -39,9 +40,9 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String register(RegisterRequest registerRequest){
+    public String register(RegisterRequest registerRequest) throws UserAlreadyExistsException {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
-            throw new RuntimeException("Email is already in use");
+            throw new UserAlreadyExistsException("Email is already in use.");
         }
         userRepository.save(new UserEntity(
                 registerRequest.getFirstName(),

@@ -1,12 +1,14 @@
 package com.atlantbh.auctionapp.controllers;
 
 import com.atlantbh.auctionapp.domain.model.User;
+import com.atlantbh.auctionapp.exceptions.UserAlreadyExistsException;
 import com.atlantbh.auctionapp.request.LoginRequest;
 import com.atlantbh.auctionapp.request.RegisterRequest;
 import com.atlantbh.auctionapp.response.LoginResponse;
 import com.atlantbh.auctionapp.security.JwtUtil;
 import com.atlantbh.auctionapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.AuthenticationException;
@@ -33,9 +35,13 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest registerRequest) {
-        String user = userService.register(registerRequest);
-        return ResponseEntity.ok(user);
+    public Object register(@RequestBody @Valid RegisterRequest registerRequest) {
+        try {
+            String user = userService.register(registerRequest);
+            return ResponseEntity.ok(user);
+        }catch (UserAlreadyExistsException e){
+            return ResponseEntity.status(400);
+        }
     }
 
     @PostMapping("/login")
