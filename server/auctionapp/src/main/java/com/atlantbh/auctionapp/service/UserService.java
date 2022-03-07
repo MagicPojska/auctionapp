@@ -1,24 +1,27 @@
 package com.atlantbh.auctionapp.service;
 
-import com.atlantbh.auctionapp.model.User;
+import com.atlantbh.auctionapp.domain.model.User;
+import com.atlantbh.auctionapp.exceptions.UserAlreadyExistsException;
+import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.LoginRequest;
-import com.atlantbh.auctionapp.request.LogoutRequest;
 import com.atlantbh.auctionapp.request.RegisterRequest;
 import com.atlantbh.auctionapp.security.JwtUtil;
-import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Service
-public class UserService  {
+public class UserService implements UserDetailsService {
     @Autowired
     private final UserRepository userRepository;
     @Autowired
@@ -28,39 +31,41 @@ public class UserService  {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    public final String AUTHORIZATION = "Authorization";
+    public final String BEARER = "Bearer ";
+
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String register(RegisterRequest registerRequest){
+    public String register(RegisterRequest registerRequest) throws UserAlreadyExistsException {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
-            throw new RuntimeException("Email is already in use");
+            throw new UserAlreadyExistsException("Email is already in use.");
         }
-        User user = userRepository.save(new User(
+        userRepository.save(new UserEntity(
                 registerRequest.getFirstName(),
                 registerRequest.getLastName(),
                 registerRequest.getEmail(),
                 passwordEncoder.encode(registerRequest.getPassword())
         ));
-        user.setPassword(null);
         return "User has been created";
     }
 
     public User login(LoginRequest loginRequest) {
-        User user = userRepository.findByEmail(loginRequest.getEmail());
-        user.setPassword(null);
-        return user;
+        UserEntity entity = userRepository.findByEmail(loginRequest.getEmail());
+        entity.setPassword(null);
+
+        return User.createFromEntity(entity);
     }
 
     public String logout(HttpServletRequest request){
-        final String requestTokenHeader = request.getHeader("Authorization");
+        final String requestTokenHeader = request.getHeader(AUTHORIZATION);
         String token = null;
 
-
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            token = requestTokenHeader.substring(7);
+        if (requestTokenHeader != null && requestTokenHeader.startsWith(BEARER)) {
+            token = requestTokenHeader.substring(BEARER.length());
         }
 
         jsonWebToken.invalidateToken(token);
@@ -76,4 +81,18 @@ public class UserService  {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        UserEntity userRes = userRepository.findByEmail(email);
+        if(userRes == null){
+            throw new UsernameNotFoundException("Could not findUser with email = " + email);
+        }
+        return User.createFromEntity(userRes);
+    }
 }
+
+
+
+
