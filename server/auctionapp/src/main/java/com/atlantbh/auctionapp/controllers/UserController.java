@@ -49,7 +49,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public void logout(HttpServletRequest request) {
         userService.logout(request);
     }
