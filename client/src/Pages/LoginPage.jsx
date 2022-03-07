@@ -20,7 +20,7 @@ const LoginPage = () => {
     const data = await login(user);
     if (data === null) {
       toast.error("Wrong username or password!", {
-        position: toast.POSITION.BOTTOM_RIGHT,
+        position: toast.POSITION.TOP_CENTER,
       });
     } else {
       navigate(homePath);
