@@ -15,7 +15,7 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  const submitForm = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const data = await login(user);
     if (data === null) {
@@ -36,7 +36,7 @@ const LoginPage = () => {
         </div>
 
         <form
-          onSubmit={submitForm}
+          onSubmit={handleLogin}
           className="mt-12 font-normal text-lg leading-7 mx-24"
         >
           <div className="mb-8">

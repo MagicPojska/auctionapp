@@ -8,9 +8,9 @@ export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState("");
   const login = async (user) => {
     try {
-      const data = await signIn(user);
-      setUserSession(data.data.user, data.data.token);
-      return data;
+      const response = await signIn(user);
+      setUserSession(response.data.user, response.data.token);
+      return response;
     } catch (error) {
       console.log(error);
       return null;
@@ -19,8 +19,8 @@ export const UserContextProvider = ({ children }) => {
 
   const register = async (user) => {
     try {
-      const data = await signUp(user);
-      return data;
+      const response = await signUp(user);
+      return response;
     } catch (error) {
       console.log(error);
       return null;

@@ -17,7 +17,7 @@ const RegistrationPage = () => {
 
   const navigate = useNavigate();
 
-  const submitForm = async (e) => {
+  const handleRegistration = async (e) => {
     e.preventDefault();
     const data = await register(user);
     if (data === null) {
@@ -41,7 +41,7 @@ const RegistrationPage = () => {
         </div>
 
         <form
-          onSubmit={submitForm}
+          onSubmit={handleRegistration}
           className="mt-12 font-normal text-lg leading-7 mx-24"
         >
           <div className="mb-8">
