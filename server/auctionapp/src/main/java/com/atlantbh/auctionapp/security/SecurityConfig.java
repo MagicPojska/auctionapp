@@ -2,6 +2,7 @@ package com.atlantbh.auctionapp.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,6 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtFilter filter;
 
+    private static String allowedURL;
+
     private static final String[] AUTH_WHITELIST = {
             // -- Swagger UI v2
             "/v2/api-docs",
@@ -43,6 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-ui/**"
     };
 
+    @Value("${app.cors.allowed-domain}")
+    public void setAllowedURL(String allowedURL) {
+        SecurityConfig.allowedURL = allowedURL;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -75,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("${app.cors.allowed-domain}"));
+        configuration.setAllowedOrigins(Arrays.asList(allowedURL));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

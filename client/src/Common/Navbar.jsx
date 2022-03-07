@@ -1,18 +1,34 @@
 import { AiOutlineSearch } from "react-icons/ai";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { loginPath, registrationPath } from "../utilities/paths";
+import {
+  accountPath,
+  homePath,
+  loginPath,
+  registrationPath,
+  shopPath,
+} from "../utilities/paths";
 import SocialMedia from "../components/SocialMedia";
+import { getUserSession } from "../utilities/auth";
+import { useUserContext } from "../contexts/UserContextProvider";
 
 const Navbar = () => {
-  //State to show login or create account if user is not logged in and Hi, Jon Doe if user is logged in
-  const [user, setUser] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
+  const { logout, user, setUser } = useUserContext();
+
+  useEffect(() => {
+    setUser(getUserSession());
+  }, [location]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     console.log(searchTerm);
+  };
+
+  const handleLogout = async () => {
+    setUser("");
+    await logout();
   };
   return (
     <header>
@@ -22,12 +38,22 @@ const Navbar = () => {
         </div>
 
         {user ? (
-          <div className="text-[14px] leading-[17px]">Hi, Jon Doe</div>
+          <div className="text-[14px] leading-[17px] flex space-x-10">
+            <p>
+              Hi, {user.firstName} {user.lastName}
+            </p>
+            <button
+              onClick={handleLogout}
+              className="text-[14px] leading-[17px] font-bold hover:text-gray-400"
+            >
+              Logout
+            </button>
+          </div>
         ) : (
           <div className="text-[14px]">
-            <Link to="/">Login</Link>
+            <Link to={loginPath}>Login</Link>
             <span className="text-gray-400 px-5">{" or "}</span>
-            <Link to="/">Create an account</Link>
+            <Link to={registrationPath}>Create an account</Link>
           </div>
         )}
       </div>
@@ -73,9 +99,11 @@ const Navbar = () => {
             <ul className="flex justify-start w-[262px] min-w-fit text-base leading-5 font-light ml-6 space-x-[30px] mt-5 lg:mt-0">
               <li>
                 <NavLink
-                  to="/"
+                  to={homePath}
                   className={
-                    "/" === location.pathname ? "text-purple font-bold" : ""
+                    homePath === location.pathname
+                      ? "text-purple font-bold"
+                      : ""
                   }
                 >
                   HOME
@@ -83,9 +111,11 @@ const Navbar = () => {
               </li>
               <li>
                 <NavLink
-                  to="/shop"
+                  to={shopPath}
                   className={
-                    "/shop" === location.pathname ? "text-purple font-bold" : ""
+                    shopPath === location.pathname
+                      ? "text-purple font-bold"
+                      : ""
                   }
                 >
                   SHOP
@@ -93,9 +123,9 @@ const Navbar = () => {
               </li>
               <li>
                 <NavLink
-                  to="/account"
+                  to={accountPath}
                   className={
-                    "/account" === location.pathname
+                    accountPath === location.pathname
                       ? "text-purple font-bold"
                       : ""
                   }

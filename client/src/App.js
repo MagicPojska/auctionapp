@@ -4,14 +4,25 @@ import Navbar from "./Common/Navbar";
 import AboutPage from "./Pages/AboutPage";
 import TermsPage from "./Pages/TermsPage";
 import PrivacyPolicyPage from "./Pages/PrivacyPolicyPage";
+import LoginPage from "./Pages/LoginPage";
+import RegistrationPage from "./Pages/RegistrationPage";
 import PageLayout from "./components/PageLayout";
-import { aboutUsPath, privacyPolicyPath, termsPath } from "./utilities/paths";
+
+import {
+  aboutUsPath,
+  loginPath,
+  privacyPolicyPath,
+  registrationPath,
+  termsPath,
+} from "./utilities/paths";
 
 const App = () => {
   return (
     <div className="font-lato font-bold">
       <Navbar />
       <Routes>
+        <Route path={loginPath} element={<LoginPage />} />
+        <Route path={registrationPath} element={<RegistrationPage />} />
         <Route
           path={aboutUsPath}
           element={

@@ -1,6 +1,6 @@
 import useBreadcrumbs from "use-react-router-breadcrumbs";
 
-const CurrentPageNav = ({ props }) => {
+const CurrentPageNav = () => {
   const breadcrumbs = useBreadcrumbs();
   let lastElement =
     breadcrumbs[breadcrumbs.length - 1].breadcrumb.props.children.split(" ");
