@@ -22,7 +22,7 @@ const RegistrationPage = () => {
     const data = await register(user);
     if (data === null) {
       toast.error("User already exists!", {
-        position: toast.POSITION.BOTTOM_RIGHT,
+        position: toast.POSITION.OP_CENTER,
       });
     } else {
       navigate(loginPath);
