@@ -9,7 +9,7 @@ import {
   shopPath,
 } from "../utilities/paths";
 import SocialMedia from "../components/SocialMedia";
-import { getUser } from "../utilities/auth";
+import { getUserSession } from "../utilities/auth";
 import { useUserContext } from "../contexts/UserContextProvider";
 
 const Navbar = () => {
@@ -18,7 +18,7 @@ const Navbar = () => {
   const { logout, user, setUser } = useUserContext();
 
   useEffect(() => {
-    setUser(getUser());
+    setUser(getUserSession());
   }, [location]);
 
   const handleSearch = (e) => {
