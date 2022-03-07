@@ -12,7 +12,7 @@ export const UserContextProvider = ({ children }) => {
       setUserSession(response.data.user, response.data.token);
       return response;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   };
@@ -22,7 +22,7 @@ export const UserContextProvider = ({ children }) => {
       const response = await signUp(user);
       return response;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   };
@@ -33,7 +33,7 @@ export const UserContextProvider = ({ children }) => {
       await logoutUser(token);
       removeUser();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       removeUser();
     }
   };
