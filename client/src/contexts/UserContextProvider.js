@@ -1,14 +1,15 @@
-import { createContext, useContext } from "react";
-import { getToken, removeUser, setUser } from "../utilities/auth";
+import { createContext, useContext, useState } from "react";
+import { getToken, removeUser, setUserSession } from "../utilities/auth";
 import { logoutUser, signIn, signUp } from "../utilities/api";
 
 const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
+  const [user, setUser] = useState("");
   const login = async (user) => {
     try {
       const data = await signIn(user);
-      setUser(data.data.user, data.data.token);
+      setUserSession(data.data.user, data.data.token);
       return data;
     } catch (error) {
       console.log(error);
@@ -38,7 +39,7 @@ export const UserContextProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ login, register, logout }}>
+    <UserContext.Provider value={{ user, setUser, login, register, logout }}>
       {children}
     </UserContext.Provider>
   );

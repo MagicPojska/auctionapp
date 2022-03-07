@@ -13,10 +13,9 @@ import { getUser } from "../utilities/auth";
 import { useUserContext } from "../contexts/UserContextProvider";
 
 const Navbar = () => {
-  const [user, setUser] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
-  const { logout } = useUserContext();
+  const { logout, user, setUser } = useUserContext();
 
   useEffect(() => {
     setUser(getUser());
