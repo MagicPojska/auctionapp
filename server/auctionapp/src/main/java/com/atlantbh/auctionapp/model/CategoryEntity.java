@@ -28,9 +28,9 @@ public class CategoryEntity {
     private String description;
 
     @Column(nullable = true)
-    private int subcategoryId;
+    private Integer subcategoryId;
 
-    public CategoryEntity(String categoryName, String description, int subcategoryId) {
+    public CategoryEntity(String categoryName, String description, Integer subcategoryId) {
         this.categoryName = categoryName;
         this.description = description;
         this.subcategoryId = subcategoryId;
