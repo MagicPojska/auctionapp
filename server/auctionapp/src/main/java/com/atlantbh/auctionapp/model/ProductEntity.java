@@ -43,22 +43,21 @@ public class ProductEntity {
     @Column(nullable = false)
     private String images;
 
-    @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
-    private UserEntity user;
+    @Column(nullable = false)
+    private long userId;
 
     @ManyToOne
     @JoinColumn(name = "categoryId", nullable = false)
     private CategoryEntity category;
 
-    public ProductEntity(String productName, String description, Float startPrice, LocalDateTime startDate, LocalDateTime endDate, String images, UserEntity user, CategoryEntity category) {
+    public ProductEntity(String productName, String description, Float startPrice, LocalDateTime startDate, LocalDateTime endDate, String images, long userId, CategoryEntity category) {
         this.productName = productName;
         this.description = description;
         this.startPrice = startPrice;
         this.startDate = startDate;
         this.endDate = endDate;
         this.images = images;
-        this.user = user;
+        this.userId = userId;
         this.category = category;
     }
 }
