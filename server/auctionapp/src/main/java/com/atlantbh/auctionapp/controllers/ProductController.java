@@ -1,5 +1,6 @@
 package com.atlantbh.auctionapp.controllers;
 
+import com.atlantbh.auctionapp.model.CategoryEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,12 @@ public class ProductController {
         Page<ProductEntity> list = productService.getAllProducts(pageNumber, pageSize, sortBy);
 
         return new ResponseEntity<Page<ProductEntity>>(list, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<CategoryEntity>> getAllCategories(){
+        List<CategoryEntity> list = productService.getAllCategories();
+
+        return new ResponseEntity<List<CategoryEntity>>(list, new HttpHeaders(), HttpStatus.OK);
     }
 }
