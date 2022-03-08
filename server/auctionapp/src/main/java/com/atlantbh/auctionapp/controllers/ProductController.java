@@ -1,7 +1,6 @@
 package com.atlantbh.auctionapp.controllers;
 
 import com.atlantbh.auctionapp.model.ProductEntity;
-import com.atlantbh.auctionapp.repository.ProductRepository;
 import com.atlantbh.auctionapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
