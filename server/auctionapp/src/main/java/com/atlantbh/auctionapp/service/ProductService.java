@@ -17,7 +17,7 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public List<ProductEntity> getAllProducts(Integer pageNumber, Integer pageSize, String sortBy){
+    public Page<ProductEntity> getAllProducts(Integer pageNumber, Integer pageSize, String sortBy){
         Sort sortOrder;
         if(sortBy.equals("startDate")){
             sortOrder = Sort.by(sortBy).descending();
@@ -27,10 +27,8 @@ public class ProductService {
         Pageable paging = PageRequest.of(pageNumber, pageSize, sortOrder);
 
         Page<ProductEntity> pagedResult = productRepository.findAll(paging);
-        if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
-        } else {
-            return new ArrayList<ProductEntity>();
-        }
+
+        return pagedResult;
+
     }
 }
