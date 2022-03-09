@@ -76,7 +76,7 @@ const LandingPage = () => {
 
   return (
     <>
-      <div className="px-[162px] 2xl:px-72 pt-4 h-[38rem] bg-bgWhite flex justify-between">
+      <div className="px-40 2xl:px-72 pt-4 h-[38rem] bg-bgWhite flex justify-between">
         <div className="h-full">
           <h3 className="text-base leading-5 font-bold ml-4 mb-4 text-purple">
             CATEGORIES
@@ -134,7 +134,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <div className="mx-[162px] 2xl:mx-72 mt-16">
+      <div className="mx-40 2xl:mx-72 mt-16">
         <div className="border-b-2">
           <div className="space-x-12 text-xl leading-6 font-normal">
             <button
