@@ -3,6 +3,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Link, useLocation } from "react-router-dom";
 import { getCategoriesList, getProductsSorted } from "../utilities/api";
 import { BsChevronRight } from "react-icons/bs";
+import { categoriesPath, shopProductPath } from "../utilities/paths";
 
 const LandingPage = () => {
   const [products, setProducts] = useState([]);
@@ -87,7 +88,7 @@ const LandingPage = () => {
                 key={item.id}
               >
                 <Link
-                  to={`/product/category/${item.categoryName.toLowerCase()}`}
+                  to={`${categoriesPath}/${item.categoryName.toLowerCase()}`}
                   className="text-base leading-6 font-normal"
                 >
                   {item.categoryName}
@@ -97,7 +98,7 @@ const LandingPage = () => {
           </div>
           <div className="bg-white h-14 w-64 flex p-4 border-b-[1px] border-gray-300 items-center">
             <Link
-              to={`/product/categories`}
+              to={categoriesPath}
               className="text-base leading-6 font-normal"
             >
               All Categories
@@ -117,7 +118,7 @@ const LandingPage = () => {
               {highlightedProduct.description}
             </p>
             <Link
-              to="/bid"
+              to={`${shopProductPath}/${highlightedProduct.id}`}
               className="mt-auto flex border-4 border-purple w-44 h-14 justify-center items-center leading-7 text-base font-bold"
             >
               BID NOW &nbsp;&nbsp;{" "}
@@ -167,7 +168,7 @@ const LandingPage = () => {
           <div className="grid grid-cols-4 gap-x-4 gap-y-8 mt-8">
             {products.map((item) => (
               <Link
-                to={`/shop/product/${item.id}`}
+                to={`${shopProductPath}/${item.id}`}
                 className="flex flex-col"
                 key={item.id}
               >
