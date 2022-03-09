@@ -17,3 +17,9 @@ export const signIn = (formData) => API.post("/auth/login", formData);
 export const signUp = (formData) => API.post("/auth/register", formData);
 export const logoutUser = (token) =>
   API.get("/auth/logout", addAuthHeader(token));
+
+export const getProductsSorted = (pageNumber, pageSize, sortBy) =>
+  API.get(
+    `/product/items?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}`
+  );
+export const getCategoriesList = () => API.get("/product/categories");
