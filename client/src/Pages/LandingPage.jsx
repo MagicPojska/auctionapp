@@ -75,7 +75,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div>
+    <>
       <div className="px-[162px] pt-4 h-[38rem] bg-bgWhite flex justify-between">
         <div className="h-full">
           <h3 className="text-base leading-5 font-bold ml-4 mb-4 text-purple">
@@ -119,7 +119,7 @@ const LandingPage = () => {
             </p>
             <Link
               to={`${shopProductPath}/${highlightedProduct.id}`}
-              className="mt-auto flex border-4 border-purple w-44 h-14 justify-center items-center leading-7 text-base font-bold"
+              className="mt-auto flex border-4 border-purple w-48 h-14 justify-center items-center leading-7 text-base font-bold"
             >
               BID NOW &nbsp;&nbsp;{" "}
               <BsChevronRight className="stroke-2 text-xs" />
@@ -173,7 +173,7 @@ const LandingPage = () => {
                 key={item.id}
               >
                 <img
-                  src={item.images}
+                  src={item.images.split(",")[0]}
                   className="object-cover aspect-square"
                   alt=""
                 />
@@ -191,7 +191,7 @@ const LandingPage = () => {
           </div>
         </InfiniteScroll>
       </div>
-    </div>
+    </>
   );
 };
 
