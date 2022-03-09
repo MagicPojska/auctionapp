@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link, useLocation } from "react-router-dom";
-import LoaderSpinner from "../components/LoaderSpinner";
 import { getCategoriesList, getProductsSorted } from "../utilities/api";
 import { BsChevronRight } from "react-icons/bs";
 
@@ -11,7 +10,6 @@ const LandingPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
   const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const pageSize = 8;
 
@@ -51,7 +49,6 @@ const LandingPage = () => {
 
   const getMoreProducts = async (sortBy) => {
     try {
-      setIsLoading(true);
       const response = await getProductsSorted(pageNumber, pageSize, sortBy);
       setProducts([...products, ...response.data.content]);
 
@@ -59,7 +56,6 @@ const LandingPage = () => {
         setHasMore(false);
       }
       setPageNumber(pageNumber + 1);
-      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
