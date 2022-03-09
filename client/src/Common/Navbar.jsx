@@ -32,7 +32,7 @@ const Navbar = () => {
   };
   return (
     <header>
-      <div className="bg-blackPrimary text-white h-10 flex items-center justify-between lg:pl-44 lg:pr-40 md:px-24 sm:px-10 px-4 text-sm">
+      <div className="bg-blackPrimary text-white h-10 flex items-center justify-between 2xl:px-72 lg:pl-44 lg:pr-40 md:px-24 sm:px-10 px-4 text-sm">
         <div className="pl-[3px]">
           <SocialMedia />
         </div>
@@ -70,7 +70,7 @@ const Navbar = () => {
           </Link>
         </div>
       ) : (
-        <div className="flex flex-col xl:flex-row justify-between items-center px-20 md:px-48 pt-4 pb-9">
+        <div className="flex flex-col xl:flex-row justify-between items-center px-20 md:px-48 2xl:px-72 pt-4 pb-9">
           <Link to="/" className="logo-link">
             <img
               src="/images/auction-app-logo.png"

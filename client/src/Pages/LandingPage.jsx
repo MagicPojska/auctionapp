@@ -76,7 +76,7 @@ const LandingPage = () => {
 
   return (
     <>
-      <div className="px-[162px] pt-4 h-[38rem] bg-bgWhite flex justify-between">
+      <div className="px-[162px] 2xl:px-72 pt-4 h-[38rem] bg-bgWhite flex justify-between">
         <div className="h-full">
           <h3 className="text-base leading-5 font-bold ml-4 mb-4 text-purple">
             CATEGORIES
@@ -106,8 +106,8 @@ const LandingPage = () => {
           </div>
         </div>
 
-        <div className="my-24 w-[46rem] 2xl:w-[56rem] flex">
-          <div className="flex flex-col">
+        <div className="my-24 w-[46rem] 2xl:w-[50rem] flex ml-5">
+          <div className="flex flex-col mr-3">
             <h2 className="text-3xl leading-10 font-normal mb-4">
               {highlightedProduct.productName}
             </h2>
@@ -129,12 +129,12 @@ const LandingPage = () => {
           <img
             src={highlightedProduct.images}
             alt=""
-            className="h-[26rem] w-[22rem] 2xl:w-[32rem] object-cover"
+            className="h-[26rem] w-[22rem] object-cover"
           />
         </div>
       </div>
 
-      <div className="mx-[162px] mt-16">
+      <div className="mx-[162px] 2xl:mx-72 mt-16">
         <div className="border-b-2">
           <div className="space-x-12 text-xl leading-6 font-normal">
             <button
