@@ -10,17 +10,20 @@ import PageLayout from "./components/PageLayout";
 
 import {
   aboutUsPath,
+  homePath,
   loginPath,
   privacyPolicyPath,
   registrationPath,
   termsPath,
 } from "./utilities/paths";
+import LandingPage from "./Pages/LandingPage";
 
 const App = () => {
   return (
     <div className="font-lato font-bold">
       <Navbar />
       <Routes>
+        <Route path={homePath} element={<LandingPage />} />
         <Route path={loginPath} element={<LoginPage />} />
         <Route path={registrationPath} element={<RegistrationPage />} />
         <Route
