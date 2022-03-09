@@ -6,18 +6,24 @@ import { BsChevronRight } from "react-icons/bs";
 
 const LandingPage = () => {
   const [products, setProducts] = useState([]);
-  const [highlightedProduct, setHighlightedProduct] = useState({});
+  const [highlightedProduct, setHighlightedProduct] = useState("");
   const [hasMore, setHasMore] = useState(true);
-  const [pageNumber, setPageNumber] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
   const [categories, setCategories] = useState([]);
+
+  const startDate = "startDate";
+  const endDate = "endDate";
+  const [sort, setSort] = useState(startDate);
+
   const location = useLocation();
+
   const pageSize = 8;
 
   useEffect(() => {
     (async () => {
-      await getProductsFirstPage();
+      await getProductsFirstPage(sort);
     })();
-  }, [location]);
+  }, [location, sort]);
 
   useEffect(() => {
     (async () => {
@@ -34,22 +40,24 @@ const LandingPage = () => {
     }
   };
 
-  const getProductsFirstPage = async () => {
+  const getProductsFirstPage = async (sort = startDate) => {
     try {
-      setPageNumber(0);
-      const response = await getProductsSorted(pageNumber, pageSize, "endDate");
-      setPageNumber(1);
+      const response = await getProductsSorted(0, pageSize, sort);
 
       setProducts(response.data.content);
-      setHighlightedProduct(response.data.content[0]);
+      setHasMore(true);
+      setPageNumber(1);
+      if (!highlightedProduct) {
+        setHighlightedProduct(response.data.content[0]);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getMoreProducts = async (sortBy) => {
+  const getMoreProducts = async (sort) => {
     try {
-      const response = await getProductsSorted(pageNumber, pageSize, sortBy);
+      const response = await getProductsSorted(pageNumber, pageSize, sort);
       setProducts([...products, ...response.data.content]);
 
       if (response.data.last) {
@@ -62,7 +70,7 @@ const LandingPage = () => {
   };
 
   const goNext = async () => {
-    await getMoreProducts("endDate");
+    await getMoreProducts(sort);
   };
 
   return (
@@ -72,7 +80,7 @@ const LandingPage = () => {
           <h3 className="text-base leading-5 font-bold ml-4 mb-4 text-purple">
             CATEGORIES
           </h3>
-          <div className="h-[31rem] w-64 2xl:w-80 overflow-y-scroll scrollbar">
+          <div className="h-[31rem] w-64 overflow-y-scroll scrollbar">
             {categories.map((item) => (
               <div
                 className="bg-white h-14  flex p-4 border-b-[1px] border-gray-300 items-center"
@@ -125,10 +133,30 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <div className="mx-[162px] mt-7">
+      <div className="mx-[162px] mt-16">
         <div className="border-b-2">
-          <span className="">New Arrivals</span>
-          <span>Last Chance</span>
+          <div className="space-x-12 text-xl leading-6 font-normal">
+            <button
+              className={`pb-4  ${
+                sort === startDate ? "border-b-[3px] border-purple" : ""
+              }`}
+              onClick={() => {
+                setSort(startDate);
+              }}
+            >
+              New Arrivals
+            </button>
+            <button
+              className={`pb-4  ${
+                sort === endDate ? "border-b-[3px] border-purple" : ""
+              }`}
+              onClick={() => {
+                setSort(endDate);
+              }}
+            >
+              Last Chance
+            </button>
+          </div>
         </div>
 
         <InfiniteScroll
@@ -144,17 +172,17 @@ const LandingPage = () => {
                 key={item.id}
               >
                 <img
-                  src={highlightedProduct.images}
+                  src={item.images}
                   className="object-cover aspect-square"
                   alt=""
                 />
                 <h4 className="mt-3 text-2xl leading-6 font-semibold">
-                  {highlightedProduct.productName}
+                  {item.productName}
                 </h4>
                 <p className="text-l leading-6 font-normal text-textTetriary">
                   Start From&nbsp;
                   <span className="text-purple font-bold">
-                    ${parseFloat(highlightedProduct.startPrice).toFixed(2)}
+                    ${parseFloat(item.startPrice).toFixed(2)}
                   </span>
                 </p>
               </Link>
