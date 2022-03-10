@@ -24,7 +24,7 @@ public class ProductService {
 
     public Page<ProductEntity> getAllProducts(Integer pageNumber, Integer pageSize, String sortBy){
         Sort sortOrder;
-        if (sortBy.equals(SortBy.startDate.toString())){
+        if (sortBy.equals(SortBy.START_DATE.getSort())){
             sortOrder = Sort.by(sortBy).descending();
         } else {
             sortOrder = Sort.by(sortBy);
