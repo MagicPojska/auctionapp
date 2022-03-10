@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { getCategoriesList, getProductsSorted } from "../utilities/api";
-import { shopProductPath } from "../utilities/paths";
 import LandingPageCategories from "../components/LandingPageCategories";
 import HighlightedProduct from "../components/HighlightedProduct";
 import LandingPageItems from "../components/LandingPageItems";
