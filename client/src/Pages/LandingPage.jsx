@@ -76,12 +76,12 @@ const LandingPage = () => {
 
   return (
     <>
-      <div className="px-40 2xl:px-72 pt-4 h-[38rem] bg-bgWhite flex justify-between">
+      <div className="px-40 2xl:px-72 pt-4 h-[39rem] bg-bgWhite flex justify-between">
         <div className="h-full">
           <h3 className="text-base leading-5 font-bold ml-4 mb-4 text-purple">
             CATEGORIES
           </h3>
-          <div className="h-[31rem] w-64 overflow-y-scroll scrollbar">
+          <div className="h-[32rem] w-64 overflow-y-scroll scrollbar">
             {categories.map((item) => (
               <div
                 className="bg-white h-14  flex p-4 border-b-[1px] border-gray-300 items-center"

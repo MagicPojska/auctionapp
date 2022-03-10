@@ -28,11 +28,11 @@ public class CategoryEntity {
     private String description;
 
     @Column(nullable = true)
-    private Integer subcategoryId;
+    private Integer supercategoryId;
 
-    public CategoryEntity(String categoryName, String description, Integer subcategoryId) {
+    public CategoryEntity(String categoryName, String description, Integer supercategoryId) {
         this.categoryName = categoryName;
         this.description = description;
-        this.subcategoryId = subcategoryId;
+        this.supercategoryId = supercategoryId;
     }
 }
