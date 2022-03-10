@@ -36,9 +36,9 @@ public class ProductService {
         return pagedResult;
     }
 
-    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize,long categoryId){
+    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize,long[] categoryId){
         Pageable paging = PageRequest.of(pageNumber, pageSize);
-        Page<ProductEntity> productsList = productRepository.findAllByCategoryId(categoryId, paging);
+        Page<ProductEntity> productsList = productRepository.findAllByCategoryIdIn(categoryId, paging);
 
         return productsList;
     }
