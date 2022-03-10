@@ -82,19 +82,22 @@ const LandingPage = () => {
             CATEGORIES
           </h3>
           <div className="h-[32rem] w-64 overflow-y-scroll scrollbar">
-            {categories.map((item) => (
-              <div
-                className="bg-white h-14  flex p-4 border-b-[1px] border-gray-300 items-center"
-                key={item.id}
-              >
-                <Link
-                  to={`${categoriesPath}/${item.categoryName.toLowerCase()}`}
-                  className="text-base leading-6 font-normal"
-                >
-                  {item.categoryName}
-                </Link>
-              </div>
-            ))}
+            {categories.map(
+              (item) =>
+                item.supercategoryId === null && (
+                  <div
+                    className="bg-white h-14  flex p-4 border-b-[1px] border-gray-300 items-center"
+                    key={item.id}
+                  >
+                    <Link
+                      to={`${categoriesPath}/${item.categoryName.toLowerCase()}`}
+                      className="text-base leading-6 font-normal"
+                    >
+                      {item.categoryName}
+                    </Link>
+                  </div>
+                )
+            )}
           </div>
           <div className="bg-white h-14 w-64 flex p-4 border-b-[1px] border-gray-300 items-center">
             <Link
