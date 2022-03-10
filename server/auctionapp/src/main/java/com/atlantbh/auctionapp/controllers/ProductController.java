@@ -27,13 +27,13 @@ public class ProductController {
                                                               @RequestParam(defaultValue = "startDate") String sortBy){
         Page<ProductEntity> list = productService.getAllProducts(pageNumber, pageSize, sortBy);
 
-        return new ResponseEntity<Page<ProductEntity>>(list, new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryEntity>> getAllCategories(){
         List<CategoryEntity> list = productService.getAllCategories();
 
-        return new ResponseEntity<List<CategoryEntity>>(list, new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
     }
 }
