@@ -59,7 +59,7 @@ const LandingPage = () => {
     }
   };
 
-  const goNext = async () => {
+  const fetchNextPage = async () => {
     await getProducts(sort, pageNumber + 1);
   };
 
@@ -154,7 +154,7 @@ const LandingPage = () => {
 
         <InfiniteScroll
           dataLength={products.length} //This is important field to render the next data
-          next={goNext}
+          next={fetchNextPage}
           hasMore={hasMore}
         >
           <div className="grid grid-cols-4 gap-x-4 gap-y-8 mt-8">
