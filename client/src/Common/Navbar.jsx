@@ -113,7 +113,7 @@ const Navbar = () => {
                 <NavLink
                   to={shopPath}
                   className={
-                    shopPath === location.pathname
+                    location.pathname.includes(shopPath)
                       ? "text-purple font-bold"
                       : ""
                   }
@@ -125,7 +125,7 @@ const Navbar = () => {
                 <NavLink
                   to={accountPath}
                   className={
-                    accountPath === location.pathname
+                    location.pathname.includes(accountPath)
                       ? "text-purple font-bold"
                       : ""
                   }
