@@ -36,6 +36,12 @@ public class ProductService {
         return pagedResult;
     }
 
+    public List<ProductEntity> getAllProductsFromCategory(long categoryId){
+        List<ProductEntity> productsList = productRepository.findByCategoryId(categoryId);
+
+        return productsList;
+    }
+
     public List<CategoryEntity> getAllCategories(){
         List<CategoryEntity> categoryList = categoryRepository.findAll();
 

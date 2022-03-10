@@ -30,6 +30,13 @@ public class ProductController {
         return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
     }
 
+    @GetMapping("/items/category")
+    public ResponseEntity<List<ProductEntity>> getAllProductsFromCategory(@RequestParam long categoryId){
+        List<ProductEntity> list = productService.getAllProductsFromCategory(categoryId);
+
+        return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
+    }
+
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryEntity>> getAllCategories(){
         List<CategoryEntity> list = productService.getAllCategories();
