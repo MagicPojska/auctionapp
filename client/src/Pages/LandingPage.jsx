@@ -12,66 +12,55 @@ const LandingPage = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [categories, setCategories] = useState([]);
 
-  const startDate = "startDate";
-  const endDate = "endDate";
-  const [sort, setSort] = useState(startDate);
+  const START_DATE = "startDate";
+  const END_DATE = "endDate";
+  const [sort, setSort] = useState(START_DATE);
 
   const location = useLocation();
 
-  const pageSize = 8;
+  const PAGE_SIZE = 8;
 
   useEffect(() => {
-    (async () => {
-      await getProductsFirstPage(sort);
-    })();
+    getProducts(sort, 0);
   }, [location, sort]);
 
   useEffect(() => {
-    (async () => {
-      await getCategories();
-    })();
+    const getCategories = async () => {
+      try {
+        const response = await getCategoriesList();
+        setCategories(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getCategories();
   }, []);
 
-  const getCategories = async () => {
+  const getProducts = async (sort, page) => {
     try {
-      const response = await getCategoriesList();
-      setCategories(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      const response = await getProductsSorted(page, PAGE_SIZE, sort);
+      if (page === 0) {
+        setHasMore(true);
+        setProducts([]);
+        setProducts(response.data.content);
+      } else {
+        setProducts([...products, ...response.data.content]);
+      }
 
-  const getProductsFirstPage = async (sort = startDate) => {
-    try {
-      const response = await getProductsSorted(0, pageSize, sort);
-
-      setProducts(response.data.content);
-      setHasMore(true);
-      setPageNumber(1);
       if (!highlightedProduct) {
         setHighlightedProduct(response.data.content[0]);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getMoreProducts = async (sort) => {
-    try {
-      const response = await getProductsSorted(pageNumber, pageSize, sort);
-      setProducts([...products, ...response.data.content]);
-
       if (response.data.last) {
         setHasMore(false);
       }
-      setPageNumber(pageNumber + 1);
+      setPageNumber(page);
     } catch (error) {
       console.log(error);
     }
   };
 
   const goNext = async () => {
-    await getMoreProducts(sort);
+    await getProducts(sort, pageNumber + 1);
   };
 
   return (
@@ -142,20 +131,20 @@ const LandingPage = () => {
           <div className="space-x-12 text-xl leading-6 font-normal">
             <button
               className={`pb-4  ${
-                sort === startDate ? "border-b-[3px] border-purple" : ""
+                sort === START_DATE ? "border-b-[3px] border-purple" : ""
               }`}
               onClick={() => {
-                setSort(startDate);
+                setSort(START_DATE);
               }}
             >
               New Arrivals
             </button>
             <button
               className={`pb-4  ${
-                sort === endDate ? "border-b-[3px] border-purple" : ""
+                sort === END_DATE ? "border-b-[3px] border-purple" : ""
               }`}
               onClick={() => {
-                setSort(endDate);
+                setSort(END_DATE);
               }}
             >
               Last Chance
