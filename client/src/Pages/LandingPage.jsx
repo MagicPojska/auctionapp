@@ -90,7 +90,7 @@ const LandingPage = () => {
                     key={item.id}
                   >
                     <Link
-                      to={`${categoriesPath}/${item.categoryName.toLowerCase()}`}
+                      to={`${categoriesPath}/${item.id}`}
                       className="text-base leading-6 font-normal"
                     >
                       {item.categoryName}
