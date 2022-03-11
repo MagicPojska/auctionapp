@@ -10,6 +10,7 @@ import PageLayout from "./components/PageLayout";
 
 import {
   aboutUsPath,
+  categoriesPath,
   homePath,
   loginPath,
   privacyPolicyPath,
@@ -25,7 +26,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path={homePath} element={<LandingPage />} />
-        <Route path="/shop/categories/:id" element={<FilterPage />} />
+        <Route path={`${categoriesPath}/:id`} element={<FilterPage />} />
         <Route path={loginPath} element={<LoginPage />} />
         <Route path={registrationPath} element={<RegistrationPage />} />
         <Route
