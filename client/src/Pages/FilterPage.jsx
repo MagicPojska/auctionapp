@@ -81,8 +81,18 @@ const FilterPage = () => {
 
   return (
     <div className="mx-40 2xl:mx-72 flex justify-between">
-      <CategoriesAccordion categories={categories} />
-
+      <div className="w-64 min-w-max h-max border-2 p-6">
+        <h3 className="text-base font-bold text-purple mb-8">
+          PRODUCT CATEGORIES
+        </h3>
+        {categories.map((item) => (
+          <CategoriesAccordion
+            key={item.id}
+            categories={categories}
+            item={item}
+          />
+        ))}
+      </div>
       <FilterProductsGrid
         products={products}
         loadMoreProducts={loadMoreProducts}
