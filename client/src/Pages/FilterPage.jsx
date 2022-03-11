@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { getCategoriesList, getProductsByCategory } from "../utilities/api";
-import { shopProductPath } from "../utilities/paths";
+import { categoriesPath, shopProductPath } from "../utilities/paths";
 
 const FilterPage = () => {
   const [categories, setCategories] = useState([]);
@@ -22,6 +22,12 @@ const FilterPage = () => {
       await getProducts(0);
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      await getProducts(0);
+    })();
+  }, [location]);
 
   const getCategories = async () => {
     try {
@@ -51,7 +57,11 @@ const FilterPage = () => {
     try {
       let supercategoryIds;
       if (page === 0) {
-        supercategoryIds = getCategoryPairs(superCategories);
+        if (superCategories) {
+          supercategoryIds = getCategoryPairs(superCategories);
+        } else {
+          supercategoryIds = getCategoryPairs(superCategoryList);
+        }
       } else {
         supercategoryIds = getCategoryPairs(superCategoryList);
       }
@@ -73,6 +83,7 @@ const FilterPage = () => {
       }
       setPageNumber(page);
     } catch (error) {
+      setProducts([]);
       console.log(error);
     }
   };
@@ -100,50 +111,60 @@ const FilterPage = () => {
           (item) =>
             item.supercategoryId === null && (
               <div className="bg-white h-14  flex items-center" key={item.id}>
-                <p className="text-base leading-6 font-normal">
+                <Link
+                  to={`${categoriesPath}/${item.id}`}
+                  className="text-base leading-6 font-normal"
+                >
                   {item.categoryName}
-                </p>
+                </Link>
               </div>
             )
         )}
       </div>
 
-      <div className="ml-6 ">
-        <div className="grid grid-cols-3 gap-x-4 gap-y-8">
-          {products.map((item) => (
-            <Link
-              to={`${shopProductPath}/${item.id}`}
-              className="flex flex-col"
-              key={item.id}
+      {products.length !== 0 ? (
+        <div className="ml-6">
+          <div className="grid grid-cols-3 gap-x-4 gap-y-8">
+            {products.map((item) => (
+              <Link
+                to={`${shopProductPath}/${item.id}`}
+                className="flex flex-col"
+                key={item.id}
+              >
+                <img
+                  src={item.images.split(",")[0]}
+                  className="object-cover aspect-[3/4]"
+                  alt=""
+                />
+                <h4 className="mt-3 text-2xl leading-6 font-semibold mb-2">
+                  {item.productName}
+                </h4>
+                <p className="text-l leading-6 font-normal text-textTetriary">
+                  Start From&nbsp;
+                  <span className="text-purple font-bold">
+                    ${parseFloat(item.startPrice).toFixed(2)}
+                  </span>
+                </p>
+              </Link>
+            ))}
+          </div>
+
+          <div className="w-full flex justify-center mt-20">
+            <button
+              className={`py-4 px-14 bg-purple text-white text-base font-bold leading-7 ${
+                hasMore ? "" : "hidden"
+              }`}
+              onClick={loadMoreProducts}
             >
-              <img
-                src={item.images.split(",")[0]}
-                className="object-cover aspect-[3/4]"
-                alt=""
-              />
-              <h4 className="mt-3 text-2xl leading-6 font-semibold mb-2">
-                {item.productName}
-              </h4>
-              <p className="text-l leading-6 font-normal text-textTetriary">
-                Start From&nbsp;
-                <span className="text-purple font-bold">
-                  ${parseFloat(item.startPrice).toFixed(2)}
-                </span>
-              </p>
-            </Link>
-          ))}
+              Explore More
+            </button>
+          </div>
         </div>
-        <div className="w-full flex justify-center mt-20">
-          <button
-            className={`py-4 px-14 bg-purple text-white text-base font-bold leading-7 ${
-              hasMore ? "" : "hidden"
-            }`}
-            onClick={loadMoreProducts}
-          >
-            Explore More
-          </button>
+      ) : (
+        <div className="w-full flex justify-center mt-10 text-2xl leading-6 font-bold">
+          No products to show
         </div>
-      </div>
+      )}
     </div>
   );
 };
