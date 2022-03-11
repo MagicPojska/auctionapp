@@ -25,5 +25,7 @@ export const getProductsSorted = (pageNumber, pageSize, sortBy) =>
 export const getCategoriesList = () => API.get("/product/categories");
 export const getProductsByCategory = (pageNumber, pageSize, categoryId) =>
   API.get(
-    `/product/items/category?pageNumber=${pageNumber}&pageSize=${pageSize}&categoryId=${categoryId}`
+    `/product/items/category?pageNumber=${pageNumber}&${categoryId
+      .map((item) => `categoryId=${item}&`)
+      .join("")}pageSize=${pageSize}&`
   );

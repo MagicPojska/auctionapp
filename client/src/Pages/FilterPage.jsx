@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getCategoriesList, getProductsByCategory } from "../utilities/api";
 import { shopProductPath } from "../utilities/paths";
 
@@ -9,25 +9,33 @@ const FilterPage = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const { id } = useParams();
 
+  let superCategories;
+
   const pageSize = 9;
-
-  const location = useLocation();
-
-  useEffect(() => {
-    (async () => {
-      await getProductsCategory();
-    })();
-  }, [location]);
 
   useEffect(() => {
     (async () => {
       await getCategories();
+      await getProductsCategory();
     })();
   }, []);
 
   const getProductsCategory = async () => {
     try {
-      const response = await getProductsByCategory(0, pageSize, id);
+      //This returns supercategory from list of key value paires from superCategories object literal with subcategoryId and supercategoryId
+      const supercategoryIds = superCategories
+        .map((item) => {
+          if (item.supercategoryId == id) {
+            return item.subcategoryId;
+          }
+        })
+        .filter((item) => item !== undefined);
+
+      const response = await getProductsByCategory(
+        0,
+        pageSize,
+        supercategoryIds
+      );
 
       setProducts(response.data.content);
     } catch (error) {
@@ -39,6 +47,19 @@ const FilterPage = () => {
     try {
       const response = await getCategoriesList();
       setCategories(response.data);
+
+      //Maps trough all the categories and makes a new object literal with key value paires where each subcategory will have its supercategory
+      superCategories = response.data
+        .map((item) => {
+          if (item.supercategoryId) {
+            return {
+              subcategoryId: item.id,
+              supercategoryId: item.supercategoryId,
+            };
+          }
+          return;
+        })
+        .filter((item) => item !== undefined);
     } catch (error) {
       console.log(error);
     }
