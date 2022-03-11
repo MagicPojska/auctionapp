@@ -22,27 +22,12 @@ const FilterPage = () => {
 
   useEffect(() => {
     getProducts(0);
-  }, [location, superCategoryList]);
+  }, [location, categories]);
 
   const getCategories = async () => {
     try {
       const response = await getCategoriesList();
       setCategories(response.data);
-
-      //Maps trough all the categories and makes a new object literal with key value paires where each subcategory will have its supercategory
-      setSuperCategoryList(
-        response.data
-          .map((item) => {
-            if (item.supercategoryId) {
-              return {
-                subcategoryId: item.id,
-                supercategoryId: item.supercategoryId,
-              };
-            }
-            return;
-          })
-          .filter((item) => item !== undefined)
-      );
     } catch (error) {
       console.log(error);
     }
@@ -50,13 +35,12 @@ const FilterPage = () => {
 
   const getProducts = async (page) => {
     try {
-      console.log("supercategorylist:", superCategoryList);
-      const supercategoryIds = getCategoryPairs(superCategoryList);
+      const subcategoryIds = getSubcategoryIds(categories);
 
       const response = await getProductsByCategory(
         page,
         PAGE_SIZE,
-        supercategoryIds
+        subcategoryIds
       );
       if (page === 0) {
         setHasMore(true);
@@ -80,12 +64,12 @@ const FilterPage = () => {
     await getProducts(pageNumber + 1);
   };
 
-  const getCategoryPairs = (categoryList) => {
-    //This returns supercategory from list of key value paires from superCategories object literal with subcategoryId and supercategoryId
+  const getSubcategoryIds = (categoryList) => {
+    //This returns function returns all subcategoryIds that are part of supercategoryId that was provided in url
     return categoryList
       .map((item) => {
         if (item.supercategoryId == id) {
-          return item.subcategoryId;
+          return item.id;
         }
       })
       .filter((item) => item !== undefined);
