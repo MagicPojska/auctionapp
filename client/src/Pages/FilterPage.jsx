@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import CategoriesAccordion from "../components/CategoriesAccordion";
 import FilterProductsGrid from "../components/FilterProductsGrid";
 import { getCategoriesList, getProductsByCategory } from "../utilities/api";
-import { categoriesPath, shopProductPath } from "../utilities/paths";
 
 const FilterPage = () => {
   const [categories, setCategories] = useState([]);
@@ -93,22 +93,7 @@ const FilterPage = () => {
 
   return (
     <div className="mx-40 2xl:mx-72 flex justify-between">
-      <div className="w-64 min-w-max h-max border-2 p-6">
-        <h3 className="text-base font-bold text-purple">PRODUCT CATEGORIES</h3>
-        {categories.map(
-          (item) =>
-            item.supercategoryId === null && (
-              <div className="bg-white h-14  flex items-center" key={item.id}>
-                <Link
-                  to={`${categoriesPath}/${item.id}`}
-                  className="text-base leading-6 font-normal"
-                >
-                  {item.categoryName}
-                </Link>
-              </div>
-            )
-        )}
-      </div>
+      <CategoriesAccordion categories={categories} />
 
       <FilterProductsGrid
         products={products}
