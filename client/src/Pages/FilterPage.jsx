@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import FilterProductsGrid from "../components/FilterProductsGrid";
 import { getCategoriesList, getProductsByCategory } from "../utilities/api";
 import { categoriesPath, shopProductPath } from "../utilities/paths";
 
@@ -12,22 +13,16 @@ const FilterPage = () => {
 
   const { id } = useParams();
   const location = useLocation();
-  let superCategories;
 
   const PAGE_SIZE = 9;
 
   useEffect(() => {
-    (async () => {
-      await getCategories();
-      await getProducts(0);
-    })();
+    getCategories();
   }, []);
 
   useEffect(() => {
-    (async () => {
-      await getProducts(0);
-    })();
-  }, [location]);
+    getProducts(0);
+  }, [location, superCategoryList]);
 
   const getCategories = async () => {
     try {
@@ -35,19 +30,19 @@ const FilterPage = () => {
       setCategories(response.data);
 
       //Maps trough all the categories and makes a new object literal with key value paires where each subcategory will have its supercategory
-      superCategories = response.data
-        .map((item) => {
-          if (item.supercategoryId) {
-            return {
-              subcategoryId: item.id,
-              supercategoryId: item.supercategoryId,
-            };
-          }
-          return;
-        })
-        .filter((item) => item !== undefined);
-
-      setSuperCategoryList(superCategories);
+      setSuperCategoryList(
+        response.data
+          .map((item) => {
+            if (item.supercategoryId) {
+              return {
+                subcategoryId: item.id,
+                supercategoryId: item.supercategoryId,
+              };
+            }
+            return;
+          })
+          .filter((item) => item !== undefined)
+      );
     } catch (error) {
       console.log(error);
     }
@@ -55,16 +50,9 @@ const FilterPage = () => {
 
   const getProducts = async (page) => {
     try {
-      let supercategoryIds;
-      if (page === 0) {
-        if (superCategories) {
-          supercategoryIds = getCategoryPairs(superCategories);
-        } else {
-          supercategoryIds = getCategoryPairs(superCategoryList);
-        }
-      } else {
-        supercategoryIds = getCategoryPairs(superCategoryList);
-      }
+      console.log("supercategorylist:", superCategoryList);
+      const supercategoryIds = getCategoryPairs(superCategoryList);
+
       const response = await getProductsByCategory(
         page,
         PAGE_SIZE,
@@ -122,49 +110,11 @@ const FilterPage = () => {
         )}
       </div>
 
-      {products.length !== 0 ? (
-        <div className="ml-6">
-          <div className="grid grid-cols-3 gap-x-4 gap-y-8">
-            {products.map((item) => (
-              <Link
-                to={`${shopProductPath}/${item.id}`}
-                className="flex flex-col"
-                key={item.id}
-              >
-                <img
-                  src={item.images.split(",")[0]}
-                  className="object-cover aspect-[3/4]"
-                  alt=""
-                />
-                <h4 className="mt-3 text-2xl leading-6 font-semibold mb-2">
-                  {item.productName}
-                </h4>
-                <p className="text-l leading-6 font-normal text-textTetriary">
-                  Start From&nbsp;
-                  <span className="text-purple font-bold">
-                    ${parseFloat(item.startPrice).toFixed(2)}
-                  </span>
-                </p>
-              </Link>
-            ))}
-          </div>
-
-          <div className="w-full flex justify-center mt-20">
-            <button
-              className={`py-4 px-14 bg-purple text-white text-base font-bold leading-7 ${
-                hasMore ? "" : "hidden"
-              }`}
-              onClick={loadMoreProducts}
-            >
-              Explore More
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="w-full flex justify-center mt-10 text-2xl leading-6 font-bold">
-          No products to show
-        </div>
-      )}
+      <FilterProductsGrid
+        products={products}
+        loadMoreProducts={loadMoreProducts}
+        hasMore={hasMore}
+      />
     </div>
   );
 };
