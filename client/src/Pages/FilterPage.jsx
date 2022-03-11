@@ -7,12 +7,10 @@ import { getCategoriesList, getProductsByCategory } from "../utilities/api";
 const FilterPage = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
-  const [superCategoryList, setSuperCategoryList] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
 
   const { id } = useParams();
-  const location = useLocation();
 
   const PAGE_SIZE = 9;
 
@@ -22,7 +20,7 @@ const FilterPage = () => {
 
   useEffect(() => {
     getProducts(0);
-  }, [location, categories]);
+  }, [categories, id]);
 
   const getCategories = async () => {
     try {
@@ -37,11 +35,17 @@ const FilterPage = () => {
     try {
       const subcategoryIds = getSubcategoryIds(categories);
 
+      //This line exists before making a call if there is no subcategories in a supercategory
+      if (subcategoryIds.length === 0) {
+        setProducts([]);
+        return;
+      }
       const response = await getProductsByCategory(
         page,
         PAGE_SIZE,
         subcategoryIds
       );
+
       if (page === 0) {
         setHasMore(true);
         setProducts([]);
