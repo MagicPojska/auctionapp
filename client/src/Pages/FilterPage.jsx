@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import CategoriesAccordion from "../components/CategoriesAccordion";
 import FilterProductsGrid from "../components/FilterProductsGrid";
-import { getCategoriesList, getProductsByCategory } from "../utilities/api";
+import {
+  getCategoriesList,
+  getProductsByCategory,
+} from "../utilities/productsApi";
 
 const FilterPage = () => {
   const [categories, setCategories] = useState([]);

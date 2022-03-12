@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { getToken, removeUser, setUserSession } from "../utilities/auth";
-import { logoutUser, signIn, signUp } from "../utilities/api";
+import { logoutUser, signIn, signUp } from "../utilities/authApi";
 
 const UserContext = createContext();
 
