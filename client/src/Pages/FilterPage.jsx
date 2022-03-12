@@ -9,6 +9,7 @@ import {
 
 const FilterPage = () => {
   const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -22,8 +23,8 @@ const FilterPage = () => {
   }, []);
 
   useEffect(() => {
-    getProducts(0);
-  }, [categories, id]);
+    getProducts(0, subCategories);
+  }, [categories, subCategories]);
 
   const getCategories = async () => {
     try {
@@ -34,11 +35,16 @@ const FilterPage = () => {
     }
   };
 
-  const getProducts = async (page) => {
+  const getProducts = async (page, subcategoryId) => {
     try {
-      const subcategoryIds = getSubcategoryIds(categories);
+      let subcategoryIds;
+      if (subcategoryId.length === 0) {
+        subcategoryIds = getSubcategoryIdsFromSupercategory(categories);
+      } else {
+        subcategoryIds = subcategoryId;
+      }
 
-      //This line exists before making a call if there is no subcategories in a supercategory
+      //This line exits before making a call if there is no subcategories in a supercategory
       if (subcategoryIds.length === 0) {
         setProducts([]);
         return;
@@ -68,10 +74,10 @@ const FilterPage = () => {
   };
 
   const loadMoreProducts = async () => {
-    await getProducts(pageNumber + 1);
+    await getProducts(pageNumber + 1, subCategories);
   };
 
-  const getSubcategoryIds = (categoryList) => {
+  const getSubcategoryIdsFromSupercategory = (categoryList) => {
     //This returns function returns all subcategoryIds that are part of supercategoryId that was provided in url
     return categoryList
       .map((item) => {
@@ -92,6 +98,8 @@ const FilterPage = () => {
           <CategoriesAccordion
             key={item.id}
             categories={categories}
+            subCategories={subCategories}
+            setSubCategories={setSubCategories}
             item={item}
           />
         ))}

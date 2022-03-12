@@ -2,14 +2,30 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { categoriesPath } from "../utilities/paths";
 
-const CategoriesAccordion = ({ categories, item }) => {
+const CategoriesAccordion = ({
+  categories,
+  item,
+  subCategories,
+  setSubCategories,
+}) => {
   const [isOpened, setOpened] = useState(false);
   const [height, setHeight] = useState("0px");
+
   const contentElement = useRef(null);
 
   const handleOpening = () => {
     setOpened(!isOpened);
     setHeight(!isOpened ? `${contentElement.current.scrollHeight}px` : "0px");
+  };
+
+  const filterItems = (e) => {
+    let idList = [...subCategories];
+    if (e.target.checked) {
+      idList = [...subCategories, e.target.value];
+    } else {
+      idList = subCategories.filter((item) => item !== e.target.value);
+    }
+    setSubCategories(idList);
   };
 
   return (
@@ -36,7 +52,12 @@ const CategoriesAccordion = ({ categories, item }) => {
                       key={subcategory.id}
                       className="flex items-center pb-6"
                     >
-                      <input type="checkbox" className="accent-purple" />
+                      <input
+                        type="checkbox"
+                        className="accent-purple"
+                        value={subcategory.id}
+                        onChange={filterItems}
+                      />
                       <p className="text-textTetriary text-base font-light ml-3">
                         {subcategory.categoryName}&nbsp;(
                         {subcategory.numberOfProducts})
