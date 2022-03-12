@@ -7,7 +7,7 @@ const LandingPageCategories = ({ categories }) => {
       <h3 className="text-base leading-5 font-bold ml-4 mb-4 text-purple">
         CATEGORIES
       </h3>
-      <div className="h-[32rem] w-64 overflow-y-scroll scrollbar">
+      <div className="h-[32rem] w-64 overflow-y-auto scrollbar">
         {categories.map(
           (item) =>
             item.supercategoryId === null && (
