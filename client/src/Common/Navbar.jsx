@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   accountPath,
+  categoriesPath,
   homePath,
   loginPath,
   registrationPath,
@@ -111,7 +112,7 @@ const Navbar = () => {
               </li>
               <li>
                 <NavLink
-                  to={shopPath}
+                  to={`${categoriesPath}/1`}
                   className={
                     location.pathname.includes(shopPath)
                       ? "text-purple font-bold"
