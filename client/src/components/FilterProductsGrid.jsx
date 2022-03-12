@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
 import { shopProductPath } from "../utilities/paths";
+import LoadingSpinner from "./LoadingSpinner";
 
-const FilterProductsGrid = ({ products, loadMoreProducts, hasMore }) => {
-  return products.length !== 0 ? (
+const FilterProductsGrid = ({
+  products,
+  loadMoreProducts,
+  hasMore,
+  loading,
+}) => {
+  return !loading ? (
     <div className="ml-6">
       <div className="grid grid-cols-3 gap-x-4 gap-y-8">
         {products.map((item) => (
@@ -42,7 +48,7 @@ const FilterProductsGrid = ({ products, loadMoreProducts, hasMore }) => {
     </div>
   ) : (
     <div className="w-full flex justify-center mt-10 text-2xl leading-6 font-bold">
-      No products to show
+      <LoadingSpinner />
     </div>
   );
 };
