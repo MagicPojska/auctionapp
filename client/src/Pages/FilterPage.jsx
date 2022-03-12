@@ -12,7 +12,6 @@ const FilterPage = () => {
   const [subCategories, setSubCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [hasMore, setHasMore] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
 
   const { id } = useParams();
@@ -38,7 +37,6 @@ const FilterPage = () => {
 
   const getProducts = async (page, subcategoryId) => {
     try {
-      setLoading(true);
       let subcategoryIds;
       if (subcategoryId.length === 0) {
         subcategoryIds = getSubcategoryIdsFromSupercategory(categories);
@@ -64,7 +62,6 @@ const FilterPage = () => {
         setHasMore(false);
       }
       setPageNumber(page);
-      setLoading(false);
     } catch (error) {
       setProducts([]);
       console.log(error);
@@ -106,7 +103,6 @@ const FilterPage = () => {
         products={products}
         loadMoreProducts={loadMoreProducts}
         hasMore={hasMore}
-        loading={loading}
       />
     </div>
   );

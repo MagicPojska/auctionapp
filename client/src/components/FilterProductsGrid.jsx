@@ -8,7 +8,7 @@ const FilterProductsGrid = ({
   hasMore,
   loading,
 }) => {
-  return !loading ? (
+  return products.length !== 0 ? (
     <div className="ml-6">
       <div className="grid grid-cols-3 gap-x-4 gap-y-8">
         {products.map((item) => (
