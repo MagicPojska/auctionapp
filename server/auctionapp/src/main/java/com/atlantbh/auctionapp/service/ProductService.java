@@ -43,6 +43,11 @@ public class ProductService {
         return productsList;
     }
 
+    public ProductEntity getProductById(long id){
+        ProductEntity product = productRepository.findProductById(id);
+        return product;
+    }
+
     public List<CategoryEntity> getAllCategories(){
         List<CategoryEntity> categoryList = categoryRepository.findAll();
 
