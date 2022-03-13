@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import CurrentPageNav from "../components/CurrentPageNav";
 import { getProductById } from "../utilities/productsApi";
 
 const ProductOverviewPage = () => {
@@ -15,6 +16,7 @@ const ProductOverviewPage = () => {
 
   return (
     <div>
+      <CurrentPageNav title={product.productName} />
       <p>
         {product.id} - {product.productName} - {product.startDate}
       </p>

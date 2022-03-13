@@ -33,11 +33,7 @@ const App = () => {
         <Route path={registrationPath} element={<RegistrationPage />} />
         <Route
           path={`${shopProductPath}/:id`}
-          element={
-            <PageLayout>
-              <ProductOverviewPage />
-            </PageLayout>
-          }
+          element={<ProductOverviewPage />}
         />
         <Route
           path={aboutUsPath}
