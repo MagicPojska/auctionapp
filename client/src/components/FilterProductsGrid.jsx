@@ -6,7 +6,7 @@ const FilterProductsGrid = ({
   products,
   loadMoreProducts,
   hasMore,
-  loading,
+  isLoading,
 }) => {
   return products.length !== 0 ? (
     <div className="ml-6">
@@ -48,7 +48,7 @@ const FilterProductsGrid = ({
     </div>
   ) : (
     <div className="w-full flex justify-center mt-10 text-2xl leading-6 font-bold">
-      <LoadingSpinner />
+      {isLoading ? <LoadingSpinner /> : <span>No products to show</span>}
     </div>
   );
 };

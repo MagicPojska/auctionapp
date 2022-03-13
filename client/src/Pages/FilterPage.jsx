@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import CategoriesAccordion from "../components/CategoriesAccordion";
 import FilterProductsGrid from "../components/FilterProductsGrid";
 import {
@@ -12,6 +12,7 @@ const FilterPage = () => {
   const [subCategories, setSubCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [hasMore, setHasMore] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
 
   const { id } = useParams();
@@ -37,6 +38,7 @@ const FilterPage = () => {
 
   const getProducts = async (page, subcategoryId) => {
     try {
+      setIsLoading(true);
       let subcategoryIds;
       if (subcategoryId.length === 0) {
         subcategoryIds = getSubcategoryIdsFromSupercategory(categories);
@@ -62,6 +64,7 @@ const FilterPage = () => {
         setHasMore(false);
       }
       setPageNumber(page);
+      setIsLoading(false);
     } catch (error) {
       setProducts([]);
       console.log(error);
@@ -103,6 +106,7 @@ const FilterPage = () => {
         products={products}
         loadMoreProducts={loadMoreProducts}
         hasMore={hasMore}
+        isLoading={isLoading}
       />
     </div>
   );
