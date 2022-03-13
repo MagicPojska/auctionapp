@@ -4,11 +4,13 @@ import { getCategoriesList, getProductsSorted } from "../utilities/productsApi";
 import LandingPageCategories from "../components/LandingPageCategories";
 import HighlightedProduct from "../components/HighlightedProduct";
 import LandingPageItems from "../components/LandingPageItems";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const LandingPage = () => {
   const [products, setProducts] = useState([]);
   const [highlightedProduct, setHighlightedProduct] = useState("");
   const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
   const [categories, setCategories] = useState([]);
 
@@ -38,6 +40,7 @@ const LandingPage = () => {
 
   const getProducts = async (sort, page) => {
     try {
+      setIsLoading(true);
       const response = await getProductsSorted(page, PAGE_SIZE, sort);
       if (page === 0) {
         setHasMore(true);
@@ -54,6 +57,7 @@ const LandingPage = () => {
         setHasMore(false);
       }
       setPageNumber(page);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -68,7 +72,13 @@ const LandingPage = () => {
       <div className="px-40 2xl:px-72 pt-4 h-[39rem] bg-bgWhite flex justify-between">
         <LandingPageCategories categories={categories} />
 
-        <HighlightedProduct highlightedProduct={highlightedProduct} />
+        {isLoading ? (
+          <div className="mx-auto">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <HighlightedProduct highlightedProduct={highlightedProduct} />
+        )}
       </div>
 
       <div className="mx-40 2xl:mx-72 mt-16">

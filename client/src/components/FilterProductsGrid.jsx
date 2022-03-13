@@ -36,14 +36,18 @@ const FilterProductsGrid = ({
       </div>
 
       <div className="w-full flex justify-center mt-20">
-        <button
-          className={`py-4 px-14 bg-purple text-white text-base font-bold leading-7 ${
-            hasMore ? "" : "hidden"
-          }`}
-          onClick={loadMoreProducts}
-        >
-          Explore More
-        </button>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <button
+            className={`py-4 px-14 bg-purple text-white text-base font-bold leading-7 ${
+              hasMore ? "" : "hidden"
+            }`}
+            onClick={loadMoreProducts}
+          >
+            Explore More
+          </button>
+        )}
       </div>
     </div>
   ) : (
