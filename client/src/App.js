@@ -6,6 +6,7 @@ import TermsPage from "./Pages/TermsPage";
 import PrivacyPolicyPage from "./Pages/PrivacyPolicyPage";
 import LoginPage from "./Pages/LoginPage";
 import RegistrationPage from "./Pages/RegistrationPage";
+import ProductOverviewPage from "./Pages/ProductOverviewPage";
 import PageLayout from "./components/PageLayout";
 
 import {
@@ -15,6 +16,7 @@ import {
   loginPath,
   privacyPolicyPath,
   registrationPath,
+  shopProductPath,
   termsPath,
 } from "./utilities/paths";
 import LandingPage from "./Pages/LandingPage";
@@ -29,6 +31,14 @@ const App = () => {
         <Route path={`${categoriesPath}/:id`} element={<FilterPage />} />
         <Route path={loginPath} element={<LoginPage />} />
         <Route path={registrationPath} element={<RegistrationPage />} />
+        <Route
+          path={`${shopProductPath}/:id`}
+          element={
+            <PageLayout>
+              <ProductOverviewPage />
+            </PageLayout>
+          }
+        />
         <Route
           path={aboutUsPath}
           element={

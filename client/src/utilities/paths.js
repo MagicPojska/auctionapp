@@ -8,4 +8,4 @@ export const shopPath = "/shop";
 export const accountPath = "/account";
 export const forgotPasswordPath = "/forgot-password";
 export const categoriesPath = "/shop/categories";
-export const shopProductPath = "/shop/product";
+export const shopProductPath = "/shop/single-product";
