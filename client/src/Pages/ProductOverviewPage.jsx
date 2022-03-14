@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { BsChevronRight } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 import CurrentPageNav from "../components/CurrentPageNav";
+import { useUserContext } from "../contexts/UserContextProvider";
 import { getProductById } from "../utilities/productsApi";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
   const [timeLeft, setTimeLeft] = useState("");
+  const { user } = useUserContext();
   const { id } = useParams();
 
   useEffect(() => {
@@ -74,7 +76,12 @@ const ProductOverviewPage = () => {
               className="border-2 py-3 px-8 mr-6 w-4/6 focus:outline-none"
               placeholder="Enter $56 or higher"
             />
-            <button className="mt-auto flex border-4 border-purple w-48 h-14 justify-center items-center leading-7 text-base font-bold">
+            <button
+              className={`mt-auto flex border-4 border-purple w-48 h-14 justify-center items-center leading-7 text-base font-bold ${
+                !user && "opacity-25"
+              }`}
+              disabled={!user && true}
+            >
               PLACE BID &nbsp;&nbsp;{" "}
               <BsChevronRight className="stroke-2 text-xs" />
             </button>
