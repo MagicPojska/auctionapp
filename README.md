@@ -34,6 +34,7 @@
   </ol>
 </details>
 
+You can see the demo [here](https://auction-app-react.herokuapp.com/)
 
 
 <!-- ABOUT THE PROJECT -->
