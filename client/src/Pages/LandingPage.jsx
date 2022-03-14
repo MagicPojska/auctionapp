@@ -10,8 +10,8 @@ const LandingPage = () => {
   const [products, setProducts] = useState([]);
   const [highlightedProduct, setHighlightedProduct] = useState("");
   const [hasMore, setHasMore] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [pageNumber, setPageNumber] = useState(0);
   const [categories, setCategories] = useState([]);
 
   const START_DATE = "startDate";
@@ -43,7 +43,6 @@ const LandingPage = () => {
       setIsLoading(true);
       const response = await getProductsSorted(page, PAGE_SIZE, sort);
       if (page === 0) {
-        setHasMore(!response.data.last);
         setProducts(response.data.content);
       } else {
         setProducts([...products, ...response.data.content]);
@@ -52,13 +51,13 @@ const LandingPage = () => {
       if (!highlightedProduct) {
         setHighlightedProduct(response.data.content[0]);
       }
-      if (response.data.last) {
-        setHasMore(false);
-      }
+
+      setHasMore(!response.data.last);
       setPageNumber(page);
-      setIsLoading(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 

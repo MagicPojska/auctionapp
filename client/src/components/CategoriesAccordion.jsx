@@ -1,6 +1,4 @@
 import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { categoriesPath } from "../utilities/paths";
 
 const CategoriesAccordion = ({
   categories,
@@ -9,13 +7,11 @@ const CategoriesAccordion = ({
   setSubCategories,
 }) => {
   const [isOpened, setOpened] = useState(false);
-  const [height, setHeight] = useState("0px");
 
   const contentElement = useRef(null);
 
   const handleOpening = () => {
     setOpened(!isOpened);
-    setHeight(!isOpened ? `${contentElement.current.scrollHeight}px` : "0px");
   };
 
   const filterItems = (e) => {
@@ -41,8 +37,10 @@ const CategoriesAccordion = ({
           </div>
           <div
             ref={contentElement}
-            style={{ height: height }}
-            className="overflow-hidden transition-all duration-200"
+            // style={{ height: height }}
+            className={`overflow-hidden transition-all duration-200 ${
+              !isOpened && "hidden"
+            }`}
           >
             <div className="mt-8">
               {categories.map(
