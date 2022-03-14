@@ -13,7 +13,6 @@ const ProductOverviewPage = () => {
     (async () => {
       const response = await getProductById(id);
       setProduct(response.data);
-
       calculateTimeLeft(response);
     })();
   }, []);

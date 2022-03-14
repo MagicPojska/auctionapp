@@ -4,11 +4,11 @@ const CurrentPageNav = ({ title }) => {
   const breadcrumbs = useBreadcrumbs();
   let lastElement =
     breadcrumbs[
-      breadcrumbs.length - title ? 2 : 1
+      breadcrumbs.length - (title ? 2 : 1)
     ].breadcrumb.props.children.split(" ");
   let secondToLastElement =
     breadcrumbs[
-      breadcrumbs.length - title ? 3 : 2
+      breadcrumbs.length - (title ? 3 : 2)
     ].breadcrumb.props.children.split(" ");
 
   const capitalize = (words) => {
