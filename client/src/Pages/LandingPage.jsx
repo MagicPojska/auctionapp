@@ -40,8 +40,7 @@ const LandingPage = () => {
     try {
       const response = await getProductsSorted(page, PAGE_SIZE, sort);
       if (page === 0) {
-        setHasMore(true);
-        setProducts([]);
+        setHasMore(!response.data.last);
         setProducts(response.data.content);
       } else {
         setProducts([...products, ...response.data.content]);
