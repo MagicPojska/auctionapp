@@ -14,32 +14,37 @@ const ProductOverviewPage = () => {
       const response = await getProductById(id);
       setProduct(response.data);
 
-      const startDate = new Date();
-      const endDate = new Date(response.data.endDate);
-      const diffDays = Math.ceil(
-        Math.abs(endDate - startDate) / (1000 * 60 * 60 * 24)
-      );
-      const diffWeeks = Math.floor(diffDays / 7);
-      const diff = {
-        weeks: diffWeeks,
-        days: Math.floor(diffDays % 7),
-      };
-      setTimeLeft(diff);
+      calculateTimeLeft(response);
     })();
   }, []);
 
-  const calculateTimeLeft = () => {
+  const calculateTimeLeft = (response) => {
     const startDate = new Date();
-    const endDate = new Date(product.endDate);
-
-    console.log(endDate.getDate() - startDate.getDate());
+    const endDate = new Date(response.data.endDate);
+    const diffDays = Math.ceil(
+      Math.abs(endDate - startDate) / (1000 * 60 * 60 * 24)
+    );
+    const diffWeeks = Math.floor(diffDays / 7);
+    const diff = {
+      weeks: diffWeeks,
+      days: Math.floor(diffDays % 7),
+    };
+    setTimeLeft(diff);
   };
 
   return (
     <>
       <CurrentPageNav title={product.productName} />
       <div className="mx-40 2xl:mx-72 flex">
-        <div className="w-1/2">images</div>
+        <div className="w-1/2">
+          <div className="mr-28 flex justify-center p-4">
+            <img
+              src={product.images}
+              className="object-cover aspect-[7/9]"
+              alt=""
+            />
+          </div>
+        </div>
 
         <div className="w-1/2">
           <h1 className="text-3xl font-normal mb-4">{product.productName}</h1>
