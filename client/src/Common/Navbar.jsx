@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   accountPath,
+  categoriesPath,
   homePath,
   loginPath,
   registrationPath,
@@ -70,7 +71,7 @@ const Navbar = () => {
           </Link>
         </div>
       ) : (
-        <div className="flex flex-col xl:flex-row justify-between items-center px-20 md:px-48 2xl:px-72 pt-4 pb-9">
+        <div className="flex flex-col xl:flex-row justify-between items-center px-20 md:px-44 2xl:px-72 pt-4 pb-9">
           <Link to="/" className="logo-link">
             <img
               src="/images/auction-app-logo.png"
@@ -111,9 +112,9 @@ const Navbar = () => {
               </li>
               <li>
                 <NavLink
-                  to={shopPath}
+                  to={`${categoriesPath}/1`}
                   className={
-                    shopPath === location.pathname
+                    location.pathname.includes(shopPath)
                       ? "text-purple font-bold"
                       : ""
                   }
@@ -125,7 +126,7 @@ const Navbar = () => {
                 <NavLink
                   to={accountPath}
                   className={
-                    accountPath === location.pathname
+                    location.pathname.includes(accountPath)
                       ? "text-purple font-bold"
                       : ""
                   }

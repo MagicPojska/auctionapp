@@ -7,7 +7,7 @@ const LandingPageCategories = ({ categories }) => {
       <h3 className="text-base leading-5 font-bold ml-4 mb-4 text-purple">
         CATEGORIES
       </h3>
-      <div className="h-[32rem] w-64 overflow-y-scroll scrollbar">
+      <div className="h-[32rem] w-64 overflow-y-auto scrollbar">
         {categories.map(
           (item) =>
             item.supercategoryId === null && (
@@ -16,7 +16,7 @@ const LandingPageCategories = ({ categories }) => {
                 key={item.id}
               >
                 <Link
-                  to={`${categoriesPath}/${item.categoryName.toLowerCase()}`}
+                  to={`${categoriesPath}/${item.id}`}
                   className="text-base leading-6 font-normal"
                 >
                   {item.categoryName}
@@ -26,7 +26,10 @@ const LandingPageCategories = ({ categories }) => {
         )}
       </div>
       <div className="bg-white h-14 w-64 flex p-4 border-b-[1px] border-gray-300 items-center">
-        <Link to={categoriesPath} className="text-base leading-6 font-normal">
+        <Link
+          to={`${categoriesPath}/1`}
+          className="text-base leading-6 font-normal"
+        >
           All Categories
         </Link>
       </div>

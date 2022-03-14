@@ -30,6 +30,15 @@ public class ProductController {
         return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
     }
 
+    @GetMapping("/items/category")
+    public ResponseEntity<Page<ProductEntity>> getAllProductsFromCategory(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                                                          @RequestParam(defaultValue = "9") Integer pageSize,
+                                                                          @RequestParam long[] categoryId){
+        Page<ProductEntity> list = productService.getAllProductsFromCategory(pageNumber, pageSize, categoryId);
+
+        return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
+    }
+
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryEntity>> getAllCategories(){
         List<CategoryEntity> list = productService.getAllCategories();

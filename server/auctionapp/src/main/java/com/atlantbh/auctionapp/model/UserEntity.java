@@ -13,7 +13,6 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @Entity
-//This line of code doesn't work in production, so it needs to be removed
 @Table(name = "User", schema="auction")
 public class UserEntity {
     @Id

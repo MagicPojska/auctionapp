@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
-//This line of code doesn't work in production, so it needs to be removed
 @Table(name = "Bids", schema="auction")
 public class BidsEntity {
     @Id

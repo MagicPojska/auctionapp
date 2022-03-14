@@ -3,6 +3,7 @@ package com.atlantbh.auctionapp.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,7 +13,6 @@ import javax.validation.constraints.Size;
 @Setter
 @Getter
 @Entity
-//This line of code doesn't work in production, so it needs to be removed
 @Table(name = "Category", schema="auction")
 public class CategoryEntity {
     @Id
@@ -29,6 +29,9 @@ public class CategoryEntity {
 
     @Column(nullable = true)
     private Integer supercategoryId;
+
+    @Formula("(SELECT COUNT(*) FROM auction.product pe WHERE pe.category_id = id)")
+    private Integer numberOfProducts;
 
     public CategoryEntity(String categoryName, String description, Integer supercategoryId) {
         this.categoryName = categoryName;
