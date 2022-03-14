@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Entity
 //This line of code doesn't work in production, so it needs to be removed
-//@Table(name = "User", schema="auction")
+@Table(name = "User", schema="auction")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -26,7 +26,7 @@ const CurrentPageNav = () => {
   secondToLastElement = capitalize(secondToLastElement);
 
   return (
-    <div className="h-[60px] bg-bgWhite flex justify-between items-center px-[160px] font-normal text-base">
+    <div className="h-[60px] bg-bgWhite flex justify-between items-center px-40 2xl:px-72 font-normal text-base">
       <span>{lastElement}</span>
       <div className="font-normal text-base flex text-textTetriary">
         <span>{secondToLastElement} &nbsp;</span>
