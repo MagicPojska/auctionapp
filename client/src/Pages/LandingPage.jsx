@@ -70,7 +70,7 @@ const LandingPage = () => {
       <div className="px-40 2xl:px-72 pt-4 h-[39rem] bg-bgWhite flex justify-between">
         <LandingPageCategories categories={categories} />
 
-        {isLoading ? (
+        {isLoading && !highlightedProduct ? (
           <div className="mx-auto">
             <LoadingSpinner />
           </div>
