@@ -21,7 +21,8 @@ const ProductDetails = ({ product, timeLeft }) => {
         <p>
           Time left:{" "}
           <span className="font-bold text-purple">
-            {timeLeft.weeks} Weeks {timeLeft.days} Days
+            {timeLeft.weeks} {timeLeft.weeks === 1 ? "Week" : "Weeks"}{" "}
+            {timeLeft.days} {timeLeft.days === 1 ? "Day" : "Days"}
           </span>
         </p>
       </div>
