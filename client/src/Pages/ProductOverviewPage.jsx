@@ -6,14 +6,34 @@ import { getProductById } from "../utilities/productsApi";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
+  const [timeLeft, setTimeLeft] = useState("");
   const { id } = useParams();
 
   useEffect(() => {
     (async () => {
       const response = await getProductById(id);
       setProduct(response.data);
+
+      const startDate = new Date();
+      const endDate = new Date(response.data.endDate);
+      const diffDays = Math.ceil(
+        Math.abs(endDate - startDate) / (1000 * 60 * 60 * 24)
+      );
+      const diffWeeks = Math.floor(diffDays / 7);
+      const diff = {
+        weeks: diffWeeks,
+        days: Math.floor(diffDays % 7),
+      };
+      setTimeLeft(diff);
     })();
   }, []);
+
+  const calculateTimeLeft = () => {
+    const startDate = new Date();
+    const endDate = new Date(product.endDate);
+
+    console.log(endDate.getDate() - startDate.getDate());
+  };
 
   return (
     <>
@@ -38,7 +58,9 @@ const ProductOverviewPage = () => {
             </p>
             <p>
               Time left:{" "}
-              <span className="font-bold text-purple">${product.endDate}</span>
+              <span className="font-bold text-purple">
+                {timeLeft.weeks} Weeks {timeLeft.days} Days
+              </span>
             </p>
           </div>
 
