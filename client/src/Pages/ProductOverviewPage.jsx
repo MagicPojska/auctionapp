@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CurrentPageNav from "../components/CurrentPageNav";
+import ImageSelection from "../components/ImageSelection";
 import ProductDetails from "../components/ProductDetails";
 import { getProductById } from "../utilities/productsApi";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
+  const [images, setImages] = useState([]);
+  const [image, setImage] = useState("");
   const [timeLeft, setTimeLeft] = useState("");
   const { id } = useParams();
 
@@ -13,6 +16,8 @@ const ProductOverviewPage = () => {
     (async () => {
       const response = await getProductById(id);
       setProduct(response.data);
+      setImages(response.data.images.split(","));
+      setImage(response.data.images.split(",")[0]);
       calculateTimeLeft(response);
     })();
   }, []);
@@ -35,15 +40,7 @@ const ProductOverviewPage = () => {
     <>
       <CurrentPageNav title={product.productName} />
       <div className="mx-40 mt-8 2xl:mx-72 flex">
-        <div className="w-1/2">
-          <div className="mr-28 flex justify-center">
-            <img
-              src={product.images}
-              className="object-cover aspect-[7/9]"
-              alt=""
-            />
-          </div>
-        </div>
+        <ImageSelection images={images} image={image} setImage={setImage} />
 
         <ProductDetails product={product} timeLeft={timeLeft} />
       </div>
