@@ -39,7 +39,7 @@ public class ProductEntity {
     @Column(nullable = false)
     private LocalDateTime endDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition="TEXT")
     private String images;
 
     @Column(nullable = false)
