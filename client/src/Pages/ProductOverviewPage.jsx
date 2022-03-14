@@ -34,9 +34,9 @@ const ProductOverviewPage = () => {
   return (
     <>
       <CurrentPageNav title={product.productName} />
-      <div className="mx-40 2xl:mx-72 flex">
+      <div className="mx-40 mt-8 2xl:mx-72 flex">
         <div className="w-1/2">
-          <div className="mr-28 flex justify-center p-4">
+          <div className="mr-28 flex justify-center">
             <img
               src={product.images}
               className="object-cover aspect-[7/9]"
