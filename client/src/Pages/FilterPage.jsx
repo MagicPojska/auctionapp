@@ -13,7 +13,7 @@ const FilterPage = () => {
   const [products, setProducts] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(0);
 
   const { id } = useParams();
 
@@ -24,7 +24,7 @@ const FilterPage = () => {
   }, []);
 
   useEffect(() => {
-    getProducts(0, subCategories);
+    categories.length > 0 && getProducts(0, subCategories);
   }, [categories, subCategories]);
 
   const getCategories = async () => {
@@ -53,16 +53,12 @@ const FilterPage = () => {
       );
 
       if (page === 0) {
-        setHasMore(true);
-        setProducts([]);
         setProducts(response.data.content);
       } else {
         setProducts([...products, ...response.data.content]);
       }
 
-      if (response.data.last) {
-        setHasMore(false);
-      }
+      setHasMore(!response.data.last);
       setPageNumber(page);
       setIsLoading(false);
     } catch (error) {
@@ -79,7 +75,7 @@ const FilterPage = () => {
     //This returns function returns all subcategoryIds that are part of supercategoryId that was provided in url
     return categoryList
       .map((item) => {
-        if (item.supercategoryId == id) {
+        if (item.supercategoryId === parseInt(id)) {
           return item.id;
         }
       })
