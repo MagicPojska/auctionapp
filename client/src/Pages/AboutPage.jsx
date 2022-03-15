@@ -51,15 +51,15 @@ const AboutPage = () => {
             className="object-contain"
             alt="woman"
           />
-          <div className="flex space-x-5 mt-6">
+          <div className="grid grid-cols-2 gap-6 mx-auto mt-6">
             <img
               src="https://images.unsplash.com/photo-1438109491414-7198515b166b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-              className="object-contain w-full"
+              className=""
               alt="woman"
             />
             <img
               src="https://images.unsplash.com/photo-1517677129300-07b130802f46?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-              className="object-contain w-full"
+              className=""
               alt="woman"
             />
           </div>
