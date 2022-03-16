@@ -22,10 +22,12 @@ import {
   shopProductPath,
   termsPath,
 } from "./utilities/paths";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   return (
     <div className="font-lato font-bold">
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path={homePath} element={<LandingPage />} />
