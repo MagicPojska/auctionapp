@@ -51,7 +51,16 @@ const RegistrationPage = () => {
               placeholder="John"
               value={user.firstName}
               className="w-full mt-4 h-16 border-2 bg-gray-50 pl-6 font-light text-base focus:outline-none"
-              onChange={(e) => setUser({ ...user, firstName: e.target.value })}
+              onChange={(e) => {
+                if (e.target.value.match("^[a-zA-Z]*$") != null) {
+                  setUser({
+                    ...user,
+                    firstName:
+                      e.target.value.charAt(0).toUpperCase() +
+                      e.target.value.slice(1),
+                  });
+                }
+              }}
               required
             />
           </div>
@@ -62,7 +71,16 @@ const RegistrationPage = () => {
               placeholder="Doe"
               value={user.lastName}
               className="w-full mt-4 h-16 border-2 bg-gray-50 pl-6 font-light text-base focus:outline-none"
-              onChange={(e) => setUser({ ...user, lastName: e.target.value })}
+              onChange={(e) => {
+                if (e.target.value.match("^[a-zA-Z]*$") != null) {
+                  setUser({
+                    ...user,
+                    lastName:
+                      e.target.value.charAt(0).toUpperCase() +
+                      e.target.value.slice(1),
+                  });
+                }
+              }}
               required
             />
           </div>
