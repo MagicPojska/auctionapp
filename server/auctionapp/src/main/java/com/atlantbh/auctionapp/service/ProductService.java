@@ -1,5 +1,6 @@
 package com.atlantbh.auctionapp.service;
 
+import com.atlantbh.auctionapp.exceptions.NotFoundException;
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.model.enums.SortBy;
 import com.atlantbh.auctionapp.repository.ProductRepository;
@@ -39,6 +40,9 @@ public class ProductService {
 
     public ProductEntity getProductById(long id){
         ProductEntity product = productRepository.findProductById(id);
+        if(product == null){
+            throw new NotFoundException("Product with id:" + id + " does not exist");
+        }
         return product;
     }
 
