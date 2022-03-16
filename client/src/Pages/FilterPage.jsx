@@ -24,8 +24,9 @@ const FilterPage = () => {
   }, []);
 
   useEffect(() => {
-    categories.length > 0 && getProducts(0, subCategories);
-  }, [categories, subCategories]);
+    subCategories.length > 0 && getProducts(0, subCategories);
+    console.log(subCategories);
+  }, [subCategories]);
 
   const getCategories = async () => {
     try {
@@ -39,12 +40,7 @@ const FilterPage = () => {
   const getProducts = async (page, subcategoryId) => {
     try {
       setIsLoading(true);
-      let subcategoryIds;
-      if (subcategoryId.length === 0) {
-        subcategoryIds = getSubcategoryIdsFromSupercategory(categories);
-      } else {
-        subcategoryIds = subcategoryId;
-      }
+      const subcategoryIds = subcategoryId;
 
       const response = await getProductsByCategory(
         page,
@@ -95,6 +91,7 @@ const FilterPage = () => {
             subCategories={subCategories}
             setSubCategories={setSubCategories}
             item={item}
+            id={id}
           />
         ))}
       </div>
