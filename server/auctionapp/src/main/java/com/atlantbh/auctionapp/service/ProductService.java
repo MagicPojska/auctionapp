@@ -1,9 +1,7 @@
 package com.atlantbh.auctionapp.service;
 
-import com.atlantbh.auctionapp.model.CategoryEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.model.enums.SortBy;
-import com.atlantbh.auctionapp.repository.CategoryRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,15 +10,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     public Page<ProductEntity> getAllProducts(Integer pageNumber, Integer pageSize, String sortBy){
         Sort sortOrder;
@@ -48,9 +42,4 @@ public class ProductService {
         return product;
     }
 
-    public List<CategoryEntity> getAllCategories(){
-        List<CategoryEntity> categoryList = categoryRepository.findAll();
-
-        return categoryList;
-    }
 }

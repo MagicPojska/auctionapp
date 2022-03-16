@@ -43,11 +43,4 @@ public class ProductController {
 
         return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
     }
-
-    @GetMapping("/categories")
-    public ResponseEntity<List<CategoryEntity>> getAllCategories(){
-        List<CategoryEntity> list = productService.getAllCategories();
-
-        return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
-    }
 }

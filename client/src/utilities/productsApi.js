@@ -11,7 +11,7 @@ export const getProductsSorted = (pageNumber, pageSize, sortBy) =>
 
 export const getProductById = (id) => API.get(`/product/item/${id}`);
 
-export const getCategoriesList = () => API.get("/product/categories");
+export const getCategoriesList = () => API.get("/categories");
 
 export const getProductsByCategory = (pageNumber, pageSize, categoryId) =>
   API.get(
