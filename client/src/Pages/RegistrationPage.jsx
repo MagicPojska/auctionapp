@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContextProvider";
-import { loginPath } from "../utilities/paths";
+import { homePath, loginPath } from "../utilities/paths";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,10 +22,10 @@ const RegistrationPage = () => {
     const data = await register(user);
     if (data === null) {
       toast.error("User already exists!", {
-        position: toast.POSITION.OP_CENTER,
+        position: toast.POSITION.TOP_CENTER,
       });
     } else {
-      navigate(loginPath);
+      navigate(homePath);
     }
   };
 

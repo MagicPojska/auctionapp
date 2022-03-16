@@ -49,6 +49,7 @@ public class UserService implements UserDetailsService {
                 registerRequest.getLastName(),
                 registerRequest.getEmail(),
                 passwordEncoder.encode(registerRequest.getPassword()));
+
         userRepository.save(entity);
 
         entity.setPassword(null);
