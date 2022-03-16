@@ -25,7 +25,6 @@ const FilterPage = () => {
 
   useEffect(() => {
     subCategories.length > 0 && getProducts(0, subCategories);
-    console.log(subCategories);
   }, [subCategories]);
 
   const getCategories = async () => {
@@ -40,12 +39,11 @@ const FilterPage = () => {
   const getProducts = async (page, subcategoryId) => {
     try {
       setIsLoading(true);
-      const subcategoryIds = subcategoryId;
 
       const response = await getProductsByCategory(
         page,
         PAGE_SIZE,
-        subcategoryIds
+        subcategoryId
       );
 
       if (page === 0) {
@@ -65,17 +63,6 @@ const FilterPage = () => {
 
   const loadMoreProducts = async () => {
     await getProducts(pageNumber + 1, subCategories);
-  };
-
-  const getSubcategoryIdsFromSupercategory = (categoryList) => {
-    //This returns function returns all subcategoryIds that are part of supercategoryId that was provided in url
-    return categoryList
-      .map((item) => {
-        if (item.supercategoryId === parseInt(id)) {
-          return item.id;
-        }
-      })
-      .filter((item) => item !== undefined);
   };
 
   return (
