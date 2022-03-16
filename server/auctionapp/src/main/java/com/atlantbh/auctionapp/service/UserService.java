@@ -40,17 +40,19 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String register(RegisterRequest registerRequest) throws ConflictException {
+    public User register(RegisterRequest registerRequest) throws ConflictException {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new ConflictException("Email is already in use.");
         }
-        userRepository.save(new UserEntity(
+        UserEntity entity = new UserEntity(
                 registerRequest.getFirstName(),
                 registerRequest.getLastName(),
                 registerRequest.getEmail(),
-                passwordEncoder.encode(registerRequest.getPassword())
-        ));
-        return "User has been created";
+                passwordEncoder.encode(registerRequest.getPassword()));
+        userRepository.save(entity);
+
+        entity.setPassword(null);
+        return User.createFromEntity(entity);
     }
 
     public User login(LoginRequest loginRequest) {
