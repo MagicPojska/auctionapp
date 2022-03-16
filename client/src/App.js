@@ -8,6 +8,9 @@ import LoginPage from "./Pages/LoginPage";
 import RegistrationPage from "./Pages/RegistrationPage";
 import ProductOverviewPage from "./Pages/ProductOverviewPage";
 import PageLayout from "./components/PageLayout";
+import LandingPage from "./Pages/LandingPage";
+import FilterPage from "./Pages/FilterPage";
+import NotFoundPage from "./Pages/NotFoundPage";
 
 import {
   aboutUsPath,
@@ -19,8 +22,6 @@ import {
   shopProductPath,
   termsPath,
 } from "./utilities/paths";
-import LandingPage from "./Pages/LandingPage";
-import FilterPage from "./Pages/FilterPage";
 
 const App = () => {
   return (
@@ -59,6 +60,7 @@ const App = () => {
             </PageLayout>
           }
         />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
     </div>

@@ -4,6 +4,7 @@ import CurrentPageNav from "../components/CurrentPageNav";
 import ImageSelection from "../components/ImageSelection";
 import ProductDetails from "../components/ProductDetails";
 import { getProductById } from "../utilities/productsApi";
+import NotFoundPage from "./NotFoundPage";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
@@ -14,11 +15,15 @@ const ProductOverviewPage = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getProductById(id);
-      setProduct(response.data);
-      setImages(response.data.images.split(","));
-      setImage(response.data.images.split(",")[0]);
-      calculateTimeLeft(response);
+      try {
+        const response = await getProductById(id);
+        setProduct(response.data);
+        setImages(response.data.images.split(","));
+        setImage(response.data.images.split(",")[0]);
+        calculateTimeLeft(response);
+      } catch (error) {
+        console.error(error);
+      }
     })();
   }, []);
 
@@ -36,7 +41,7 @@ const ProductOverviewPage = () => {
     setTimeLeft(diff);
   };
 
-  return (
+  return product ? (
     <>
       <CurrentPageNav title={product.productName} />
       <div className="mx-40 mt-8 2xl:mx-72 flex">
@@ -45,6 +50,8 @@ const ProductOverviewPage = () => {
         <ProductDetails product={product} timeLeft={timeLeft} />
       </div>
     </>
+  ) : (
+    <NotFoundPage />
   );
 };
 
