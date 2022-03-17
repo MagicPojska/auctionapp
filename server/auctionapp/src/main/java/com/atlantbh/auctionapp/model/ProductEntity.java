@@ -33,7 +33,7 @@ public class ProductEntity {
 
     @Positive
     @Column(nullable = false)
-    private Float startPrice;
+    private BigDecimal startPrice;
 
     @Column(nullable = false)
     private LocalDateTime startDate;
@@ -59,7 +59,7 @@ public class ProductEntity {
     @JoinColumn(name = "categoryId", nullable = false)
     private CategoryEntity category;
 
-    public ProductEntity(String productName, String description, Float startPrice, LocalDateTime startDate, LocalDateTime endDate, String images, long userId, CategoryEntity category) {
+    public ProductEntity(String productName, String description, BigDecimal startPrice, LocalDateTime startDate, LocalDateTime endDate, String images, long userId, CategoryEntity category) {
         this.productName = productName;
         this.description = description;
         this.startPrice = startPrice;

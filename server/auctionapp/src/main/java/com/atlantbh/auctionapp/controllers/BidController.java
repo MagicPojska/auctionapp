@@ -1,6 +1,7 @@
 package com.atlantbh.auctionapp.controllers;
 
 import com.atlantbh.auctionapp.projections.BidProj;
+import com.atlantbh.auctionapp.request.BidRequest;
 import com.atlantbh.auctionapp.service.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,5 +18,12 @@ public class BidController {
     @GetMapping("/product")
     public ResponseEntity<List<BidProj>> getBidsForProduct(@RequestParam long id){
         return ResponseEntity.ok(bidService.getBidsForProduct(id));
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<String> addBid(@RequestBody BidRequest bidRequest){
+        bidService.add(bidRequest);
+
+        return ResponseEntity.ok("Bid added");
     }
 }
