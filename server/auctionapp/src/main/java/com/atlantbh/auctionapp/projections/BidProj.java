@@ -1,6 +1,5 @@
 package com.atlantbh.auctionapp.projections;
 
-import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.model.UserEntity;
 
 import java.math.BigDecimal;
