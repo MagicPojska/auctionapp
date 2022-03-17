@@ -43,4 +43,7 @@ public class ProductController {
 
         return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
     }
+
+    // Endpoint za najveci bid i broj bidova
+
 }

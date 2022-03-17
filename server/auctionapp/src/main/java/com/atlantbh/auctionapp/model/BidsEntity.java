@@ -1,6 +1,5 @@
 package com.atlantbh.auctionapp.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,8 +32,9 @@ public class BidsEntity {
     @JoinColumn(name = "userId", nullable = false)
     private UserEntity user;
 
-    @Column(nullable = false)
-    private long productId;
+    @ManyToOne
+    @JoinColumn(name = "productId", nullable = false)
+    private ProductEntity product;
 
     public BidsEntity(BigDecimal price, LocalDateTime bidDate, UserEntity user, ProductEntity product) {
         this.price = price;
