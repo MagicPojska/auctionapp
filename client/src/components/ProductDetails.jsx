@@ -1,9 +1,32 @@
-import React from "react";
+import { useState } from "react";
 import { BsChevronRight } from "react-icons/bs";
 import { useUserContext } from "../contexts/UserContextProvider";
+import { postBid } from "../utilities/bidApi";
 
-const ProductDetails = ({ product, timeLeft }) => {
+const ProductDetails = ({ product, timeLeft, getProductInfo }) => {
   const { user } = useUserContext();
+  const [bid, setBid] = useState("");
+
+  const placeBid = async (e) => {
+    e.preventDefault();
+    if (bid.price < product.startPrice || bid.price < product.highestBid) {
+      alert("Low bid");
+      return;
+    }
+
+    try {
+      const bidDetails = {
+        price: bid,
+        userId: user.id,
+        productId: product.id,
+      };
+      await postBid(bidDetails);
+      await getProductInfo();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="w-1/2">
       <h1 className="text-3xl font-normal mb-4">{product.productName}</h1>
@@ -33,6 +56,12 @@ const ProductDetails = ({ product, timeLeft }) => {
       <div className="flex">
         <input
           type="text"
+          value={bid.price}
+          onChange={(e) => {
+            if (e.target.value.match("^[0-9.]*$") != null) {
+              setBid(e.target.value);
+            }
+          }}
           className="border-2 py-3 px-8 mr-6 w-4/6 focus:outline-none"
           placeholder={`Enter $${
             product.highestBid !== null
@@ -41,10 +70,11 @@ const ProductDetails = ({ product, timeLeft }) => {
           } or higher`}
         />
         <button
+          onClick={placeBid}
           className={`mt-auto flex border-4 border-purple w-48 h-14 justify-center items-center leading-7 text-base font-bold ${
-            !user && "opacity-25"
+            (!user || user.id === product.userId) && "opacity-25"
           }`}
-          disabled={!user && true}
+          disabled={(!user || user.id === product.userId) && true}
         >
           PLACE BID &nbsp;&nbsp; <BsChevronRight className="stroke-2 text-xs" />
         </button>

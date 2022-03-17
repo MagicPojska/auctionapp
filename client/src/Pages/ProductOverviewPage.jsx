@@ -13,18 +13,20 @@ const ProductOverviewPage = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await getProductById(id);
-        setProduct(response.data);
-        setImages(response.data.images.split(","));
-        setImage(response.data.images.split(",")[0]);
-        calculateTimeLeft(response);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
+    getProductInfo();
   }, []);
+
+  const getProductInfo = async () => {
+    try {
+      const response = await getProductById(id);
+      setProduct(response.data);
+      setImages(response.data.images.split(","));
+      setImage(response.data.images.split(",")[0]);
+      calculateTimeLeft(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const calculateTimeLeft = (response) => {
     const startDate = new Date();
@@ -46,7 +48,11 @@ const ProductOverviewPage = () => {
       <div className="mx-40 mt-8 2xl:mx-72 flex">
         <ImageSelection images={images} image={image} setImage={setImage} />
 
-        <ProductDetails product={product} timeLeft={timeLeft} />
+        <ProductDetails
+          product={product}
+          timeLeft={timeLeft}
+          getProductInfo={getProductInfo}
+        />
       </div>
     </>
   );
