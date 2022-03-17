@@ -4,7 +4,6 @@ import CurrentPageNav from "../components/CurrentPageNav";
 import ImageSelection from "../components/ImageSelection";
 import ProductDetails from "../components/ProductDetails";
 import { getProductById } from "../utilities/productsApi";
-import NotFoundPage from "./NotFoundPage";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
@@ -41,7 +40,7 @@ const ProductOverviewPage = () => {
     setTimeLeft(diff);
   };
 
-  return product ? (
+  return (
     <>
       <CurrentPageNav title={product.productName} />
       <div className="mx-40 mt-8 2xl:mx-72 flex">
@@ -50,8 +49,6 @@ const ProductOverviewPage = () => {
         <ProductDetails product={product} timeLeft={timeLeft} />
       </div>
     </>
-  ) : (
-    <NotFoundPage />
   );
 };
 
