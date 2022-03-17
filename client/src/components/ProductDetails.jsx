@@ -13,10 +13,13 @@ const ProductDetails = ({ product, timeLeft }) => {
       <div className="text-base font-light py-6 px-9 border-2 space-y-4 mb-16 w-fit">
         <p>
           Highest bid:{" "}
-          <span className="font-bold text-purple">${product.startPrice}</span>
+          <span className="font-bold text-purple">
+            {product.highestBid !== null ? "$" + product.highestBid : "No bids"}
+          </span>
         </p>
         <p>
-          Number of bids: <span className="font-bold text-purple">0</span>
+          Number of bids:{" "}
+          <span className="font-bold text-purple">{product.numberOfBids}</span>
         </p>
         <p>
           Time left:{" "}
