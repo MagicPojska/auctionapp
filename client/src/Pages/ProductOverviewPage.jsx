@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CurrentPageNav from "../components/CurrentPageNav";
 import ImageSelection from "../components/ImageSelection";
+import Notification from "../components/Notification";
 import ProductDetails from "../components/ProductDetails";
 import { getProductById } from "../utilities/productsApi";
 
@@ -10,11 +11,18 @@ const ProductOverviewPage = () => {
   const [images, setImages] = useState([]);
   const [image, setImage] = useState("");
   const [timeLeft, setTimeLeft] = useState("");
+  const [notification, setNotification] = useState("");
   const { id } = useParams();
 
   useEffect(() => {
     getProductInfo();
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setNotification("");
+    }, 7000);
+  }, [notification]);
 
   const getProductInfo = async () => {
     try {
@@ -45,6 +53,8 @@ const ProductOverviewPage = () => {
   return (
     <>
       <CurrentPageNav title={product.productName} />
+      {notification && <Notification notification={notification} />}
+
       <div className="mx-40 mt-8 2xl:mx-72 flex">
         <ImageSelection images={images} image={image} setImage={setImage} />
 
@@ -52,6 +62,7 @@ const ProductOverviewPage = () => {
           product={product}
           timeLeft={timeLeft}
           getProductInfo={getProductInfo}
+          setNotification={setNotification}
         />
       </div>
     </>

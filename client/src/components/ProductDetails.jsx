@@ -3,14 +3,22 @@ import { BsChevronRight } from "react-icons/bs";
 import { useUserContext } from "../contexts/UserContextProvider";
 import { postBid } from "../utilities/bidApi";
 
-const ProductDetails = ({ product, timeLeft, getProductInfo }) => {
+const ProductDetails = ({
+  product,
+  timeLeft,
+  getProductInfo,
+  setNotification,
+}) => {
   const { user } = useUserContext();
   const [bid, setBid] = useState("");
 
+  const SUCCESS = "success";
+  const FAIL = "fail";
+
   const placeBid = async (e) => {
     e.preventDefault();
-    if (bid.price < product.startPrice || bid.price < product.highestBid) {
-      alert("Low bid");
+    if (bid < product.startPrice || bid < product.highestBid) {
+      setNotification(FAIL);
       return;
     }
 
@@ -22,6 +30,7 @@ const ProductDetails = ({ product, timeLeft, getProductInfo }) => {
       };
       await postBid(bidDetails);
       await getProductInfo();
+      setNotification(SUCCESS);
     } catch (error) {
       console.error(error);
     }
