@@ -33,14 +33,12 @@ public class BidsEntity {
     @JoinColumn(name = "userId", nullable = false)
     private UserEntity user;
 
-    @ManyToOne
-    @JoinColumn(name = "productId", nullable = false)
-    private ProductEntity product;
+    @Column(nullable = false)
+    private long productId;
 
     public BidsEntity(BigDecimal price, LocalDateTime bidDate, UserEntity user, ProductEntity product) {
         this.price = price;
         this.bidDate = bidDate;
         this.user = user;
-        this.product = product;
     }
 }
