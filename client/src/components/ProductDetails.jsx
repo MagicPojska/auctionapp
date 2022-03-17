@@ -17,7 +17,7 @@ const ProductDetails = ({
 
   const placeBid = async (e) => {
     e.preventDefault();
-    if (bid < product.startPrice || bid < product.highestBid) {
+    if (bid <= product.startPrice || bid <= product.highestBid) {
       setNotification(FAIL);
       return;
     }

@@ -5,7 +5,7 @@ const Notification = ({ notification }) => {
         notification === "fail"
           ? "bg-lightOrange text-orange"
           : "bg-lightGreen text-green"
-      }  py-5 px-72 mt-2 `}
+      }  py-5 px-40 2xl:px-72 mt-2 `}
     >
       {notification === "fail"
         ? "There are higher bids than yours. You could give a second try!"
