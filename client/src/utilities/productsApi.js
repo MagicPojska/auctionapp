@@ -1,8 +1,4 @@
-import axios from "axios";
-
-const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-});
+import { API } from "./authApi";
 
 export const getProductsSorted = (pageNumber, pageSize, sortBy) =>
   API.get(

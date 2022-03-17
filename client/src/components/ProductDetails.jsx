@@ -34,7 +34,11 @@ const ProductDetails = ({ product, timeLeft }) => {
         <input
           type="text"
           className="border-2 py-3 px-8 mr-6 w-4/6 focus:outline-none"
-          placeholder={`Enter $${product.startPrice} or higher`}
+          placeholder={`Enter $${
+            product.highestBid !== null
+              ? product.highestBid
+              : product.startPrice
+          } or higher`}
         />
         <button
           className={`mt-auto flex border-4 border-purple w-48 h-14 justify-center items-center leading-7 text-base font-bold ${
