@@ -70,7 +70,6 @@ const CategoriesAccordion = ({
                         value={subcategory.id}
                         onChange={filterItems}
                         checked={
-                          subcategory.supercategoryId === parseInt(id) ||
                           subCategories.includes(subcategory.id.toString())
                             ? true
                             : false
