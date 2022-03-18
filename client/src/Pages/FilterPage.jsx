@@ -25,7 +25,7 @@ const FilterPage = () => {
   }, []);
 
   useEffect(() => {
-    subCategories.length > 0 && getProducts(0, subCategories);
+    subCategories.length > 0 ? getProducts(0, subCategories) : setProducts([]);
   }, [subCategories]);
 
   const getCategories = async () => {
