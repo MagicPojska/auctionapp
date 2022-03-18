@@ -65,13 +65,13 @@ const ProductDetails = ({
       <div className="flex">
         <input
           type="text"
-          value={bid.price}
+          value={bid}
           onChange={(e) => {
             if (e.target.value.match("^[0-9.]*$") != null) {
               setBid(e.target.value);
             }
           }}
-          className="border-2 py-3 px-8 mr-6 w-4/6 focus:outline-none"
+          className="appearance-none border-2 py-3 px-8 mr-6 w-4/6 focus:outline-none"
           placeholder={`Enter $${
             product.highestBid !== null
               ? product.highestBid
