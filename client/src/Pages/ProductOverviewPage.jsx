@@ -5,6 +5,7 @@ import ImageSelection from "../components/ImageSelection";
 import Notification from "../components/Notification";
 import ProductDetails from "../components/ProductDetails";
 import { getProductById } from "../utilities/productsApi";
+import moment from "moment";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
@@ -17,12 +18,6 @@ const ProductOverviewPage = () => {
   useEffect(() => {
     getProductInfo();
   }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setNotification("");
-    }, 7000);
-  }, [notification]);
 
   const getProductInfo = async () => {
     try {
@@ -37,15 +32,16 @@ const ProductOverviewPage = () => {
   };
 
   const calculateTimeLeft = (response) => {
-    const startDate = new Date();
+    const startDate = moment();
     const endDate = new Date(response.data.endDate);
-    const diffDays = Math.ceil(
-      Math.abs(endDate - startDate) / (1000 * 60 * 60 * 24)
-    );
-    const diffWeeks = Math.floor(diffDays / 7);
+
+    const date = endDate - startDate;
+
     const diff = {
-      weeks: diffWeeks,
-      days: Math.floor(diffDays % 7),
+      weeks: moment.duration(date).weeks(),
+      days: moment.duration(date).days(),
+      hours: moment.duration(date).hours(),
+      minutes: moment.duration(date).minutes(),
     };
     setTimeLeft(diff);
   };

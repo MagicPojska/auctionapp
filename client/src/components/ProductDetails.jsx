@@ -56,8 +56,22 @@ const ProductDetails = ({
         <p>
           Time left:{" "}
           <span className="font-bold text-purple">
-            {timeLeft.weeks} {timeLeft.weeks === 1 ? "Week" : "Weeks"}{" "}
-            {timeLeft.days} {timeLeft.days === 1 ? "Day" : "Days"}
+            {timeLeft.weeks > 0
+              ? `${timeLeft.weeks} ${
+                  timeLeft.weeks === 1 ? "Week" : "Weeks"
+                } ${Math.floor(timeLeft.days % 7)} ${
+                  timeLeft.days === 1 ? "Day" : "Days"
+                }`
+              : timeLeft.days > 0
+              ? `${timeLeft.days} ${timeLeft.days === 1 ? "Day" : "Days"} ${
+                  timeLeft.days
+                } ${timeLeft.hours === 1 ? "Hour" : "Hours"}`
+              : `${timeLeft.hours} ${timeLeft.hours === 1 ? "Hour" : "Hours"} ${
+                  timeLeft.minutes
+                } ${timeLeft.minutes === 1 ? "Minute" : "Minutes"}`}
+
+            {/* {timeLeft.weeks} {timeLeft.weeks === 1 ? "Week" : "Weeks"}{" "}
+            {timeLeft.days} {timeLeft.days === 1 ? "Day" : "Days"} */}
           </span>
         </p>
       </div>
