@@ -49,7 +49,12 @@ const ProductOverviewPage = () => {
   return (
     <>
       <CurrentPageNav title={product.productName} />
-      {notification && <Notification notification={notification} />}
+      {notification && (
+        <Notification
+          notification={notification}
+          setNotification={setNotification}
+        />
+      )}
 
       <div className="mx-40 mt-8 2xl:mx-72 flex">
         <ImageSelection images={images} image={image} setImage={setImage} />
