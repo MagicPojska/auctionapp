@@ -68,9 +68,7 @@ const FilterPage = () => {
 
   const removeFilter = (subCategoryId) => {
     let idList = [...subCategories];
-
     idList = subCategories.filter((item) => item !== subCategoryId.toString());
-    console.log(idList);
     setSubCategories(idList);
   };
 

@@ -69,16 +69,17 @@ const CategoriesAccordion = ({
                         className="accent-purple"
                         value={subcategory.id}
                         onChange={filterItems}
-                        defaultChecked={
-                          subcategory.supercategoryId === parseInt(id)
+                        checked={
+                          subcategory.supercategoryId === parseInt(id) ||
+                          subCategories.includes(subcategory.id.toString())
                             ? true
                             : false
                         }
                       />
-                      <p className="text-textTetriary text-base font-light ml-3">
+                      <label className="text-textTetriary text-base font-light ml-3">
                         {subcategory.categoryName}&nbsp;(
                         {subcategory.numberOfProducts})
-                      </p>
+                      </label>
                     </div>
                   )
               )}
