@@ -32,7 +32,7 @@ public class ProductService {
     }
 
     public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize,long[] categoryId){
-        Pageable paging = PageRequest.of(pageNumber, pageSize);
+        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by("category_id"));
         Page<ProductEntity> productsList = productRepository.findAllByCategoryIdIn(categoryId, paging);
 
         return productsList;
