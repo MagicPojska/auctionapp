@@ -8,12 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/product")
@@ -30,18 +28,18 @@ public class ProductController {
         return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
     }
 
+    @GetMapping("/item/{id}")
+    public ResponseEntity getAllProducts(@PathVariable long id){
+        ProductEntity product = productService.getProductById(id);
+
+        return new ResponseEntity<>(product, new HttpHeaders(), HttpStatus.OK);
+    }
+
     @GetMapping("/items/category")
     public ResponseEntity<Page<ProductEntity>> getAllProductsFromCategory(@RequestParam(defaultValue = "0") Integer pageNumber,
                                                                           @RequestParam(defaultValue = "9") Integer pageSize,
                                                                           @RequestParam long[] categoryId){
         Page<ProductEntity> list = productService.getAllProductsFromCategory(pageNumber, pageSize, categoryId);
-
-        return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
-    }
-
-    @GetMapping("/categories")
-    public ResponseEntity<List<CategoryEntity>> getAllCategories(){
-        List<CategoryEntity> list = productService.getAllCategories();
 
         return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
     }

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContextProvider";
-import { loginPath } from "../utilities/paths";
+import { homePath, loginPath } from "../utilities/paths";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { capitalizeWord } from "../utilities/helperFunctions";
 
 const RegistrationPage = () => {
   const { register } = useUserContext();
@@ -22,10 +23,10 @@ const RegistrationPage = () => {
     const data = await register(user);
     if (data === null) {
       toast.error("User already exists!", {
-        position: toast.POSITION.OP_CENTER,
+        position: toast.POSITION.TOP_CENTER,
       });
     } else {
-      navigate(loginPath);
+      navigate(homePath);
     }
   };
 
@@ -51,7 +52,16 @@ const RegistrationPage = () => {
               placeholder="John"
               value={user.firstName}
               className="w-full mt-4 h-16 border-2 bg-gray-50 pl-6 font-light text-base focus:outline-none"
-              onChange={(e) => setUser({ ...user, firstName: e.target.value })}
+              onChange={(e) => {
+                if (e.target.value.match("^[a-zA-Z]*$") != null) {
+                  setUser({
+                    ...user,
+                    firstName:
+                      e.target.value.charAt(0).toUpperCase() +
+                      e.target.value.slice(1),
+                  });
+                }
+              }}
               required
             />
           </div>
@@ -62,7 +72,14 @@ const RegistrationPage = () => {
               placeholder="Doe"
               value={user.lastName}
               className="w-full mt-4 h-16 border-2 bg-gray-50 pl-6 font-light text-base focus:outline-none"
-              onChange={(e) => setUser({ ...user, lastName: e.target.value })}
+              onChange={(e) => {
+                if (e.target.value.match("^[a-zA-Z]*$") != null) {
+                  setUser({
+                    ...user,
+                    lastName: capitalizeWord(e),
+                  });
+                }
+              }}
               required
             />
           </div>

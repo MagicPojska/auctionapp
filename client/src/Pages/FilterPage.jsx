@@ -24,8 +24,8 @@ const FilterPage = () => {
   }, []);
 
   useEffect(() => {
-    categories.length > 0 && getProducts(0, subCategories);
-  }, [categories, subCategories]);
+    subCategories.length > 0 && getProducts(0, subCategories);
+  }, [subCategories]);
 
   const getCategories = async () => {
     try {
@@ -39,17 +39,11 @@ const FilterPage = () => {
   const getProducts = async (page, subcategoryId) => {
     try {
       setIsLoading(true);
-      let subcategoryIds;
-      if (subcategoryId.length === 0) {
-        subcategoryIds = getSubcategoryIdsFromSupercategory(categories);
-      } else {
-        subcategoryIds = subcategoryId;
-      }
 
       const response = await getProductsByCategory(
         page,
         PAGE_SIZE,
-        subcategoryIds
+        subcategoryId
       );
 
       if (page === 0) {
@@ -71,17 +65,6 @@ const FilterPage = () => {
     await getProducts(pageNumber + 1, subCategories);
   };
 
-  const getSubcategoryIdsFromSupercategory = (categoryList) => {
-    //This returns function returns all subcategoryIds that are part of supercategoryId that was provided in url
-    return categoryList
-      .map((item) => {
-        if (item.supercategoryId === parseInt(id)) {
-          return item.id;
-        }
-      })
-      .filter((item) => item !== undefined);
-  };
-
   return (
     <div className="mx-40 2xl:mx-72 flex justify-between">
       <div className="w-64 min-w-max h-max border-2 p-6">
@@ -95,6 +78,7 @@ const FilterPage = () => {
             subCategories={subCategories}
             setSubCategories={setSubCategories}
             item={item}
+            id={id}
           />
         ))}
       </div>

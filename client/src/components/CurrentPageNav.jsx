@@ -1,11 +1,15 @@
 import useBreadcrumbs from "use-react-router-breadcrumbs";
 
-const CurrentPageNav = () => {
+const CurrentPageNav = ({ title }) => {
   const breadcrumbs = useBreadcrumbs();
   let lastElement =
-    breadcrumbs[breadcrumbs.length - 1].breadcrumb.props.children.split(" ");
+    breadcrumbs[
+      breadcrumbs.length - (title ? 2 : 1)
+    ].breadcrumb.props.children.split(" ");
   let secondToLastElement =
-    breadcrumbs[breadcrumbs.length - 2].breadcrumb.props.children.split(" ");
+    breadcrumbs[
+      breadcrumbs.length - (title ? 3 : 2)
+    ].breadcrumb.props.children.split(" ");
 
   const capitalize = (words) => {
     if (words.length === 1) {
@@ -27,7 +31,7 @@ const CurrentPageNav = () => {
 
   return (
     <div className="h-[60px] bg-bgWhite flex justify-between items-center px-40 2xl:px-72 font-normal text-base">
-      <span>{lastElement}</span>
+      <span>{title ? title : lastElement}</span>
       <div className="font-normal text-base flex text-textTetriary">
         <span>{secondToLastElement} &nbsp;</span>
         <p>&#10132; &nbsp;</p>

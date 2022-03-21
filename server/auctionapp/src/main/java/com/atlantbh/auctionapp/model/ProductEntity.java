@@ -26,7 +26,7 @@ public class ProductEntity {
     private String productName;
 
     @Size(max = 255)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition="TEXT")
     private String description;
 
     @Positive
@@ -39,7 +39,7 @@ public class ProductEntity {
     @Column(nullable = false)
     private LocalDateTime endDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition="TEXT")
     private String images;
 
     @Column(nullable = false)

@@ -1,14 +1,24 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CategoriesAccordion = ({
   categories,
   item,
   subCategories,
   setSubCategories,
+  id,
 }) => {
-  const [isOpened, setOpened] = useState(false);
-
+  const [isOpened, setOpened] = useState(
+    parseInt(id) === item.id ? true : false
+  );
   const contentElement = useRef(null);
+
+  useEffect(() => {
+    const idList = categories
+      .filter((cat) => cat && cat.supercategoryId === parseInt(id))
+      .map((cat) => cat.id.toString());
+
+    setSubCategories(idList);
+  }, []);
 
   const handleOpening = () => {
     setOpened(!isOpened);
@@ -55,6 +65,9 @@ const CategoriesAccordion = ({
                         className="accent-purple"
                         value={subcategory.id}
                         onChange={filterItems}
+                        defaultChecked={
+                          subcategory.supercategoryId === parseInt(id)
+                        }
                       />
                       <p className="text-textTetriary text-base font-light ml-3">
                         {subcategory.categoryName}&nbsp;(

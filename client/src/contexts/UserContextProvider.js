@@ -20,6 +20,7 @@ export const UserContextProvider = ({ children }) => {
   const register = async (user) => {
     try {
       const response = await signUp(user);
+      setUserSession(response.data.user, response.data.token);
       return response;
     } catch (error) {
       console.error(error);

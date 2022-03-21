@@ -6,7 +6,11 @@ import TermsPage from "./Pages/TermsPage";
 import PrivacyPolicyPage from "./Pages/PrivacyPolicyPage";
 import LoginPage from "./Pages/LoginPage";
 import RegistrationPage from "./Pages/RegistrationPage";
+import ProductOverviewPage from "./Pages/ProductOverviewPage";
 import PageLayout from "./components/PageLayout";
+import LandingPage from "./Pages/LandingPage";
+import FilterPage from "./Pages/FilterPage";
+import NotFoundPage from "./Pages/NotFoundPage";
 
 import {
   aboutUsPath,
@@ -15,20 +19,25 @@ import {
   loginPath,
   privacyPolicyPath,
   registrationPath,
+  shopProductPath,
   termsPath,
 } from "./utilities/paths";
-import LandingPage from "./Pages/LandingPage";
-import FilterPage from "./Pages/FilterPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   return (
     <div className="font-lato font-bold">
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path={homePath} element={<LandingPage />} />
         <Route path={`${categoriesPath}/:id`} element={<FilterPage />} />
         <Route path={loginPath} element={<LoginPage />} />
         <Route path={registrationPath} element={<RegistrationPage />} />
+        <Route
+          path={`${shopProductPath}/:id`}
+          element={<ProductOverviewPage />}
+        />
         <Route
           path={aboutUsPath}
           element={
@@ -53,6 +62,7 @@ const App = () => {
             </PageLayout>
           }
         />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
     </div>

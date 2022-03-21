@@ -1,7 +1,6 @@
 package com.atlantbh.auctionapp.controllers;
 
 import com.atlantbh.auctionapp.domain.model.User;
-import com.atlantbh.auctionapp.exceptions.UserAlreadyExistsException;
 import com.atlantbh.auctionapp.request.LoginRequest;
 import com.atlantbh.auctionapp.request.RegisterRequest;
 import com.atlantbh.auctionapp.response.LoginResponse;
@@ -27,13 +26,10 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public Object register(@RequestBody @Valid RegisterRequest registerRequest) {
-        try {
-            String user = userService.register(registerRequest);
-            return ResponseEntity.ok(user);
-        }catch (UserAlreadyExistsException e){
-            return ResponseEntity.status(400);
-        }
+    public ResponseEntity<LoginResponse> register(@RequestBody @Valid RegisterRequest registerRequest) {
+        User user = userService.register(registerRequest);
+        return ResponseEntity.ok(new LoginResponse(user, jwtUtil.generateToken(user)));
+
     }
 
     @PostMapping("/login")
