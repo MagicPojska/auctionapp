@@ -6,7 +6,7 @@ import {
   getCategoriesList,
   getProductsByCategory,
 } from "../utilities/productsApi";
-import { TiDelete } from "react-icons/ti";
+import SelectedFilters from "../components/SelectedFilters";
 
 const FilterPage = () => {
   const [categories, setCategories] = useState([]);
@@ -66,12 +66,6 @@ const FilterPage = () => {
     await getProducts(pageNumber + 1, subCategories);
   };
 
-  const removeFilter = (subCategoryId) => {
-    let idList = [...subCategories];
-    idList = subCategories.filter((item) => item !== subCategoryId.toString());
-    setSubCategories(idList);
-  };
-
   return (
     <div className="mx-40 2xl:mx-72 flex justify-between">
       <div className="w-64 min-w-max h-max border-2 p-6">
@@ -90,24 +84,11 @@ const FilterPage = () => {
         ))}
       </div>
       <div className="flex flex-col w-full">
-        <div className="flex flex-wrap ml-6 mb-4 text-white font-normal text-base">
-          {categories.map(
-            (category) =>
-              subCategories.includes(category.id.toString()) && (
-                <div key={category.id}>
-                  <div className="flex items-center bg-purple rounded-full py-2 px-4 mr-3 space-x-3 mb-2">
-                    <p>{category.categoryName}</p>
-                    <button
-                      className="text-xl"
-                      onClick={() => removeFilter(category.id)}
-                    >
-                      <TiDelete />
-                    </button>
-                  </div>
-                </div>
-              )
-          )}
-        </div>
+        <SelectedFilters
+          categories={categories}
+          subCategories={subCategories}
+          setSubCategories={setSubCategories}
+        />
 
         <FilterProductsGrid
           products={products}
