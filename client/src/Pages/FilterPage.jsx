@@ -38,14 +38,21 @@ const FilterPage = () => {
     }
   };
 
-  const getProducts = async (page, subcategoryId) => {
+  const getProducts = async (
+    page,
+    subcategoryId,
+    lowPrice = "",
+    highPrice = ""
+  ) => {
     try {
       setIsLoading(true);
 
       const response = await getProductsByCategory(
         page,
         PAGE_SIZE,
-        subcategoryId
+        subcategoryId,
+        lowPrice,
+        highPrice
       );
 
       if (page === 0) {
@@ -86,7 +93,10 @@ const FilterPage = () => {
           ))}
         </div>
 
-        <PriceRangeSlider />
+        <PriceRangeSlider
+          getProducts={getProducts}
+          subCategories={subCategories}
+        />
       </div>
 
       <div className="flex flex-col w-full">

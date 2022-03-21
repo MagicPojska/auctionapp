@@ -1,36 +1,45 @@
 import { useState, useEffect, useRef } from "react";
+import { getProductPriceRange } from "../utilities/productsApi";
 
-const PriceRangeSlider = () => {
+const PriceRangeSlider = ({ getProducts, subCategories }) => {
   const progressRef = useRef(null);
   const [minValue, setMinValue] = useState("");
   const [maxValue, setMaxValue] = useState("");
-  const min = 10;
-  const max = 450;
+  const [min, setMin] = useState("");
+  const [max, setMax] = useState("");
   const step = 1;
   const priceCap = 50;
 
   useEffect(() => {
+    (async () => {
+      const response = await getProductPriceRange();
+      setMinValue(response.data.min);
+      setMaxValue(response.data.max);
+      setMin(parseInt(response.data.min) - 1);
+      setMax(parseInt(response.data.max) + 3);
+    })();
+  }, []);
+
+  useEffect(() => {
     progressRef.current.style.left = (minValue / max) * 100 + "%";
     progressRef.current.style.right = 100 - (maxValue / max) * 100 + "%";
-  }, [minValue, maxValue, max, step]);
+  }, [minValue, maxValue, max]);
 
   const handleMin = (e) => {
     if (maxValue - minValue >= priceCap && maxValue <= max) {
-      if (parseInt(e.target.value) > parseInt(maxValue)) {
-      } else {
-        setMinValue(parseInt(e.target.value));
+      if (parseInt(e.target.value) < parseInt(maxValue)) {
+        setMinValue(e.target.value);
       }
     } else {
-      if (parseInt(e.target.value) < minValue) {
-        setMinValue(parseInt(e.target.value));
+      if (parseInt(e.target.value) < parseInt(minValue)) {
+        setMinValue(e.target.value);
       }
     }
   };
 
   const handleMax = (e) => {
     if (maxValue - minValue >= priceCap && maxValue <= max) {
-      if (parseInt(e.target.value) < parseInt(minValue)) {
-      } else {
+      if (parseInt(e.target.value) > parseInt(minValue)) {
         setMaxValue(parseInt(e.target.value));
       }
     } else {
@@ -38,6 +47,32 @@ const PriceRangeSlider = () => {
         setMaxValue(parseInt(e.target.value));
       }
     }
+  };
+
+  const onMinValueChange = async (e) => {
+    if (e.target.value.match("^[0-9.]*$") != null) {
+      if (parseInt(e.target.value) > parseInt(maxValue)) {
+        setMinValue(maxValue - 10);
+      } else {
+        setMinValue(e.target.value);
+      }
+    }
+    await getProducts(0, subCategories, e.target.value, maxValue);
+  };
+
+  const onMaxValueChange = async (e) => {
+    if (e.target.value.match("^[0-9.]*$") != null) {
+      if (parseInt(e.target.value) > max) {
+        setMaxValue(max);
+      } else {
+        setMaxValue(e.target.value);
+      }
+    }
+    await getProducts(0, subCategories, minValue, e.target.value);
+  };
+
+  const filterByPrice = async () => {
+    await getProducts(0, subCategories, minValue, maxValue);
   };
 
   return (
@@ -48,13 +83,7 @@ const PriceRangeSlider = () => {
         <div className="flex h-12 border-2">
           <input
             type="text"
-            onChange={(e) => {
-              if (e.target.value > maxValue) {
-                setMinValue(maxValue - 10);
-              } else {
-                setMinValue(e.target.value);
-              }
-            }}
+            onChange={onMinValueChange}
             value={minValue}
             className="focus:outline-none w-20 text-center"
             placeholder="$10"
@@ -64,8 +93,11 @@ const PriceRangeSlider = () => {
         <div className="flex h-12 border-2">
           <input
             type="text"
-            onChange={(e) => {
-              setMaxValue(e.target.value);
+            onChange={onMaxValueChange}
+            onBlur={(e) => {
+              if (parseInt(e.target.value) < minValue) {
+                setMaxValue(parseInt(minValue) + 10);
+              }
             }}
             value={maxValue}
             className="focus:outline-none w-20 text-center"
@@ -87,6 +119,7 @@ const PriceRangeSlider = () => {
             type="range"
             className="range-min absolute w-full -top-1 h-1   bg-transparent appearance-none pointer-events-none"
             onChange={handleMin}
+            onMouseUp={filterByPrice}
             min={min}
             step={step}
             max={max}
@@ -97,6 +130,7 @@ const PriceRangeSlider = () => {
             type="range"
             className="range-max absolute w-full -top-1 h-1 bg-transparent appearance-none pointer-events-none"
             onChange={handleMax}
+            onMouseUp={filterByPrice}
             min={min}
             step={step}
             max={max}
