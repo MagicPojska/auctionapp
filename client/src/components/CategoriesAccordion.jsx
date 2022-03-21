@@ -14,12 +14,8 @@ const CategoriesAccordion = ({
 
   useEffect(() => {
     const idList = categories
-      .map((i) => {
-        if (i.supercategoryId === parseInt(id)) {
-          return i.id.toString();
-        }
-      })
-      .filter((i) => i !== undefined);
+      .filter((cat) => cat && cat.supercategoryId === parseInt(id))
+      .map((cat) => cat.id.toString());
 
     setSubCategories(idList);
   }, []);
