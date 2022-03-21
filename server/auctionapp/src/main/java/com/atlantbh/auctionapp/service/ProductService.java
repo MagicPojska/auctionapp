@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Service
@@ -34,8 +36,9 @@ public class ProductService {
     }
 
     public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, long[] categoryId, BigDecimal lowPrice, BigDecimal highPrice){
+        LocalDateTime time = LocalDateTime.now();
         Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by("category_id"));
-        Page<ProductEntity> productsList = productRepository.findAllByCategoryIdInAndStartPriceBetween(categoryId, lowPrice, highPrice, paging);
+        Page<ProductEntity> productsList = productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfter(categoryId, lowPrice, highPrice, time, paging );
 
         return productsList;
     }

@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
-    Page<ProductEntity> findAllByCategoryIdInAndStartPriceBetween(long[] categoryId, BigDecimal lowPrice, BigDecimal highPrice, Pageable paging);
-
+    Page<ProductEntity> findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfter(long[] categoryId, BigDecimal lowPrice, BigDecimal highPrice, LocalDateTime time, Pageable paging);
     ProductEntity findProductById(long id);
 }
