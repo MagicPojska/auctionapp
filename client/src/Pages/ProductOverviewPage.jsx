@@ -39,7 +39,7 @@ const ProductOverviewPage = () => {
     setTimeLeft(diff);
   };
 
-  return product ? (
+  return (
     <>
       <CurrentPageNav title={product.productName} />
       <div className="mx-40 mt-8 2xl:mx-72 flex">
@@ -48,8 +48,6 @@ const ProductOverviewPage = () => {
         <ProductDetails product={product} timeLeft={timeLeft} />
       </div>
     </>
-  ) : (
-    <NotFoundPage />
   );
 };
 
