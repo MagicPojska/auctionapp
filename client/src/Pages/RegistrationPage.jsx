@@ -5,6 +5,7 @@ import { homePath, loginPath } from "../utilities/paths";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { capitalizeWord } from "../utilities/helperFunctions";
 
 const RegistrationPage = () => {
   const { register } = useUserContext();
@@ -75,9 +76,7 @@ const RegistrationPage = () => {
                 if (e.target.value.match("^[a-zA-Z]*$") != null) {
                   setUser({
                     ...user,
-                    lastName:
-                      e.target.value.charAt(0).toUpperCase() +
-                      e.target.value.slice(1),
+                    lastName: capitalizeWord(e),
                   });
                 }
               }}
