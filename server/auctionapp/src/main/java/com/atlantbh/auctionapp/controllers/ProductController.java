@@ -1,6 +1,7 @@
 package com.atlantbh.auctionapp.controllers;
 
 import com.atlantbh.auctionapp.model.ProductEntity;
+import com.atlantbh.auctionapp.projections.PriceRangeProj;
 import com.atlantbh.auctionapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/product")
@@ -42,5 +44,11 @@ public class ProductController {
         Page<ProductEntity> list = productService.getAllProductsFromCategory(pageNumber, pageSize, categoryId, lowPrice, highPrice);
 
         return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @GetMapping("/items/price-range")
+    public ResponseEntity<PriceRangeProj> getProductPriceRange(){
+        PriceRangeProj priceRange = productService.getPriceRange();
+        return new ResponseEntity<>(priceRange, new HttpHeaders(), HttpStatus.OK);
     }
 }
