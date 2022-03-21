@@ -9,7 +9,6 @@ import NotFoundPage from "./NotFoundPage";
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
   const [images, setImages] = useState([]);
-  const [image, setImage] = useState("");
   const [timeLeft, setTimeLeft] = useState("");
   const { id } = useParams();
 
@@ -19,7 +18,6 @@ const ProductOverviewPage = () => {
         const response = await getProductById(id);
         setProduct(response.data);
         setImages(response.data.images.split(","));
-        setImage(response.data.images.split(",")[0]);
         calculateTimeLeft(response);
       } catch (error) {
         console.error(error);
@@ -45,7 +43,7 @@ const ProductOverviewPage = () => {
     <>
       <CurrentPageNav title={product.productName} />
       <div className="mx-40 mt-8 2xl:mx-72 flex">
-        <ImageSelection images={images} image={image} setImage={setImage} />
+        <ImageSelection images={images} />
 
         <ProductDetails product={product} timeLeft={timeLeft} />
       </div>
