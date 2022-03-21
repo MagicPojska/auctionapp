@@ -7,6 +7,7 @@ import {
   getProductsByCategory,
 } from "../utilities/productsApi";
 import SelectedFilters from "../components/SelectedFilters";
+import PriceRangeSlider from "../components/PriceRangeSlider";
 
 const FilterPage = () => {
   const [categories, setCategories] = useState([]);
@@ -68,21 +69,26 @@ const FilterPage = () => {
 
   return (
     <div className="mx-40 2xl:mx-72 flex justify-between">
-      <div className="w-64 min-w-max h-max border-2 p-6">
-        <h3 className="text-base font-bold text-purple mb-8">
-          PRODUCT CATEGORIES
-        </h3>
-        {categories.map((item) => (
-          <CategoriesAccordion
-            key={item.id}
-            categories={categories}
-            subCategories={subCategories}
-            setSubCategories={setSubCategories}
-            item={item}
-            id={id}
-          />
-        ))}
+      <div>
+        <div className="w-64 min-w-max h-max border-2 p-6">
+          <h3 className="text-base font-bold text-purple mb-8">
+            PRODUCT CATEGORIES
+          </h3>
+          {categories.map((item) => (
+            <CategoriesAccordion
+              key={item.id}
+              categories={categories}
+              subCategories={subCategories}
+              setSubCategories={setSubCategories}
+              item={item}
+              id={id}
+            />
+          ))}
+        </div>
+
+        <PriceRangeSlider />
       </div>
+
       <div className="flex flex-col w-full">
         <SelectedFilters
           categories={categories}
