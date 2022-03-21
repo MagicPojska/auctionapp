@@ -14,12 +14,8 @@ const CategoriesAccordion = ({
 
   useEffect(() => {
     const idList = categories
-      .map((i) => {
-        if (i.supercategoryId === parseInt(id)) {
-          return i.id.toString();
-        }
-      })
-      .filter((i) => i !== undefined);
+      .filter((cat) => cat && cat.supercategoryId === parseInt(id))
+      .map((cat) => cat.id.toString());
 
     setSubCategories(idList);
   }, []);
@@ -51,7 +47,6 @@ const CategoriesAccordion = ({
           </div>
           <div
             ref={contentElement}
-            // style={{ height: height }}
             className={`overflow-hidden transition-all duration-200 ${
               !isOpened && "hidden"
             }`}
@@ -69,11 +64,9 @@ const CategoriesAccordion = ({
                         className="accent-purple"
                         value={subcategory.id}
                         onChange={filterItems}
-                        checked={
-                          subCategories.includes(subcategory.id.toString())
-                            ? true
-                            : false
-                        }
+                        checked={subCategories.includes(
+                          subcategory.id.toString()
+                        )}
                       />
                       <label className="text-textTetriary text-base font-light ml-3">
                         {subcategory.categoryName}&nbsp;(

@@ -1,4 +1,12 @@
-const ImageSelection = ({ image, images, setImage }) => {
+import { useEffect, useState } from "react";
+
+const ImageSelection = ({ images }) => {
+  const [image, setImage] = useState("");
+
+  useEffect(() => {
+    setImage(images[0]);
+  }, [images]);
+
   return (
     <div className="w-1/2">
       <div className="mr-28 flex flex-col">
