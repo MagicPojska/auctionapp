@@ -43,7 +43,7 @@ const PriceRangeSlider = ({ getProducts, subCategories }) => {
         setMaxValue(parseFloat(e.target.value));
       }
     } else {
-      if (parseFloat(e.target.value) > maxValue) {
+      if (parseFloat(e.target.value) > parseFloat(maxValue)) {
         setMaxValue(parseFloat(e.target.value));
       }
     }
