@@ -15,8 +15,8 @@ const PriceRangeSlider = ({ getProducts, subCategories }) => {
       const response = await getProductPriceRange();
       setMinValue(response.data.min);
       setMaxValue(response.data.max);
-      setMin(parseInt(response.data.min) - 1);
-      setMax(parseInt(response.data.max) + 3);
+      setMin(parseFloat(response.data.min));
+      setMax(parseFloat(response.data.max));
     })();
   }, []);
 
@@ -27,11 +27,11 @@ const PriceRangeSlider = ({ getProducts, subCategories }) => {
 
   const handleMin = (e) => {
     if (maxValue - minValue >= priceCap && maxValue <= max) {
-      if (parseInt(e.target.value) < parseInt(maxValue)) {
+      if (parseFloat(e.target.value) < parseFloat(maxValue)) {
         setMinValue(e.target.value);
       }
     } else {
-      if (parseInt(e.target.value) < parseInt(minValue)) {
+      if (parseFloat(e.target.value) < parseFloat(minValue)) {
         setMinValue(e.target.value);
       }
     }
@@ -39,19 +39,19 @@ const PriceRangeSlider = ({ getProducts, subCategories }) => {
 
   const handleMax = (e) => {
     if (maxValue - minValue >= priceCap && maxValue <= max) {
-      if (parseInt(e.target.value) > parseInt(minValue)) {
-        setMaxValue(parseInt(e.target.value));
+      if (parseFloat(e.target.value) > parseFloat(minValue)) {
+        setMaxValue(parseFloat(e.target.value));
       }
     } else {
-      if (parseInt(e.target.value) > maxValue) {
-        setMaxValue(parseInt(e.target.value));
+      if (parseFloat(e.target.value) > maxValue) {
+        setMaxValue(parseFloat(e.target.value));
       }
     }
   };
 
   const onMinValueChange = async (e) => {
     if (e.target.value.match("^[0-9.]*$") != null) {
-      if (parseInt(e.target.value) > parseInt(maxValue)) {
+      if (parseFloat(e.target.value) > parseFloat(maxValue)) {
         setMinValue(maxValue - 10);
       } else {
         setMinValue(e.target.value);
@@ -62,7 +62,7 @@ const PriceRangeSlider = ({ getProducts, subCategories }) => {
 
   const onMaxValueChange = async (e) => {
     if (e.target.value.match("^[0-9.]*$") != null) {
-      if (parseInt(e.target.value) > max) {
+      if (parseFloat(e.target.value) > max) {
         setMaxValue(max);
       } else {
         setMaxValue(e.target.value);
@@ -95,8 +95,8 @@ const PriceRangeSlider = ({ getProducts, subCategories }) => {
             type="text"
             onChange={onMaxValueChange}
             onBlur={(e) => {
-              if (parseInt(e.target.value) < minValue) {
-                setMaxValue(parseInt(minValue) + 10);
+              if (parseFloat(e.target.value) < minValue) {
+                setMaxValue(parseFloat(minValue) + 10);
               }
             }}
             value={maxValue}
