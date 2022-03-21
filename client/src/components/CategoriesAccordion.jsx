@@ -71,8 +71,6 @@ const CategoriesAccordion = ({
                         onChange={filterItems}
                         defaultChecked={
                           subcategory.supercategoryId === parseInt(id)
-                            ? true
-                            : false
                         }
                       />
                       <p className="text-textTetriary text-base font-light ml-3">
