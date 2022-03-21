@@ -66,7 +66,7 @@ const ProductDetails = ({
                 }`
               : timeLeft.days > 0
               ? `${timeLeft.days} ${timeLeft.days === 1 ? "Day" : "Days"} ${
-                  timeLeft.days
+                  timeLeft.hours
                 } ${timeLeft.hours === 1 ? "Hour" : "Hours"}`
               : `${timeLeft.hours} ${timeLeft.hours === 1 ? "Hour" : "Hours"} ${
                   timeLeft.minutes
