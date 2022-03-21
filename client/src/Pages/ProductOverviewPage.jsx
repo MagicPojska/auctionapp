@@ -4,8 +4,8 @@ import CurrentPageNav from "../components/CurrentPageNav";
 import ImageSelection from "../components/ImageSelection";
 import Notification from "../components/Notification";
 import ProductDetails from "../components/ProductDetails";
+import { calculateTimeLeft } from "../utilities/helperFunctions";
 import { getProductById } from "../utilities/productsApi";
-import moment from "moment";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
@@ -23,25 +23,10 @@ const ProductOverviewPage = () => {
       const response = await getProductById(id);
       setProduct(response.data);
       setImages(response.data.images.split(","));
-      calculateTimeLeft(response);
+      setTimeLeft(calculateTimeLeft(response));
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const calculateTimeLeft = (response) => {
-    const startDate = moment();
-    const endDate = new Date(response.data.endDate);
-
-    const date = endDate - startDate;
-
-    const diff = {
-      weeks: moment.duration(date).weeks(),
-      days: moment.duration(date).days(),
-      hours: moment.duration(date).hours(),
-      minutes: moment.duration(date).minutes(),
-    };
-    setTimeLeft(diff);
   };
 
   return (
