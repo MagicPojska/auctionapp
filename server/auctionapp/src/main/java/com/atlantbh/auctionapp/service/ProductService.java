@@ -23,6 +23,7 @@ public class ProductService {
 
     public Page<ProductEntity> getAllProducts(Integer pageNumber, Integer pageSize, String sortBy){
         Sort sortOrder;
+        LocalDateTime time = LocalDateTime.now();
         if (sortBy.equals(SortBy.START_DATE.getSort())){
             sortOrder = Sort.by(sortBy).descending();
         } else {
@@ -30,7 +31,7 @@ public class ProductService {
         }
         Pageable paging = PageRequest.of(pageNumber, pageSize, sortOrder);
 
-        Page<ProductEntity> pagedResult = productRepository.findAll(paging);
+        Page<ProductEntity> pagedResult = productRepository.findAllByEndDateIsAfter(time, paging);
 
         return pagedResult;
     }

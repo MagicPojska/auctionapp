@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
+    Page<ProductEntity> findAllByEndDateIsAfter(LocalDateTime time ,Pageable paging);
     Page<ProductEntity> findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfter(long[] categoryId, BigDecimal lowPrice, BigDecimal highPrice, LocalDateTime time, Pageable paging);
     ProductEntity findProductById(long id);
 }
