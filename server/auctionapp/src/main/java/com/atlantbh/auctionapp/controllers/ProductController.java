@@ -10,9 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -39,8 +36,8 @@ public class ProductController {
     public ResponseEntity<Page<ProductEntity>> getAllProductsFromCategory(@RequestParam(defaultValue = "0") Integer pageNumber,
                                                                           @RequestParam(defaultValue = "9") Integer pageSize,
                                                                           @RequestParam long[] categoryId,
-                                                                          @RequestParam(defaultValue = "0") BigDecimal lowPrice,
-                                                                          @RequestParam(defaultValue = "99999") BigDecimal highPrice){
+                                                                          @RequestParam(defaultValue = "0") double lowPrice,
+                                                                          @RequestParam(defaultValue = "99999") double highPrice){
         Page<ProductEntity> list = productService.getAllProductsFromCategory(pageNumber, pageSize, categoryId, lowPrice, highPrice);
 
         return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);

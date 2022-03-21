@@ -13,7 +13,7 @@ import com.atlantbh.auctionapp.request.BidRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class BidService {
 
     public void add(BidRequest bidRequest){
         ProductEntity product = productRepository.findProductById(bidRequest.getProductId());
-        if (product.getStartPrice().compareTo(bidRequest.getPrice()) > 0)
+        if (product.getStartPrice() < bidRequest.getPrice())
             throw new BadRequestException("Price can't be lower than the product start price");
         if (product.getEndDate().isBefore(LocalDateTime.now()))
             throw new BadRequestException("Auction ended for this product");
@@ -48,8 +48,8 @@ public class BidService {
         if (product.getUserId() == user.getId())
             throw new BadRequestException("You can't bid on your own product");
 
-        BigDecimal maxBid = bidRepository.getMaxBidFromPersonForProduct(user.getId(), product.getId());
-        if (maxBid != null && maxBid.compareTo(bidRequest.getPrice()) >= 0)
+        double maxBid = bidRepository.getMaxBidFromPersonForProduct(user.getId(), product.getId());
+        if (maxBid >= bidRequest.getPrice())
             throw new BadRequestException("Price can't be lower than previous bid of $" + maxBid);
 
         bidRepository.save(new BidsEntity(bidRequest.getPrice(), user, product));

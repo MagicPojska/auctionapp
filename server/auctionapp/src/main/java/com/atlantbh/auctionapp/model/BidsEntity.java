@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
-import java.math.BigDecimal;
+
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -21,8 +21,8 @@ public class BidsEntity {
     private Long id;
 
     @Positive(message = "value must be positive")
-    @Column(nullable = false)
-    private BigDecimal price;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private double price;
 
     @CreationTimestamp
     @Column(nullable = false)
@@ -36,7 +36,7 @@ public class BidsEntity {
     @JoinColumn(name = "productId", nullable = false)
     private ProductEntity product;
 
-    public BidsEntity(BigDecimal price, UserEntity user, ProductEntity product) {
+    public BidsEntity(double price, UserEntity user, ProductEntity product) {
         this.price = price;
         this.user = user;
         this.product = product;

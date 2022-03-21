@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
@@ -36,7 +35,7 @@ public class ProductService {
         return pagedResult;
     }
 
-    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, long[] categoryId, BigDecimal lowPrice, BigDecimal highPrice){
+    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, long[] categoryId, double lowPrice, double highPrice){
         LocalDateTime time = LocalDateTime.now();
         Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by("category_id"));
         Page<ProductEntity> productsList = productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfter(categoryId, lowPrice, highPrice, time, paging );
