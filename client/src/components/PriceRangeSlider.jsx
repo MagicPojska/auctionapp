@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import debounce from "lodash.debounce";
 
 const PriceRangeSlider = ({
   getProducts,
@@ -31,13 +32,9 @@ const PriceRangeSlider = ({
 
   const handleMinSlider = (e) => {
     if (maxValue && maxValue - minValue >= priceCap) {
-      if (parseFloat(e.target.value) < parseFloat(maxValue)) {
-        setMinValue(e.target.value);
-      }
+      setMinValue(e.target.value);
     } else {
-      if (!maxValue) {
-        setMinValue(e.target.value);
-      } else if (parseFloat(e.target.value) < parseFloat(minValue)) {
+      if (!maxValue || e.target.value < minValue) {
         setMinValue(e.target.value);
       }
     }
@@ -45,14 +42,10 @@ const PriceRangeSlider = ({
 
   const handleMaxSlider = (e) => {
     if (minValue && maxValue - minValue >= priceCap) {
-      if (parseFloat(e.target.value) > parseFloat(minValue)) {
-        setMaxValue(parseFloat(e.target.value));
-      }
+      setMaxValue(parseFloat(e.target.value));
     } else {
-      if (!minValue) {
+      if (!minValue || e.target.value > maxValue) {
         setMaxValue(e.target.value);
-      } else if (parseFloat(e.target.value) > parseFloat(maxValue)) {
-        setMaxValue(parseFloat(e.target.value));
       }
     }
   };
@@ -64,23 +57,33 @@ const PriceRangeSlider = ({
       } else {
         setMinValue(e.target.value);
       }
+
+      getProducts(0, subCategories, e.target.value, maxValue);
     }
-    getProducts(0, subCategories, e.target.value, maxValue);
   };
 
   const onMaxValueChange = (e) => {
     if (e.target.value.match("^[0-9.]*$") != null) {
       if (parseFloat(e.target.value) > parseFloat(max)) {
         setMaxValue(max);
+        e.target.value = max;
       } else {
         setMaxValue(e.target.value);
       }
-      if (parseFloat(e.target.value) < minValue) {
-        e.target.value = parseFloat(minValue) + 50;
+
+      const debouncedMaxValue = debounce(() => {
+        if (parseFloat(e.target.value) < minValue) {
+          e.target.value = parseFloat(minValue) + 50;
+          setMaxValue(e.target.value);
+          getProducts(0, subCategories, minValue, e.target.value);
+        }
+      }, 1000);
+      debouncedMaxValue();
+
+      if (parseFloat(e.target.value) > minValue) {
+        getProducts(0, subCategories, minValue, e.target.value);
       }
     }
-
-    getProducts(0, subCategories, minValue, e.target.value);
   };
 
   const filterByPrice = () => {
@@ -106,11 +109,6 @@ const PriceRangeSlider = ({
           <input
             type="text"
             onChange={onMaxValueChange}
-            onBlur={(e) => {
-              if (parseFloat(e.target.value) < minValue) {
-                setMaxValue(parseFloat(minValue) + 50);
-              }
-            }}
             value={maxValue}
             className="focus:outline-none w-20 text-center"
             placeholder={"$" + max}
