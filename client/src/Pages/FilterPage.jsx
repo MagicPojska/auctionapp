@@ -4,6 +4,7 @@ import CategoriesAccordion from "../components/CategoriesAccordion";
 import FilterProductsGrid from "../components/FilterProductsGrid";
 import {
   getCategoriesList,
+  getProductPriceRange,
   getProductsByCategory,
 } from "../utilities/productsApi";
 import SelectedFilters from "../components/SelectedFilters";
@@ -17,16 +18,30 @@ const FilterPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
 
+  //Had to lift up the state so it can be passed down to selectedFilters component and to update products with price range when changing subCategories
+  const [minValue, setMinValue] = useState("");
+  const [maxValue, setMaxValue] = useState("");
+  const [min, setMin] = useState("");
+  const [max, setMax] = useState("");
+
   const { id } = useParams();
 
   const PAGE_SIZE = 9;
 
   useEffect(() => {
     getCategories();
+
+    (async () => {
+      const response = await getProductPriceRange();
+      setMin(parseFloat(response.data.min));
+      setMax(parseFloat(response.data.max));
+    })();
   }, []);
 
   useEffect(() => {
-    subCategories.length > 0 ? getProducts(0, subCategories) : setProducts([]);
+    subCategories.length > 0
+      ? getProducts(0, subCategories, minValue, maxValue)
+      : setProducts([]);
   }, [subCategories]);
 
   const getCategories = async () => {
@@ -38,12 +53,7 @@ const FilterPage = () => {
     }
   };
 
-  const getProducts = async (
-    page,
-    subcategoryId,
-    lowPrice = "",
-    highPrice = ""
-  ) => {
+  const getProducts = async (page, subcategoryId, lowPrice, highPrice) => {
     try {
       setIsLoading(true);
 
@@ -96,6 +106,12 @@ const FilterPage = () => {
         <PriceRangeSlider
           getProducts={getProducts}
           subCategories={subCategories}
+          minValue={minValue}
+          setMinValue={setMinValue}
+          maxValue={maxValue}
+          setMaxValue={setMaxValue}
+          min={min}
+          max={max}
         />
       </div>
 
