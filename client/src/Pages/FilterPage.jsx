@@ -53,7 +53,12 @@ const FilterPage = () => {
     }
   };
 
-  const getProducts = async (page, subcategoryId, lowPrice, highPrice) => {
+  const getProducts = async (
+    page,
+    subcategoryId,
+    lowPrice = "",
+    highPrice = ""
+  ) => {
     try {
       setIsLoading(true);
 
@@ -120,6 +125,11 @@ const FilterPage = () => {
           categories={categories}
           subCategories={subCategories}
           setSubCategories={setSubCategories}
+          minValue={minValue}
+          setMinValue={setMinValue}
+          maxValue={maxValue}
+          setMaxValue={setMaxValue}
+          getProducts={getProducts}
         />
 
         <FilterProductsGrid
