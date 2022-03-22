@@ -30,7 +30,7 @@ public class CategoryEntity {
     @Column(nullable = true)
     private Integer supercategoryId;
 
-    @Formula("(SELECT COUNT(*) FROM auction.product pe WHERE pe.category_id = id)")
+    @Formula("(SELECT COUNT(*) FROM auction.product p WHERE p.category_id = id AND p.end_date > NOW())")
     private Integer numberOfProducts;
 
     public CategoryEntity(String categoryName, String description, Integer supercategoryId) {
