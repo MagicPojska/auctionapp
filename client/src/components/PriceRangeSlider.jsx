@@ -57,30 +57,34 @@ const PriceRangeSlider = ({
     }
   };
 
-  const onMinValueChange = async (e) => {
+  const onMinValueChange = (e) => {
     if (e.target.value.match("^[0-9.]*$") != null) {
       if (parseFloat(e.target.value) > parseFloat(maxValue)) {
-        setMinValue(maxValue - 10);
+        setMinValue(maxValue - 50);
       } else {
         setMinValue(e.target.value);
       }
     }
-    await getProducts(0, subCategories, e.target.value, maxValue);
+    getProducts(0, subCategories, e.target.value, maxValue);
   };
 
-  const onMaxValueChange = async (e) => {
+  const onMaxValueChange = (e) => {
     if (e.target.value.match("^[0-9.]*$") != null) {
-      if (parseFloat(e.target.value) > max) {
+      if (parseFloat(e.target.value) > parseFloat(max)) {
         setMaxValue(max);
       } else {
         setMaxValue(e.target.value);
       }
+      if (parseFloat(e.target.value) < minValue) {
+        e.target.value = parseFloat(minValue) + 50;
+      }
     }
-    await getProducts(0, subCategories, minValue, e.target.value);
+
+    getProducts(0, subCategories, minValue, e.target.value);
   };
 
-  const filterByPrice = async () => {
-    await getProducts(0, subCategories, minValue, maxValue);
+  const filterByPrice = () => {
+    getProducts(0, subCategories, minValue, maxValue);
   };
 
   return (
@@ -104,7 +108,7 @@ const PriceRangeSlider = ({
             onChange={onMaxValueChange}
             onBlur={(e) => {
               if (parseFloat(e.target.value) < minValue) {
-                setMaxValue(parseFloat(minValue) + 10);
+                setMaxValue(parseFloat(minValue) + 50);
               }
             }}
             value={maxValue}
