@@ -5,7 +5,7 @@ import ImageSelection from "../components/ImageSelection";
 import Notification from "../components/Notification";
 import { useUserContext } from "../contexts/UserContextProvider";
 import { postBid } from "../utilities/bidApi";
-import { calculateTimeLeft } from "../utilities/helperFunctions";
+import { calculateTimeLeft, parseTimeLeft } from "../utilities/helperFunctions";
 import { getProductById } from "../utilities/productsApi";
 import {
   NOTIFICATION_FAIL,
@@ -105,23 +105,7 @@ const ProductOverviewPage = () => {
             <p>
               Time left:{" "}
               <span className="font-bold text-purple">
-                {timeLeft.minutes < 0
-                  ? "Expired"
-                  : timeLeft.weeks > 0
-                  ? `${timeLeft.weeks} ${
-                      timeLeft.weeks === 1 ? "Week" : "Weeks"
-                    } ${Math.floor(timeLeft.days % 7)} ${
-                      timeLeft.days === 1 ? "Day" : "Days"
-                    }`
-                  : timeLeft.days > 0
-                  ? `${timeLeft.days} ${timeLeft.days === 1 ? "Day" : "Days"} ${
-                      timeLeft.days
-                    } ${timeLeft.hours === 1 ? "Hour" : "Hours"}`
-                  : `${timeLeft.hours} ${
-                      timeLeft.hours === 1 ? "Hour" : "Hours"
-                    } ${timeLeft.minutes} ${
-                      timeLeft.minutes === 1 ? "Minute" : "Minutes"
-                    }`}
+                {parseTimeLeft(timeLeft)}
               </span>
             </p>
           </div>
