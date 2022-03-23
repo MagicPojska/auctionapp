@@ -23,7 +23,9 @@ const SelectedFilters = ({
     if (maxValue) {
       setMaxValue("");
     }
-    getProducts(0, subCategories);
+    if (subCategories.length > 0) {
+      getProducts(0, subCategories);
+    }
   };
 
   const clearAllFilters = () => {
@@ -35,25 +37,27 @@ const SelectedFilters = ({
   return (
     (minValue || maxValue || subCategories.length > 0) && (
       <div className="flex justify-between ml-6">
-        <div className="flex flex-col w-4/6 mb-4 mr-4 font-normal text-base">
-          <label className="text-sm text-textTetriary mb-2">Category</label>
-          <div className="flex flex-wrap">
-            {categories.map(
-              (category) =>
-                subCategories.includes(category.id.toString()) && (
-                  <div key={category.id} className="flex mr-3 space-x-3 mb-2">
-                    <p>{category.categoryName}</p>
-                    <button
-                      className="text-xl"
-                      onClick={() => removeFilter(category.id)}
-                    >
-                      <GrFormClose className="text-sm opacity-40" />
-                    </button>
-                  </div>
-                )
-            )}
+        {subCategories.length > 0 && (
+          <div className="flex flex-col w-4/6 mb-4 mr-4 font-normal text-base">
+            <label className="text-sm text-textTetriary mb-2">Category</label>
+            <div className="flex flex-wrap">
+              {categories.map(
+                (category) =>
+                  subCategories.includes(category.id.toString()) && (
+                    <div key={category.id} className="flex mr-3 space-x-3 mb-2">
+                      <p>{category.categoryName}</p>
+                      <button
+                        className="text-xl"
+                        onClick={() => removeFilter(category.id)}
+                      >
+                        <GrFormClose className="text-sm opacity-40" />
+                      </button>
+                    </div>
+                  )
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="flex h-fit">
           {(minValue || maxValue) && (
