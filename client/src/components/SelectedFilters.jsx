@@ -1,4 +1,4 @@
-import { TiDelete } from "react-icons/ti";
+import { GrFormClose } from "react-icons/gr";
 
 const SelectedFilters = ({
   categories,
@@ -34,45 +34,54 @@ const SelectedFilters = ({
 
   return (
     (minValue || maxValue || subCategories.length > 0) && (
-      <div className="flex flex-wrap ml-6 mb-4 text-white font-normal text-base">
-        {categories.map(
-          (category) =>
-            subCategories.includes(category.id.toString()) && (
-              <div
-                key={category.id}
-                className="flex items-center bg-purple rounded-full py-2 px-4 mr-3 space-x-3 mb-2"
-              >
-                <p>{category.categoryName}</p>
-                <button
-                  className="text-xl"
-                  onClick={() => removeFilter(category.id)}
-                >
-                  <TiDelete />
+      <div className="flex justify-between ml-6">
+        <div className="flex flex-col w-4/6 mb-4 mr-4 font-normal text-base">
+          <label className="text-sm text-textTetriary mb-2">Category</label>
+          <div className="flex flex-wrap">
+            {categories.map(
+              (category) =>
+                subCategories.includes(category.id.toString()) && (
+                  <div key={category.id} className="flex mr-3 space-x-3 mb-2">
+                    <p>{category.categoryName}</p>
+                    <button
+                      className="text-xl"
+                      onClick={() => removeFilter(category.id)}
+                    >
+                      <GrFormClose className="text-sm opacity-40" />
+                    </button>
+                  </div>
+                )
+            )}
+          </div>
+        </div>
+
+        <div className="flex h-fit">
+          {(minValue || maxValue) && (
+            <div className="flex flex-col mr-16 mb-2 font-normal text-base ">
+              <label className="text-sm text-textTetriary mb-2">
+                Price range
+              </label>
+              <div className="flex">
+                <p className="min-w-fit">
+                  {minValue && maxValue
+                    ? `$${minValue} - $${maxValue}`
+                    : minValue
+                    ? `> $${minValue}`
+                    : maxValue && `< $${maxValue}`}
+                </p>
+                <button className="text-xl" onClick={resetPrice}>
+                  <GrFormClose className="text-sm opacity-40 ml-3" />
                 </button>
               </div>
-            )
-        )}
+            </div>
+          )}
 
-        {(minValue || maxValue) && (
-          <div className="flex items-center bg-purple rounded-full py-2 px-4 mr-3 space-x-3 mb-2">
-            <p>
-              {minValue && maxValue
-                ? `Between $${minValue} and $${maxValue}`
-                : minValue
-                ? `Above $${minValue}`
-                : maxValue && `Bellow $${maxValue}`}
-            </p>
-            <button className="text-xl" onClick={resetPrice}>
-              <TiDelete />
+          <div className="flex justify-center items-center mt-1 border-2 h-10 w-32 text-textTetriary">
+            <p>Clear all</p>
+            <button onClick={clearAllFilters}>
+              <GrFormClose className="text-sm opacity-40 ml-3" />
             </button>
           </div>
-        )}
-
-        <div className="flex items-center border-2 border-purple rounded-full py-2 px-4 mr-3 space-x-3 mb-2 text-purple">
-          <p>Clear all</p>
-          <button onClick={clearAllFilters}>
-            <TiDelete />
-          </button>
         </div>
       </div>
     )
