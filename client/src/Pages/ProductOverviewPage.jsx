@@ -12,6 +12,8 @@ import {
   NOTIFICATION_SUCCESS,
 } from "../utilities/constants";
 import { BsChevronRight } from "react-icons/bs";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
@@ -20,7 +22,7 @@ const ProductOverviewPage = () => {
   const [notification, setNotification] = useState("");
   const [bid, setBid] = useState("");
   const { id } = useParams();
-  const { user, token } = useUserContext();
+  const { user, logout, token } = useUserContext();
 
   useEffect(() => {
     getProductInfo();
@@ -64,6 +66,12 @@ const ProductOverviewPage = () => {
         message: "Congrats! You are the highest bider!",
       });
     } catch (error) {
+      if (error.response.status === 401) {
+        toast.error("Your session has expired, please login again", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        logout();
+      }
       console.error(error);
     }
   };
@@ -162,6 +170,8 @@ const ProductOverviewPage = () => {
           </div>
         </div>
       </div>
+
+      <ToastContainer />
     </>
   );
 };

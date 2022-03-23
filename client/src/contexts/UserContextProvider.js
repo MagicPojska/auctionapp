@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { removeUser, setUserSession } from "../utilities/auth";
+import { removeUserFromStorage, setUserSession } from "../utilities/auth";
 import { logoutUser, signIn, signUp } from "../utilities/authApi";
 
 const UserContext = createContext();
@@ -36,11 +36,12 @@ export const UserContextProvider = ({ children }) => {
 
   const logout = async () => {
     try {
+      removeUserFromStorage();
+      setUser("");
       await logoutUser(token);
-      removeUser();
+      setToken("");
     } catch (error) {
       console.error(error);
-      removeUser();
     }
   };
 

@@ -32,7 +32,6 @@ const Navbar = () => {
   };
 
   const handleLogout = async () => {
-    setUser("");
     await logout();
   };
   return (
