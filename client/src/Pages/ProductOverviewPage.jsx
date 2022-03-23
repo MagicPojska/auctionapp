@@ -7,6 +7,10 @@ import { useUserContext } from "../contexts/UserContextProvider";
 import { postBid } from "../utilities/bidApi";
 import { calculateTimeLeft } from "../utilities/helperFunctions";
 import { getProductById } from "../utilities/productsApi";
+import {
+  NOTIFICATION_FAIL,
+  NOTIFICATION_SUCCESS,
+} from "../utilities/constants";
 import { BsChevronRight } from "react-icons/bs";
 
 const ProductOverviewPage = () => {
@@ -17,9 +21,6 @@ const ProductOverviewPage = () => {
   const [bid, setBid] = useState("");
   const { id } = useParams();
   const { user } = useUserContext();
-
-  const SUCCESS = "success";
-  const FAIL = "fail";
 
   useEffect(() => {
     getProductInfo();
@@ -41,7 +42,7 @@ const ProductOverviewPage = () => {
     if (bid <= product.startPrice || bid <= product.highestBid) {
       setNotification({
         ...notification,
-        type: FAIL,
+        type: NOTIFICATION_FAIL,
         message:
           "There are higher bids than yours. You could give a second try!",
       });
@@ -58,7 +59,7 @@ const ProductOverviewPage = () => {
       await getProductInfo();
       setNotification({
         ...notification,
-        type: SUCCESS,
+        type: NOTIFICATION_SUCCESS,
         message: "Congrats! You are the highest bider!",
       });
     } catch (error) {
