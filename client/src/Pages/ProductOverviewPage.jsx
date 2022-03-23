@@ -39,7 +39,12 @@ const ProductOverviewPage = () => {
   const placeBid = async (e) => {
     e.preventDefault();
     if (bid <= product.startPrice || bid <= product.highestBid) {
-      setNotification(FAIL);
+      setNotification({
+        ...notification,
+        type: FAIL,
+        message:
+          "There are higher bids than yours. You could give a second try!",
+      });
       return;
     }
 
@@ -51,7 +56,11 @@ const ProductOverviewPage = () => {
       };
       await postBid(bidDetails);
       await getProductInfo();
-      setNotification(SUCCESS);
+      setNotification({
+        ...notification,
+        type: SUCCESS,
+        message: "Congrats! You are the highest bider!",
+      });
     } catch (error) {
       console.error(error);
     }
@@ -60,6 +69,7 @@ const ProductOverviewPage = () => {
   return (
     <>
       <CurrentPageNav title={product.productName} />
+
       {notification && (
         <Notification
           notification={notification}
