@@ -48,9 +48,9 @@ public class BidService {
         if (product.getUserId() == user.getId())
             throw new BadRequestException("You can't bid on your own product");
 
-        BigDecimal maxBid = bidRepository.getMaxBidFromPersonForProduct(user.getId(), product.getId());
+        BigDecimal maxBid = bidRepository.getMaxBidFromProduct(product.getId());
         if (maxBid != null && maxBid.compareTo(bidRequest.getPrice()) >= 0)
-            throw new BadRequestException("Price can't be lower than previous bid of $" + maxBid);
+            throw new BadRequestException("Price can't be lower than highest bid of $" + maxBid);
 
         bidRepository.save(new BidsEntity(bidRequest.getPrice(), user, product));
 
