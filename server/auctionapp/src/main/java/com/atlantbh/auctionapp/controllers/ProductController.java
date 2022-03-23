@@ -37,8 +37,9 @@ public class ProductController {
                                                                           @RequestParam(defaultValue = "9") Integer pageSize,
                                                                           @RequestParam long[] categoryId,
                                                                           @RequestParam(defaultValue = "0") double lowPrice,
-                                                                          @RequestParam(defaultValue = "99999") double highPrice){
-        Page<ProductEntity> list = productService.getAllProductsFromCategory(pageNumber, pageSize, categoryId, lowPrice, highPrice);
+                                                                          @RequestParam(defaultValue = "99999") double highPrice,
+                                                                          @RequestParam(defaultValue = "productName") String sortBy){
+        Page<ProductEntity> list = productService.getAllProductsFromCategory(pageNumber, pageSize, categoryId, lowPrice, highPrice, sortBy);
 
         return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
     }

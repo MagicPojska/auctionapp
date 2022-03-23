@@ -35,9 +35,19 @@ public class ProductService {
         return pagedResult;
     }
 
-    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, long[] categoryId, double lowPrice, double highPrice){
+    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, long[] categoryId, double lowPrice, double highPrice, String sortBy){
         LocalDateTime time = LocalDateTime.now();
-        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by("productName"));
+        Sort sortOrder;
+        if (sortBy.equals(SortBy.START_DATE.getSort())){
+            sortOrder = Sort.by(sortBy).descending();
+        } else if (sortBy.equals(SortBy.END_DATE.getSort()) || sortBy.equals(SortBy.START_PRICE.getSort())) {
+            sortOrder = Sort.by(sortBy);
+        } else if (sortBy.equals(SortBy.HIGH_PRICE.getSort())) {
+            sortOrder = Sort.by(SortBy.START_PRICE.getSort()).descending();
+        } else {
+            sortOrder = Sort.by(sortBy);
+        }
+        Pageable paging = PageRequest.of(pageNumber, pageSize, sortOrder);
         Page<ProductEntity> productsList = productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfter(categoryId, lowPrice, highPrice, time, paging );
 
         return productsList;
