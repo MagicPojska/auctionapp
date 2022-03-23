@@ -122,7 +122,7 @@ const FilterPage = () => {
 
       <div className="flex flex-col w-full">
         <div className="w-24 mb-8 px-6">
-          <select name="cars" id="cars">
+          <select name="sorting">
             <option value="productName">Default Sorting</option>
             <option value="startDate">Added: New to Old</option>
             <option value="endDate">Time left</option>
@@ -130,6 +130,7 @@ const FilterPage = () => {
             <option value="highPrice">Price: High to Low</option>
           </select>
         </div>
+
         <SelectedFilters
           categories={categories}
           subCategories={subCategories}
