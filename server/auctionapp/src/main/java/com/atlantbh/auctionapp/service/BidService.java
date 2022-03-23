@@ -37,7 +37,7 @@ public class BidService {
         return bids;
     }
 
-    public void add(BidRequest bidRequest){
+    public String add(BidRequest bidRequest){
         ProductEntity product = productRepository.findProductById(bidRequest.getProductId());
         if (product.getStartPrice().compareTo(bidRequest.getPrice()) > 0)
             throw new BadRequestException("Price can't be lower than the product start price");
@@ -53,5 +53,7 @@ public class BidService {
             throw new BadRequestException("Price can't be lower than previous bid of $" + maxBid);
 
         bidRepository.save(new BidsEntity(bidRequest.getPrice(), user, product));
+
+        return bidRequest.getPrice().toString();
     }
 }

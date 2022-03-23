@@ -55,8 +55,9 @@ const ProductOverviewPage = () => {
         userId: user.id,
         productId: product.id,
       };
-      await postBid(bidDetails);
-      await getProductInfo();
+      const res = await postBid(bidDetails);
+
+      setProduct({ ...product, highestBid: res.data });
       setNotification({
         ...notification,
         type: NOTIFICATION_SUCCESS,
