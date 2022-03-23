@@ -61,7 +61,7 @@ const SelectedFilters = ({
 
         <div className="flex h-fit">
           {(minValue || maxValue) && (
-            <div className="flex flex-col mr-16 mb-2 font-normal text-base ">
+            <div className="flex flex-col mr-16 font-normal text-base ">
               <label className="text-sm text-textTetriary mb-2">
                 Price range
               </label>
