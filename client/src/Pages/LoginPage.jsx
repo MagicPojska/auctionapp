@@ -12,12 +12,14 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
+  const [rememberMe, setRememberMe] = useState(false);
 
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const data = await login(user);
+
+    const data = await login(user, rememberMe);
     if (data === null) {
       toast.error("Wrong username or password!", {
         position: toast.POSITION.TOP_CENTER,
@@ -62,7 +64,11 @@ const LoginPage = () => {
             />
           </div>
           <div className="mt-6 space-x-4 flex items-center">
-            <input type="checkbox" />
+            <input
+              value={rememberMe}
+              onChange={() => setRememberMe(!rememberMe)}
+              type="checkbox"
+            />
             <label>Remember me</label>
           </div>
           <div>

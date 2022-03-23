@@ -10,16 +10,20 @@ import {
   shopPath,
 } from "../utilities/paths";
 import SocialMedia from "../components/SocialMedia";
-import { getUserSession } from "../utilities/auth";
+import { getToken, getUserSession } from "../utilities/auth";
 import { useUserContext } from "../contexts/UserContextProvider";
 
 const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
-  const { logout, user, setUser } = useUserContext();
+  const { logout, user, setUser, setToken } = useUserContext();
 
   useEffect(() => {
-    setUser(getUserSession());
+    const userSession = getUserSession();
+    if (userSession) {
+      setUser(userSession);
+      setToken(getToken());
+    }
   }, [location]);
 
   const handleSearch = (e) => {

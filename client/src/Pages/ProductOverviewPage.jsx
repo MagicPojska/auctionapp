@@ -20,7 +20,7 @@ const ProductOverviewPage = () => {
   const [notification, setNotification] = useState("");
   const [bid, setBid] = useState("");
   const { id } = useParams();
-  const { user } = useUserContext();
+  const { user, token } = useUserContext();
 
   useEffect(() => {
     getProductInfo();
@@ -55,7 +55,7 @@ const ProductOverviewPage = () => {
         userId: user.id,
         productId: product.id,
       };
-      const res = await postBid(bidDetails);
+      const res = await postBid(bidDetails, token);
 
       setProduct({ ...product, highestBid: res.data });
       setNotification({

@@ -6,10 +6,15 @@ const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState("");
-  const login = async (user) => {
+  const [token, setToken] = useState("");
+  const login = async (user, rememberMe) => {
     try {
       const response = await signIn(user);
-      setUserSession(response.data.user, response.data.token);
+      if (rememberMe) {
+        setUserSession(response.data.user, response.data.token);
+      }
+      setUser(response.data.user);
+      setToken(response.data.token);
       return response;
     } catch (error) {
       console.error(error);
@@ -30,8 +35,8 @@ export const UserContextProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const token = getToken();
-      await logoutUser(token);
+      const tokenFromStorage = getToken();
+      await logoutUser(tokenFromStorage ? tokenFromStorage : token);
       removeUser();
     } catch (error) {
       console.error(error);
@@ -40,7 +45,9 @@ export const UserContextProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, login, register, logout }}>
+    <UserContext.Provider
+      value={{ user, setUser, token, setToken, login, register, logout }}
+    >
       {children}
     </UserContext.Provider>
   );
