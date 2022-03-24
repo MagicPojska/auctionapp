@@ -1,16 +1,39 @@
-const setUserSession = (user, token) => {
+const setUserInStorage = (user, token) => {
   localStorage.setItem("token", token);
   localStorage.setItem("user", JSON.stringify(user));
 };
 
-const removeUser = () => {
+const removeUserFromStorage = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
 };
 
-const getUserSession = () => {
+const getUserFromStorage = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   return user;
+};
+
+const getTokenFromStorage = () => {
+  return localStorage.getItem("token") || null;
+};
+
+const setUserInSession = (user, token) => {
+  sessionStorage.setItem("token", token);
+  sessionStorage.setItem("user", JSON.stringify(user));
+};
+
+const removeUserFromSession = () => {
+  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("user");
+};
+
+const getUserFromSession = () => {
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  return user;
+};
+
+const getTokenFromSession = () => {
+  return sessionStorage.getItem("token") || null;
 };
 
 const getUserId = () => {
@@ -18,8 +41,14 @@ const getUserId = () => {
   return user ? JSON.parse(user).id : null;
 };
 
-const getToken = () => {
-  return localStorage.getItem("token") || null;
+export {
+  setUserInStorage,
+  removeUserFromStorage,
+  getUserFromStorage,
+  getUserId,
+  getTokenFromStorage,
+  setUserInSession,
+  removeUserFromSession,
+  getUserFromSession,
+  getTokenFromSession,
 };
-
-export { setUserSession, removeUser, getUserSession, getUserId, getToken };

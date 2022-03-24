@@ -22,8 +22,8 @@ public class BidController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addBid(@RequestBody BidRequest bidRequest){
-        bidService.add(bidRequest);
+        String bid = bidService.add(bidRequest);
 
-        return ResponseEntity.ok("Bid added");
+        return ResponseEntity.ok(bid);
     }
 }
