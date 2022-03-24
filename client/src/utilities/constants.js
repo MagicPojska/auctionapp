@@ -8,3 +8,6 @@ export const SORT_BY = [
   { value: "startPrice", label: "Price: Low to High" },
   { value: "highPrice", label: "Price: High to Low" },
 ];
+
+export const GRID = "grid";
+export const LIST = "list";
