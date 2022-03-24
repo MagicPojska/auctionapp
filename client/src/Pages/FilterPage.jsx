@@ -10,7 +10,8 @@ import {
 import SelectedFilters from "../components/SelectedFilters";
 import PriceRangeSlider from "../components/PriceRangeSlider";
 import { SORT_BY } from "../utilities/constants";
-import { BsChevronDown } from "react-icons/bs";
+import Select from "react-select";
+import { customStyles } from "../utilities/selectStyle";
 
 const FilterPage = () => {
   const [categories, setCategories] = useState([]);
@@ -94,6 +95,10 @@ const FilterPage = () => {
     await getProducts(pageNumber + 1, subCategories);
   };
 
+  const handleSortChange = (selectedOption) => {
+    setSortBy(selectedOption.value);
+  };
+
   return (
     <div className="mx-40 2xl:mx-72 flex justify-between">
       <div>
@@ -126,19 +131,18 @@ const FilterPage = () => {
       </div>
 
       <div className="flex flex-col w-full">
-        <div className="w-24 mb-8 ml-6 px-6 py-4 border-2 min-w-fit">
-          <select
-            name="sorting"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="bg-white outline-none"
-          >
-            {SORT_BY.map((item, id) => (
-              <option key={id} value={item.value}>
-                {item.label}
-              </option>
-            ))}
-          </select>
+        <div className="mb-8 ml-6 ">
+          <Select
+            defaultValue={SORT_BY[0]}
+            onChange={handleSortChange}
+            options={SORT_BY}
+            className="w-64"
+            styles={customStyles}
+            isSearchable={false}
+            components={{
+              IndicatorSeparator: () => null,
+            }}
+          />
         </div>
 
         <SelectedFilters
