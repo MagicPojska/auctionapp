@@ -1,5 +1,10 @@
 import { createContext, useContext, useState } from "react";
-import { removeUserFromStorage, setUserSession } from "../utilities/auth";
+import {
+  removeUserFromSession,
+  removeUserFromStorage,
+  setUserInSession,
+  setUserInStorage,
+} from "../utilities/auth";
 import { logoutUser, signIn, signUp } from "../utilities/authApi";
 
 const UserContext = createContext();
@@ -11,10 +16,9 @@ export const UserContextProvider = ({ children }) => {
     try {
       const response = await signIn(user);
       if (rememberMe) {
-        setUserSession(response.data.user, response.data.token);
+        setUserInStorage(response.data.user, response.data.token);
       } else {
-        setUser(response.data.user);
-        setToken(response.data.token);
+        setUserInSession(response.data.user, response.data.token);
       }
       return response;
     } catch (error) {
@@ -26,7 +30,7 @@ export const UserContextProvider = ({ children }) => {
   const register = async (user) => {
     try {
       const response = await signUp(user);
-      setUserSession(response.data.user, response.data.token);
+      setUserInStorage(response.data.user, response.data.token);
       return response;
     } catch (error) {
       console.error(error);
@@ -37,6 +41,7 @@ export const UserContextProvider = ({ children }) => {
   const logout = async () => {
     try {
       removeUserFromStorage();
+      removeUserFromSession();
       setUser("");
       await logoutUser(token);
       setToken("");

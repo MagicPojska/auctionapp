@@ -10,7 +10,12 @@ import {
   shopPath,
 } from "../utilities/paths";
 import SocialMedia from "../components/SocialMedia";
-import { getToken, getUserSession } from "../utilities/auth";
+import {
+  getTokenFromSession,
+  getTokenFromStorage,
+  getUserFromSession,
+  getUserFromStorage,
+} from "../utilities/auth";
 import { useUserContext } from "../contexts/UserContextProvider";
 
 const Navbar = () => {
@@ -19,10 +24,13 @@ const Navbar = () => {
   const { logout, user, setUser, setToken } = useUserContext();
 
   useEffect(() => {
-    const userSession = getUserSession();
-    if (userSession) {
-      setUser(userSession);
-      setToken(getToken());
+    const userData = getUserFromStorage();
+    if (userData) {
+      setUser(userData);
+      setToken(getTokenFromStorage());
+    } else {
+      setUser(getUserFromSession());
+      setToken(getTokenFromSession());
     }
   }, [location]);
 
