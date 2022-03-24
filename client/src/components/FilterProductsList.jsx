@@ -25,7 +25,7 @@ const FilterProductsList = ({ products, isLoading }) => {
               </p>
             </div>
             <div>
-              <p className="text-3xl font-light mb-4 text-purple mb-12">
+              <p className="text-3xl font-light text-purple mb-12">
                 Start from <span>${product.startPrice}</span>
               </p>
               <div className="flex space-x-3">
