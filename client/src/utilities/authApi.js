@@ -1,8 +1,23 @@
 import axios from "axios";
+import { removeUserFromSession, removeUserFromStorage } from "./auth";
 
-export const API = axios.create({
+const API = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
+
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status === 401) {
+      removeUserFromSession();
+      removeUserFromStorage();
+      window.location = "/login";
+    }
+    return error;
+  }
+);
+
+export { API };
 
 export const addAuthHeader = (token) => {
   return {

@@ -46,6 +46,7 @@ export const UserContextProvider = ({ children }) => {
       await logoutUser(token);
       setToken("");
     } catch (error) {
+      setToken("");
       console.error(error);
     }
   };
