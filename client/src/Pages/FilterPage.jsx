@@ -135,7 +135,7 @@ const FilterPage = () => {
           defaultValue={SORT_BY[0]}
           onChange={handleSortChange}
           options={SORT_BY}
-          className="w-64"
+          className="w-64 ml-6 mb-8"
           styles={customStyles}
           isSearchable={false}
           components={{
