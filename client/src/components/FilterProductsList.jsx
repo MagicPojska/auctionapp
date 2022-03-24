@@ -11,7 +11,7 @@ const FilterProductsList = ({ products, isLoading }) => {
           <Link to={`${shopProductPath}/${product.id}`}>
             <img
               src={product.images.split(",")[0]}
-              className="object-cover aspect-[5/7] h-[22rem] min-w-fit"
+              className="object-cover aspect-[5/7] h-[22rem] 2xl:h-96 min-w-fit"
               alt=""
             />
           </Link>
