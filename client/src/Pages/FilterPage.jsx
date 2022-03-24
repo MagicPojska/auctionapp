@@ -131,19 +131,17 @@ const FilterPage = () => {
       </div>
 
       <div className="flex flex-col w-full">
-        <div className="mb-8 ml-6 ">
-          <Select
-            defaultValue={SORT_BY[0]}
-            onChange={handleSortChange}
-            options={SORT_BY}
-            className="w-64"
-            styles={customStyles}
-            isSearchable={false}
-            components={{
-              IndicatorSeparator: () => null,
-            }}
-          />
-        </div>
+        <Select
+          defaultValue={SORT_BY[0]}
+          onChange={handleSortChange}
+          options={SORT_BY}
+          className="w-64"
+          styles={customStyles}
+          isSearchable={false}
+          components={{
+            IndicatorSeparator: () => null,
+          }}
+        />
 
         <SelectedFilters
           categories={categories}

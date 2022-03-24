@@ -6,6 +6,8 @@ export const customStyles = {
     paddingBottom: 4,
     paddingLeft: 20,
     paddingRight: 20,
+    marginLeft: 24,
+    marginBottom: 32,
     border: "2px solid #e5e7eb",
     fontFamily: "Lato, sans-serif",
     fontWeight: "400",
