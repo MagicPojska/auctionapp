@@ -9,6 +9,8 @@ import {
 } from "../utilities/productsApi";
 import SelectedFilters from "../components/SelectedFilters";
 import PriceRangeSlider from "../components/PriceRangeSlider";
+import { SORT_BY } from "../utilities/constants";
+import { BsChevronDown } from "react-icons/bs";
 
 const FilterPage = () => {
   const [categories, setCategories] = useState([]);
@@ -17,6 +19,7 @@ const FilterPage = () => {
   const [hasMore, setHasMore] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
+  const [sortBy, setSortBy] = useState("");
 
   //Had to lift up the state so it can be passed down to selectedFilters component and to update products with price range when changing subCategories
   const [minValue, setMinValue] = useState("");
@@ -40,9 +43,9 @@ const FilterPage = () => {
 
   useEffect(() => {
     subCategories.length > 0
-      ? getProducts(0, subCategories, minValue, maxValue)
+      ? getProducts(0, subCategories, minValue, maxValue, sortBy)
       : setProducts([]);
-  }, [subCategories]);
+  }, [subCategories, sortBy]);
 
   const getCategories = async () => {
     try {
@@ -57,7 +60,8 @@ const FilterPage = () => {
     page,
     subcategoryId,
     lowPrice = "",
-    highPrice = ""
+    highPrice = "",
+    sortBy = ""
   ) => {
     try {
       setIsLoading(true);
@@ -67,7 +71,8 @@ const FilterPage = () => {
         PAGE_SIZE,
         subcategoryId,
         lowPrice,
-        highPrice
+        highPrice,
+        sortBy
       );
 
       if (page === 0) {
@@ -121,13 +126,18 @@ const FilterPage = () => {
       </div>
 
       <div className="flex flex-col w-full">
-        <div className="w-24 mb-8 px-6">
-          <select name="sorting">
-            <option value="productName">Default Sorting</option>
-            <option value="startDate">Added: New to Old</option>
-            <option value="endDate">Time left</option>
-            <option value="startPrice">Price: Low to High</option>
-            <option value="highPrice">Price: High to Low</option>
+        <div className="w-24 mb-8 ml-6 px-6 py-4 border-2 min-w-fit">
+          <select
+            name="sorting"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="bg-white outline-none"
+          >
+            {SORT_BY.map((item, id) => (
+              <option key={id} value={item.value}>
+                {item.label}
+              </option>
+            ))}
           </select>
         </div>
 
