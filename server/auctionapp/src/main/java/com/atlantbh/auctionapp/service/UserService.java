@@ -62,7 +62,7 @@ public class UserService implements UserDetailsService {
         return User.createFromEntity(entity);
     }
 
-    public String logout(HttpServletRequest request){
+    public void logout(HttpServletRequest request){
         final String requestTokenHeader = request.getHeader(AUTHORIZATION);
         String token = null;
 
@@ -71,7 +71,6 @@ public class UserService implements UserDetailsService {
         }
 
         jsonWebToken.invalidateToken(token);
-        return "User has been logged out!";
     }
 
     public void authenticate(String email, String password) throws Exception {

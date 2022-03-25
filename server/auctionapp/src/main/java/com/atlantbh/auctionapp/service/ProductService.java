@@ -35,9 +35,8 @@ public class ProductService {
         }
         Pageable paging = PageRequest.of(pageNumber, pageSize, sortOrder);
 
-        Page<ProductEntity> pagedResult = productRepository.findAllByEndDateIsAfter(time, paging);
+        return productRepository.findAllByEndDateIsAfter(time, paging);
 
-        return pagedResult;
     }
 
     public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, long[] categoryId, double lowPrice, double highPrice, String sortBy){
@@ -53,9 +52,7 @@ public class ProductService {
             sortOrder = Sort.by(sortBy);
         }
         Pageable paging = PageRequest.of(pageNumber, pageSize, sortOrder);
-        Page<ProductEntity> productsList = productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfter(categoryId, lowPrice, highPrice, time, paging );
-
-        return productsList;
+        return productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfter(categoryId, lowPrice, highPrice, time, paging );
     }
 
     public ProductEntity getProductById(long id){
@@ -67,8 +64,7 @@ public class ProductService {
     }
 
     public PriceRangeProj getPriceRange(){
-        PriceRangeProj priceRange = productRepository.getPriceRange();
-        return priceRange;
+        return productRepository.getPriceRange();
     }
 
 }

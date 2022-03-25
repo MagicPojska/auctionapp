@@ -18,8 +18,6 @@ public class CategoryService {
     }
 
     public List<CategoryEntity> getAllCategories(){
-        List<CategoryEntity> categoryList = categoryRepository.findAll();
-
-        return categoryList;
+        return categoryRepository.findAll();
     }
 }
