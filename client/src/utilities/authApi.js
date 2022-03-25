@@ -25,7 +25,7 @@ API.interceptors.response.use(
 API.interceptors.request.use((config) => {
   if (getTokenFromStorage() !== null) {
     config.headers["Authorization"] = `Bearer ${getTokenFromStorage()}`;
-  } else if (getTokenFromSession !== null) {
+  } else if (getTokenFromSession() !== null) {
     config.headers["Authorization"] = `Bearer ${getTokenFromSession()}`;
   }
   return config;
