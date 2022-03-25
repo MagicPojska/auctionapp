@@ -2,12 +2,7 @@ import { Link } from "react-router-dom";
 import { shopProductPath } from "../utilities/paths";
 import LoadingSpinner from "./LoadingSpinner";
 
-const FilterProductsGrid = ({
-  products,
-  loadMoreProducts,
-  hasMore,
-  isLoading,
-}) => {
+const FilterProductsGrid = ({ products, isLoading }) => {
   return products.length !== 0 ? (
     <div className="ml-6">
       <div className="grid grid-cols-3 gap-x-4 gap-y-8">
@@ -33,21 +28,6 @@ const FilterProductsGrid = ({
             </p>
           </Link>
         ))}
-      </div>
-
-      <div className="w-full flex justify-center mt-20">
-        {isLoading ? (
-          <LoadingSpinner />
-        ) : (
-          <button
-            className={`py-4 px-14 bg-purple text-white text-base font-bold leading-7 ${
-              hasMore ? "" : "hidden"
-            }`}
-            onClick={loadMoreProducts}
-          >
-            Explore More
-          </button>
-        )}
       </div>
     </div>
   ) : (
