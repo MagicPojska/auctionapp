@@ -1,5 +1,6 @@
 package com.atlantbh.auctionapp.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,6 +36,7 @@ public class UserEntity {
     @NotBlank
     @Column(nullable = false)
     @Size(max = 255)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     public UserEntity(String firstName, String lastName, String email, String password){

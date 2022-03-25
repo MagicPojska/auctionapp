@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const API = axios.create({
+export const API = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
 
-const addAuthHeader = (token) => {
+export const addAuthHeader = (token) => {
   return {
     headers: {
       "Content-type": "application/json",

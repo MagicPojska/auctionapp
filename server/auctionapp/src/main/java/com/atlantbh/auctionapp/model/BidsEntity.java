@@ -1,13 +1,13 @@
 package com.atlantbh.auctionapp.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -20,11 +20,11 @@ public class BidsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Positive(message = "value must be positive")
     @Column(nullable = false)
-    private Float price;
+    private BigDecimal price;
 
+    @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime bidDate;
 
@@ -36,9 +36,8 @@ public class BidsEntity {
     @JoinColumn(name = "productId", nullable = false)
     private ProductEntity product;
 
-    public BidsEntity(Float price, LocalDateTime bidDate, UserEntity user, ProductEntity product) {
+    public BidsEntity(BigDecimal price, UserEntity user, ProductEntity product) {
         this.price = price;
-        this.bidDate = bidDate;
         this.user = user;
         this.product = product;
     }
