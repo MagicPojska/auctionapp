@@ -3,6 +3,7 @@ package com.atlantbh.auctionapp.security;
 import com.atlantbh.auctionapp.service.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,11 +21,14 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
     public final String AUTHORIZATION = "Authorization";
     public final String BEARER = "Bearer ";
-    @Autowired
-    private UserService userService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
+
+    public JwtFilter(@Lazy UserService userService, JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

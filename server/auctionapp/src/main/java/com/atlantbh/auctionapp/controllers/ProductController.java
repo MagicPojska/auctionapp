@@ -13,8 +13,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/product")
 public class ProductController {
+
+    private final ProductService productService;
+
     @Autowired
-    private ProductService productService;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping("/items")
     public ResponseEntity<Page<ProductEntity>> getAllProducts(@RequestParam(defaultValue = "0") Integer pageNumber,

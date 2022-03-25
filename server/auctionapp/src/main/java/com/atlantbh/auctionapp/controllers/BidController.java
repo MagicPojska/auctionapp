@@ -12,8 +12,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/bids")
 public class BidController {
+
+    private final BidService bidService;
+
     @Autowired
-    private BidService bidService;
+    public BidController(BidService bidService) {
+        this.bidService = bidService;
+    }
 
     @GetMapping("/product")
     public ResponseEntity<List<BidProj>> getBidsForProduct(@RequestParam long id){

@@ -22,22 +22,21 @@ import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
+
     private final UserRepository userRepository;
-    @Autowired
     private final PasswordEncoder passwordEncoder;
-    @Autowired
-    private JwtUtil jsonWebToken;
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final JwtUtil jsonWebToken;
+    private final AuthenticationManager authenticationManager;
 
     public final String AUTHORIZATION = "Authorization";
     public final String BEARER = "Bearer ";
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jsonWebToken, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jsonWebToken = jsonWebToken;
+        this.authenticationManager = authenticationManager;
     }
 
     public User register(RegisterRequest registerRequest) throws ConflictException {

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Getter
@@ -17,6 +18,7 @@ public class RegisterRequest {
     private String lastName;
 
     @NotBlank(message = "Field can't be empty")
+    @Email(message = "Email format is not valid")
     private String email;
 
     @NotBlank(message = "Field can't be empty")

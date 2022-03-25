@@ -13,21 +13,22 @@ import com.atlantbh.auctionapp.request.BidRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class BidService {
-    @Autowired
-    private BidRepository bidRepository;
+
+    private final BidRepository bidRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    public BidService(BidRepository bidRepository, ProductRepository productRepository, UserRepository userRepository) {
+        this.bidRepository = bidRepository;
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
+    }
 
     public List<BidProj> getBidsForProduct(long id){
         List<BidProj> bids = bidRepository.findAllByProductId(id);

@@ -25,11 +25,9 @@ import java.util.Arrays;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    @Autowired
-    private JwtFilter filter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtFilter filter;
 
     private static String allowedURL;
 
@@ -50,6 +48,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/product/**"
 
     };
+
+    public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtFilter filter) {
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.filter = filter;
+    }
 
     @Value("${app.cors.allowed-domain}")
     public void setAllowedURL(String allowedURL) {
