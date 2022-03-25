@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @AllArgsConstructor
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 public class LoginRequest {
     @NotBlank(message = "Email field can't be empty")
+    @Email
     private String email;
 
     @NotBlank(message = "Password field can't be empty")
