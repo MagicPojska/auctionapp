@@ -106,7 +106,11 @@ const FilterPage = () => {
   };
 
   const handleSortChange = (selectedOption) => {
-    setSortBy(selectedOption.value);
+    setSortBy({
+      ...sortBy,
+      sortCriterium: selectedOption.sortBy,
+      sortOrder: selectedOption.orderBy,
+    });
   };
 
   return (

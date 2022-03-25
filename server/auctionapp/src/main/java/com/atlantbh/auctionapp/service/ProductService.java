@@ -5,6 +5,8 @@ import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.model.enums.SortBy;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;
 import com.atlantbh.auctionapp.repository.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +21,8 @@ import java.time.LocalDateTime;
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
+
+    Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     public Page<ProductEntity> getAllProducts(Integer pageNumber, Integer pageSize, String sortBy){
         Sort sortOrder;
@@ -35,18 +39,16 @@ public class ProductService {
         return pagedResult;
     }
 
-    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, long[] categoryId, double lowPrice, double highPrice, String sortBy){
+    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, long[] categoryId, double lowPrice, double highPrice, String sortBy, String orderBy){
         LocalDateTime time = LocalDateTime.now();
+
         Sort sortOrder;
-        if (sortBy.equals(SortBy.START_DATE.getSort())){
+        if(orderBy.equals(SortBy.DESCENDING.getSort())) {
             sortOrder = Sort.by(sortBy).descending();
-        } else if (sortBy.equals(SortBy.END_DATE.getSort()) || sortBy.equals(SortBy.START_PRICE.getSort())) {
-            sortOrder = Sort.by(sortBy);
-        } else if (sortBy.equals(SortBy.HIGH_PRICE.getSort())) {
-            sortOrder = Sort.by(SortBy.START_PRICE.getSort()).descending();
-        } else {
-            sortOrder = Sort.by(sortBy);
+        } else{
+             sortOrder = Sort.by(sortBy);
         }
+
         Pageable paging = PageRequest.of(pageNumber, pageSize, sortOrder);
         Page<ProductEntity> productsList = productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfter(categoryId, lowPrice, highPrice, time, paging );
 
