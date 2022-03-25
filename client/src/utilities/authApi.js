@@ -1,5 +1,10 @@
 import axios from "axios";
-import { removeUserFromSession, removeUserFromStorage } from "./auth";
+import {
+  getTokenFromSession,
+  getTokenFromStorage,
+  removeUserFromSession,
+  removeUserFromStorage,
+} from "./auth";
 
 const API = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -17,18 +22,17 @@ API.interceptors.response.use(
   }
 );
 
-export { API };
+API.interceptors.request.use((config) => {
+  if (getTokenFromStorage() !== null) {
+    config.headers["Authorization"] = `Bearer ${getTokenFromStorage()}`;
+  } else if (getTokenFromSession !== null) {
+    config.headers["Authorization"] = `Bearer ${getTokenFromSession()}`;
+  }
+  return config;
+});
 
-export const addAuthHeader = (token) => {
-  return {
-    headers: {
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  };
-};
+export { API };
 
 export const signIn = (formData) => API.post("/auth/login", formData);
 export const signUp = (formData) => API.post("/auth/register", formData);
-export const logoutUser = (token) =>
-  API.get("/auth/logout", addAuthHeader(token));
+export const logoutUser = () => API.get("/auth/logout");
