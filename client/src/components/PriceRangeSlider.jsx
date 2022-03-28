@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import debounce from "lodash.debounce";
 
 const PriceRangeSlider = ({
-  getProducts,
+  onChange,
   subCategories,
   minValue,
   setMinValue,
@@ -62,7 +62,7 @@ const PriceRangeSlider = ({
         setMinValue(e.target.value);
       }
 
-      getProducts(0, subCategories, e.target.value, maxValue);
+      onChange(0, subCategories, e.target.value, maxValue);
     }
   };
 
@@ -79,19 +79,19 @@ const PriceRangeSlider = ({
         if (parseFloat(e.target.value) < minValue) {
           e.target.value = parseFloat(minValue) + 50;
           setMaxValue(e.target.value);
-          getProducts(0, subCategories, minValue, e.target.value);
+          onChange(0, subCategories, minValue, e.target.value);
         }
       }, 1000);
       debouncedMaxValue();
 
       if (parseFloat(e.target.value) > minValue) {
-        getProducts(0, subCategories, minValue, e.target.value);
+        onChange(0, subCategories, minValue, e.target.value);
       }
     }
   };
 
   const filterByPrice = () => {
-    getProducts(0, subCategories, minValue, maxValue);
+    onChange(0, subCategories, minValue, maxValue);
   };
 
   return (

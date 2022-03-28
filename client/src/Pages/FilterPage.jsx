@@ -109,7 +109,7 @@ const FilterPage = () => {
         </div>
 
         <PriceRangeSlider
-          getProducts={getProducts}
+          onChange={getProducts}
           subCategories={subCategories}
           minValue={minValue}
           setMinValue={setMinValue}
