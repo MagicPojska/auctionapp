@@ -49,7 +49,7 @@ public class ProductService {
             sortBy = Sort.by(sort).ascending();
         }
 
-        Pageable paging = PageRequest.of(pageNumber, pageSize, sortOrder);
+        Pageable paging = PageRequest.of(pageNumber, pageSize, sortBy);
         return productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfter(categoryId, lowPrice, highPrice, time, paging );
     }
 
