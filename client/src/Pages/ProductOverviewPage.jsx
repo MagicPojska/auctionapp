@@ -59,7 +59,11 @@ const ProductOverviewPage = () => {
       };
       const res = await postBid(bidDetails, token);
 
-      setProduct({ ...product, highestBid: res.data });
+      setProduct({
+        ...product,
+        highestBid: res.data.bid,
+        numberOfBids: res.data.numberOfBids,
+      });
       setNotification({
         ...notification,
         type: NOTIFICATION_SUCCESS,

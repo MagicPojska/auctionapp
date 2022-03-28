@@ -2,8 +2,11 @@ package com.atlantbh.auctionapp.controllers;
 
 import com.atlantbh.auctionapp.projections.BidProj;
 import com.atlantbh.auctionapp.request.BidRequest;
+import com.atlantbh.auctionapp.response.BidResponse;
 import com.atlantbh.auctionapp.service.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +24,9 @@ public class BidController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addBid(@RequestBody BidRequest bidRequest){
-        String bid = bidService.add(bidRequest);
+    public ResponseEntity<BidResponse> addBid(@RequestBody BidRequest bidRequest){
+        BidResponse bid = bidService.add(bidRequest);
 
-        return ResponseEntity.ok(bid);
+        return new ResponseEntity<>(bid, new HttpHeaders(), HttpStatus.OK);
     }
 }
