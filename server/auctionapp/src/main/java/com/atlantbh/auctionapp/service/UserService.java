@@ -4,7 +4,6 @@ import com.atlantbh.auctionapp.domain.model.User;
 import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

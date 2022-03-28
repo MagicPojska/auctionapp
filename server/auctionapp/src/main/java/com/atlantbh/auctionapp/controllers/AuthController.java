@@ -18,14 +18,14 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
-public class UserController {
+public class AuthController {
 
     private final AuthService authService;
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserController(AuthService authService, JwtUtil jwtUtil, UserService userService) {
+    public AuthController(AuthService authService, JwtUtil jwtUtil, UserService userService) {
         this.authService = authService;
         this.jwtUtil = jwtUtil;
         this.userService = userService;
