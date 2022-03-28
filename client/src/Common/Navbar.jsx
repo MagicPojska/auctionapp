@@ -24,11 +24,10 @@ const Navbar = () => {
   const { logout, user, setUser, setToken } = useUserContext();
 
   useEffect(() => {
-    const userData = getUserFromStorage();
-    if (userData) {
-      setUser(userData);
+    if (getUserFromStorage() !== null) {
+      setUser(getUserFromStorage());
       setToken(getTokenFromStorage());
-    } else {
+    } else if (getUserFromSession() !== null) {
       setUser(getUserFromSession());
       setToken(getTokenFromSession());
     }

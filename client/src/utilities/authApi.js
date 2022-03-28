@@ -1,19 +1,38 @@
 import axios from "axios";
+import {
+  getTokenFromSession,
+  getTokenFromStorage,
+  removeUserFromSession,
+  removeUserFromStorage,
+} from "./auth";
 
-export const API = axios.create({
+const API = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
 
-export const addAuthHeader = (token) => {
-  return {
-    headers: {
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  };
-};
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status === 401) {
+      removeUserFromSession();
+      removeUserFromStorage();
+      window.location = "/login";
+    }
+    return error;
+  }
+);
+
+API.interceptors.request.use((config) => {
+  if (getTokenFromStorage() !== null) {
+    config.headers["Authorization"] = `Bearer ${getTokenFromStorage()}`;
+  } else if (getTokenFromSession() !== null) {
+    config.headers["Authorization"] = `Bearer ${getTokenFromSession()}`;
+  }
+  return config;
+});
+
+export { API };
 
 export const signIn = (formData) => API.post("/auth/login", formData);
 export const signUp = (formData) => API.post("/auth/register", formData);
-export const logoutUser = (token) =>
-  API.get("/auth/logout", addAuthHeader(token));
+export const logoutUser = () => API.get("/auth/logout");
