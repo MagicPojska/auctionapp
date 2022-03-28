@@ -1,8 +1,7 @@
 package com.atlantbh.auctionapp.model.enums;
 
 public enum SortBy {
-    START_DATE("startDate"),
-    DESCENDING("descending");
+    START_DATE("startDate");
 
     private String sort;
 

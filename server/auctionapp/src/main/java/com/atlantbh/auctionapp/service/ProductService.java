@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-
 @Service
 public class ProductService {
 
@@ -43,14 +42,11 @@ public class ProductService {
 
     }
 
-    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, long[] categoryId, double lowPrice, double highPrice, String sortBy, String orderBy){
+    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, long[] categoryId, double lowPrice, double highPrice, Sort sortBy, String sort){
         LocalDateTime time = LocalDateTime.now();
 
-        Sort sortOrder;
-        if(orderBy.equals(SortBy.DESCENDING.getSort())) {
-            sortOrder = Sort.by(sortBy).descending();
-        } else{
-             sortOrder = Sort.by(sortBy);
+        if(sortBy == Sort.unsorted()){
+            sortBy = Sort.by(sort).ascending();
         }
 
         Pageable paging = PageRequest.of(pageNumber, pageSize, sortOrder);

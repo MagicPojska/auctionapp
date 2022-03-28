@@ -6,31 +6,31 @@ export const SORT_BY = [
     value: "productName",
     label: "Default Sorting",
     sortBy: "productName",
-    orderBy: "ascending",
+    orderBy: "asc",
   },
   {
     value: "startDate",
     label: "Added: New to Old",
     sortBy: "startDate",
-    orderBy: "descending",
+    orderBy: "desc",
   },
   {
     value: "endDate",
     label: "Time left",
     sortBy: "endDate",
-    orderBy: "ascending",
+    orderBy: "asc",
   },
   {
     value: "startPrice",
     label: "Price: Low to High",
     sortBy: "startPrice",
-    orderBy: "ascending",
+    orderBy: "asc",
   },
   {
     value: "highPrice",
     label: "Price: High to Low",
     sortBy: "startPrice",
-    orderBy: "descending",
+    orderBy: "desc",
   },
 ];
 
