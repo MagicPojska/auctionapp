@@ -22,9 +22,11 @@ export const getProductsByCategory = (
       .map((item) => `categoryId=${item}&`)
       .join(
         ""
-      )}pageSize=${pageSize}&lowPrice=${lowPrice}&highPrice=${highPrice}&sortBy=${
-      sortBy.sortCriterium ? sortBy.sortCriterium : ""
-    }&orderBy=${sortBy.sortOrder ? sortBy.sortOrder : ""}`
+      )}pageSize=${pageSize}&lowPrice=${lowPrice}&highPrice=${highPrice}&sort=${
+      sortBy.sortCriterium && sortBy.sortOrder
+        ? `${sortBy.sortCriterium},${sortBy.sortOrder}`
+        : ""
+    }`
   );
 
 export const getProductPriceRange = () => API.get("/product/items/price-range");
