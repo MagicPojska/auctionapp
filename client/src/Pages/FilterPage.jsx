@@ -96,11 +96,21 @@ const FilterPage = () => {
   };
 
   const loadMoreProducts = async () => {
-    await getProducts(pageNumber + 1, subCategories);
+    await getProducts(
+      pageNumber + 1,
+      subCategories,
+      minValue,
+      maxValue,
+      sortBy
+    );
   };
 
   const handleSortChange = (selectedOption) => {
-    setSortBy(selectedOption.value);
+    setSortBy({
+      ...sortBy,
+      sortCriterium: selectedOption.sortBy,
+      sortOrder: selectedOption.orderBy,
+    });
   };
 
   return (

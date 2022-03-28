@@ -15,14 +15,16 @@ export const getProductsByCategory = (
   categoryId,
   lowPrice,
   highPrice,
-  sortBy = ""
+  sortBy
 ) =>
   API.get(
     `/product/items/category?pageNumber=${pageNumber}&${categoryId
       .map((item) => `categoryId=${item}&`)
       .join(
         ""
-      )}pageSize=${pageSize}&lowPrice=${lowPrice}&highPrice=${highPrice}&sortBy=${sortBy}`
+      )}pageSize=${pageSize}&lowPrice=${lowPrice}&highPrice=${highPrice}&sortBy=${
+      sortBy.sortCriterium ? sortBy.sortCriterium : ""
+    }&orderBy=${sortBy.sortOrder ? sortBy.sortOrder : ""}`
   );
 
 export const getProductPriceRange = () => API.get("/product/items/price-range");
