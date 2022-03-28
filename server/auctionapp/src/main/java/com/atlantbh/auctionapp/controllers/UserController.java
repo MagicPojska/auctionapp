@@ -5,6 +5,7 @@ import com.atlantbh.auctionapp.request.LoginRequest;
 import com.atlantbh.auctionapp.request.RegisterRequest;
 import com.atlantbh.auctionapp.response.LoginResponse;
 import com.atlantbh.auctionapp.security.JwtUtil;
+import com.atlantbh.auctionapp.service.AuthService;
 import com.atlantbh.auctionapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +20,20 @@ import javax.validation.Valid;
 @RequestMapping("/auth")
 public class UserController {
 
+    private final AuthService authService;
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserController(UserService userService, JwtUtil jwtUtil) {
-        this.userService = userService;
+    public UserController(AuthService authService, JwtUtil jwtUtil, UserService userService) {
+        this.authService = authService;
         this.jwtUtil = jwtUtil;
+        this.userService = userService;
     }
 
     @PostMapping("/register")
     public ResponseEntity<LoginResponse> register(@RequestBody @Valid RegisterRequest registerRequest) {
-        User user = userService.register(registerRequest);
+        User user = authService.register(registerRequest);
         return ResponseEntity.ok(new LoginResponse(user, jwtUtil.generateToken(user)));
 
     }
@@ -38,10 +41,10 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) throws Exception{
         try {
-            userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+            authService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
             final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getEmail());
 
-            User user = userService.login(loginRequest);
+            User user = authService.login(loginRequest);
             return ResponseEntity.ok(new LoginResponse(user, jwtUtil.generateToken(userDetails)));
         } catch (AuthenticationException authExc) {
             throw new RuntimeException("Invalid Login Credentials");
@@ -50,6 +53,6 @@ public class UserController {
 
     @GetMapping("/logout")
     public void logout(HttpServletRequest request) {
-        userService.logout(request);
+        authService.logout(request);
     }
 }
