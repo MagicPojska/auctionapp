@@ -8,8 +8,8 @@ const PriceRangeSlider = ({
   setMinValue,
   maxValue,
   setMaxValue,
-  min,
-  max,
+  minProductPrice,
+  maxProductPrice,
 }) => {
   const progressRef = useRef(null);
 
@@ -19,16 +19,20 @@ const PriceRangeSlider = ({
   useEffect(() => {
     if (minValue || maxValue) {
       if (minValue) {
-        progressRef.current.style.left = (minValue / max) * 100 + "%";
+        progressRef.current.style.left =
+          (minValue / maxProductPrice) * 100 + "%";
       }
       if (maxValue) {
-        progressRef.current.style.right = 100 - (maxValue / max) * 100 + "%";
+        progressRef.current.style.right =
+          100 - (maxValue / maxProductPrice) * 100 + "%";
       }
     } else {
-      progressRef.current.style.left = (min / max) * 100 + "%";
-      progressRef.current.style.right = 100 - (max / max) * 100 + "%";
+      progressRef.current.style.left =
+        (minProductPrice / maxProductPrice) * 100 + "%";
+      progressRef.current.style.right =
+        100 - (maxProductPrice / maxProductPrice) * 100 + "%";
     }
-  }, [minValue, maxValue, max]);
+  }, [minValue, maxValue, maxProductPrice]);
 
   const handleMinSlider = (e) => {
     if (maxValue && maxValue - minValue >= priceCap) {
@@ -64,9 +68,9 @@ const PriceRangeSlider = ({
 
   const onMaxValueChange = (e) => {
     if (e.target.value.match("^[0-9.]*$") != null) {
-      if (parseFloat(e.target.value) > parseFloat(max)) {
-        setMaxValue(max);
-        e.target.value = max;
+      if (parseFloat(e.target.value) > parseFloat(maxProductPrice)) {
+        setMaxValue(maxProductPrice);
+        e.target.value = maxProductPrice;
       } else {
         setMaxValue(e.target.value);
       }
@@ -101,7 +105,7 @@ const PriceRangeSlider = ({
             onChange={onMinValueChange}
             value={minValue}
             className="focus:outline-none w-20 text-center"
-            placeholder={"$" + min}
+            placeholder={"$" + minProductPrice}
           />
         </div>
         <p className="font-normal">-</p>
@@ -111,7 +115,7 @@ const PriceRangeSlider = ({
             onChange={onMaxValueChange}
             value={maxValue}
             className="focus:outline-none w-20 text-center"
-            placeholder={"$" + max}
+            placeholder={"$" + maxProductPrice}
           />
         </div>
       </div>
@@ -131,15 +135,15 @@ const PriceRangeSlider = ({
             //Since minValue and maxValue don't have initial state this will check if the don't have one and assign them a starting state in this case minimum
             onMouseDown={() => {
               if (!minValue) {
-                setMinValue(min);
+                setMinValue(minProductPrice);
               }
             }}
             onChange={handleMinSlider}
             onMouseUp={filterByPrice}
-            min={min}
+            min={minProductPrice}
             step={step}
-            max={max}
-            value={minValue ? minValue : min}
+            max={maxProductPrice}
+            value={minValue ? minValue : minProductPrice}
           />
 
           <input
@@ -147,15 +151,15 @@ const PriceRangeSlider = ({
             className="range-max absolute w-full -top-1 h-1 bg-transparent appearance-none pointer-events-none"
             onMouseDown={() => {
               if (!maxValue) {
-                setMaxValue(max);
+                setMaxValue(maxProductPrice);
               }
             }}
             onChange={handleMaxSlider}
             onMouseUp={filterByPrice}
-            min={min}
+            min={minProductPrice}
             step={step}
-            max={max}
-            value={maxValue ? maxValue : max}
+            max={maxProductPrice}
+            value={maxValue ? maxValue : maxProductPrice}
           />
         </div>
       </div>

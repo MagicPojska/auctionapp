@@ -21,8 +21,8 @@ const FilterPage = () => {
   //Had to lift up the state so it can be passed down to selectedFilters component and to update products with price range when changing subCategories
   const [minValue, setMinValue] = useState("");
   const [maxValue, setMaxValue] = useState("");
-  const [min, setMin] = useState("");
-  const [max, setMax] = useState("");
+  const [minProductPrice, setMinProductPrice] = useState("");
+  const [maxProductPrice, setMaxProductPrice] = useState("");
 
   const { id } = useParams();
 
@@ -33,8 +33,8 @@ const FilterPage = () => {
 
     (async () => {
       const response = await getProductPriceRange();
-      setMin(parseFloat(response.data.min));
-      setMax(parseFloat(response.data.max));
+      setMinProductPrice(parseFloat(response.data.min));
+      setMaxProductPrice(parseFloat(response.data.max));
     })();
   }, []);
 
@@ -115,8 +115,8 @@ const FilterPage = () => {
           setMinValue={setMinValue}
           maxValue={maxValue}
           setMaxValue={setMaxValue}
-          min={min}
-          max={max}
+          minProductPrice={minProductPrice}
+          maxProductPrice={maxProductPrice}
         />
       </div>
 
