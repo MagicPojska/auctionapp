@@ -1,7 +1,6 @@
 package com.atlantbh.auctionapp.service;
 
 import com.atlantbh.auctionapp.domain.model.User;
-import com.atlantbh.auctionapp.exceptions.NotFoundException;
 import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
