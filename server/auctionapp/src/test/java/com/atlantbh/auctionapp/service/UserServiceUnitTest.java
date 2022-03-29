@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,8 +30,9 @@ public class UserServiceUnitTest {
         User expectedUserResult = new User(1L, "Safet", "Pojskic", "test@gmail.com", "testPassword");
 
         Mockito.when(userRepository.findByEmail("test@gmail.com")).thenReturn(userEntity);
+        UserDetails actualResult = userService.loadUserByUsername("test@gmail.com");
 
-        assertThat(userService.loadUserByUsername("test@gmail.com").getUsername()).isEqualTo(expectedUserResult.getUsername());
+        assertThat(actualResult.getUsername()).isEqualTo(expectedUserResult.getUsername());
     }
 
     @Test

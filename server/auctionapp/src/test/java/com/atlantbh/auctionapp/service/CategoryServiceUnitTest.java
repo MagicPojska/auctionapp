@@ -13,7 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-class CategoryServiceUnitTest {
+public class CategoryServiceUnitTest {
 
     @Mock
     CategoryRepository categoryRepository;

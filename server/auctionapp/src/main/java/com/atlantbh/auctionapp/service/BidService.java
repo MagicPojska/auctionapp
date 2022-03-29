@@ -57,7 +57,6 @@ public class BidService {
 
         bidRepository.save(new BidsEntity(bidRequest.getPrice(), user, product));
 
-        BidResponse bid = new BidResponse(bidRequest.getPrice(), product.getNumberOfBids() + 1);
-        return bid;
+        return new BidResponse(bidRequest.getPrice(), product.getNumberOfBids() + 1);
     }
 }
