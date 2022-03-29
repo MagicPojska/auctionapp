@@ -2,7 +2,6 @@ package com.atlantbh.auctionapp.service;
 
 import com.atlantbh.auctionapp.model.CategoryEntity;
 import com.atlantbh.auctionapp.repository.CategoryRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -11,8 +10,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @ExtendWith(MockitoExtension.class)
-class CategoryServiceTest {
+class CategoryServiceUnitTest {
 
     @Mock
     CategoryRepository categoryRepository;
@@ -28,8 +29,7 @@ class CategoryServiceTest {
         List<CategoryEntity> categoryEntities = List.of(categoryEntity1, categoryEntity2, categoryEntity3, categoryEntity4);
 
         Mockito.when(categoryRepository.findAll()).thenReturn(categoryEntities);
-        List<CategoryEntity> actualResult = categoryService.getAllCategories();
 
-        Assertions.assertEquals(actualResult.size(), categoryEntities.size());
+        assertThat(categoryService.getAllCategories().size()).isEqualTo(categoryEntities.size());
     }
 }
