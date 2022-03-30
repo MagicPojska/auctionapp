@@ -4,12 +4,18 @@ import Select from "react-select";
 import { getCategoriesList } from "../../utilities/productsApi";
 import { customStyles } from "../../utilities/selectStyle";
 import { myAccountPath, profilePath } from "../../utilities/paths";
+import { FileUploader } from "react-drag-drop-files";
+import { PHOTO_TYPES } from "../../utilities/constants";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StepOne = ({
   nextStep,
   handleInputData,
   productDetails,
   setProductDetails,
+  setImages,
+  images,
 }) => {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
@@ -56,6 +62,26 @@ const StepOne = ({
   const handleSubcategoryChange = (selectedOption) => {
     setProductDetails({ ...productDetails, categoryId: selectedOption.value });
   };
+
+  const handlePhotoChange = (photos) => {
+    if (photos.length >= 3 && photos.length <= 5) {
+      setImages(photos);
+    } else {
+      toast.error("Wrong number of pictures!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
+
+  const checkAllTheFields = () =>
+    images !== null &&
+    productDetails.categoryId &&
+    productDetails.description &&
+    productDetails.productName
+      ? nextStep()
+      : toast.error("Please add all the details!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
 
   return (
     <div className="border-2 px-24 pb-16 font-normal">
@@ -114,18 +140,32 @@ const StepOne = ({
         100 words (700 characters)
       </p>
 
-      <div className="border-2 border-dashed my-4 h-80 mb-16 ">
-        <label className="bg-bgWhite w-full h-full flex flex-col justify-center items-center space-y-3">
-          <span class="text-base font-bold leading-normal text-purple">
-            Upload Photos
-          </span>
-          <span class="text-base leading-normal">or just drag and drop</span>
-          <span class="text-base font-bold leading-normal text-textTetriary">
-            (Add at least 3 photos)
-          </span>
-          <input type="file" className="hidden" />
-        </label>
-      </div>
+      <FileUploader
+        handleChange={handlePhotoChange}
+        multiple={true}
+        name="photos"
+        types={PHOTO_TYPES}
+        onTypeError={() => {
+          toast.error("Wrong file type!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }}
+      >
+        <div className="border-2 border-dashed my-4 h-80 mb-16">
+          <label className="bg-bgWhite w-full h-full flex flex-col justify-center items-center space-y-3 cursor-pointer">
+            <span className="text-base font-bold leading-normal text-purple">
+              Upload Photos
+            </span>
+            <span className="text-base leading-normal">
+              or just drag and drop
+            </span>
+            <span className="text-base font-bold leading-normal text-textTetriary">
+              (Add at least 3 photos)
+            </span>
+            <div className=""></div>
+          </label>
+        </div>
+      </FileUploader>
 
       <div className="flex space-x-6 text-lg font-bold leading-7">
         <Link
@@ -134,10 +174,14 @@ const StepOne = ({
         >
           Cancel
         </Link>
-        <button className="flex-1 bg-purple py-3 text-white" onClick={nextStep}>
+        <button
+          className="flex-1 bg-purple py-3 text-white"
+          onClick={checkAllTheFields}
+        >
           Next
         </button>
       </div>
+      <ToastContainer />
     </div>
   );
 };

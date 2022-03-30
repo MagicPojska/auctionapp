@@ -36,3 +36,5 @@ export const SORT_BY = [
 
 export const GRID = "grid";
 export const LIST = "list";
+
+export const PHOTO_TYPES = ["JPG", "PNG", "JPEG"];
