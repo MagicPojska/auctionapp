@@ -6,6 +6,7 @@ import StepThree from "../components/AddItemFormSteps/StepThree";
 
 const AddItemPage = () => {
   const [step, setStep] = useState(1);
+  const [images, setImages] = useState(null);
   const [productDetails, setProductDetails] = useState({
     productName: "",
     description: "",
@@ -56,6 +57,8 @@ const AddItemPage = () => {
             handleInputData={handleInputData}
             productDetails={productDetails}
             setProductDetails={setProductDetails}
+            setImages={setImages}
+            images={images}
           />
         );
       case 2:
