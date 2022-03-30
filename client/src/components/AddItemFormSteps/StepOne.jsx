@@ -114,7 +114,9 @@ const StepOne = ({
         100 words (700 characters)
       </p>
 
-      <div className="border-2 my-4 h-32 mb-16">Photos here</div>
+      <div className="border-2 my-4 h-80 mb-16 ">
+        <input type="file" className="bg-bgWhite w-full h-full" />
+      </div>
 
       <div className="flex space-x-6 text-lg font-bold leading-7">
         <Link
