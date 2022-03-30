@@ -24,7 +24,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    public JwtFilter(@Lazy UserService userService, JwtUtil jwtUtil) {
+    public JwtFilter(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
