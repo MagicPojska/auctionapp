@@ -114,8 +114,17 @@ const StepOne = ({
         100 words (700 characters)
       </p>
 
-      <div className="border-2 my-4 h-80 mb-16 ">
-        <input type="file" className="bg-bgWhite w-full h-full" />
+      <div className="border-2 border-dashed my-4 h-80 mb-16 ">
+        <label className="bg-bgWhite w-full h-full flex flex-col justify-center items-center space-y-3">
+          <span class="text-base font-bold leading-normal text-purple">
+            Upload Photos
+          </span>
+          <span class="text-base leading-normal">or just drag and drop</span>
+          <span class="text-base font-bold leading-normal text-textTetriary">
+            (Add at least 3 photos)
+          </span>
+          <input type="file" className="hidden" />
+        </label>
       </div>
 
       <div className="flex space-x-6 text-lg font-bold leading-7">
