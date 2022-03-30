@@ -3,6 +3,8 @@ package com.atlantbh.auctionapp.service;
 import com.atlantbh.auctionapp.domain.model.User;
 import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -24,6 +27,7 @@ public class UserService implements UserDetailsService {
 
         UserEntity userRes = userRepository.findByEmail(email);
         if(userRes == null){
+            logger.error("User with email: " + email + " not found");
             throw new UsernameNotFoundException("Could not findUser with email = " + email);
         }
         return User.createFromEntity(userRes);

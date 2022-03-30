@@ -7,6 +7,8 @@ import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.LoginRequest;
 import com.atlantbh.auctionapp.request.RegisterRequest;
 import com.atlantbh.auctionapp.security.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,6 +26,8 @@ public class AuthService {
     private final JwtUtil jsonWebToken;
     private final AuthenticationManager authenticationManager;
 
+    Logger logger = LoggerFactory.getLogger(AuthService.class);
+
     public final String AUTHORIZATION = "Authorization";
     public final String BEARER = "Bearer ";
 
@@ -37,6 +41,7 @@ public class AuthService {
 
     public User register(RegisterRequest registerRequest) throws ConflictException {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
+            logger.error("User with email: " + registerRequest.getEmail() + " already exists");
             throw new ConflictException("Email is already in use.");
         }
         UserEntity entity = new UserEntity(

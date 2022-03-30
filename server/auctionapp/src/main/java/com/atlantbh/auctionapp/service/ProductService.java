@@ -56,6 +56,7 @@ public class ProductService {
     public ProductEntity getProductById(long id){
         ProductEntity product = productRepository.findProductById(id);
         if(product == null){
+            logger.error("Product with id: " + id + " not found");
             throw new NotFoundException("Product with id:" + id + " does not exist");
         }
         return product;
