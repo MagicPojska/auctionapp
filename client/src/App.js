@@ -20,7 +20,6 @@ import {
   loginPath,
   myAccountPath,
   privacyPolicyPath,
-  profilePath,
   registrationPath,
   sellerPath,
   shopProductPath,
