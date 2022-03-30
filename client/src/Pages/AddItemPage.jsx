@@ -82,7 +82,7 @@ const AddItemPage = () => {
   return (
     <>
       <CurrentPageNav title="Seller" />
-      <div className="flex w-full justify-center items-center">
+      <div className="flex w-full justify-center items-center mt-10">
         {renderPurpleDot()}
         <hr className="w-20" />
         {step === 2 || step === 3 ? renderPurpleDot() : renderHollowDot()}
