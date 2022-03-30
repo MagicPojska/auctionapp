@@ -2,10 +2,11 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import {
-  accountPath,
   categoriesPath,
   homePath,
   loginPath,
+  myAccountPath,
+  profilePath,
   registrationPath,
   shopPath,
 } from "../utilities/paths";
@@ -134,9 +135,9 @@ const Navbar = () => {
               </li>
               <li>
                 <NavLink
-                  to={accountPath}
+                  to={`${myAccountPath}${profilePath}`}
                   className={
-                    location.pathname.includes(accountPath)
+                    location.pathname.includes(myAccountPath)
                       ? "text-purple font-bold"
                       : ""
                   }
