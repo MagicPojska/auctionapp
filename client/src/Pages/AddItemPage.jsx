@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import CurrentPageNav from "../components/CurrentPageNav";
 import StepOne from "../components/AddItemFormSteps/StepOne";
 import StepTwo from "../components/AddItemFormSteps/StepTwo";

@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Select from "react-select";
 import { getCategoriesList } from "../../utilities/productsApi";
 import { customStyles } from "../../utilities/selectStyle";
+import { myAccountPath, profilePath } from "../../utilities/paths";
 
 const StepOne = ({
   nextStep,
@@ -56,13 +58,13 @@ const StepOne = ({
   };
 
   return (
-    <div className="border-2 px-24 font-normal">
+    <div className="border-2 px-24 pb-16 font-normal">
       <div className="py-6 bg-bgWhite mb-12">
         <h2 className="text-center text-2xl font-bold leading-7">ADD ITEM</h2>
       </div>
 
       <label className="text-lg leading-7">What do you sell?</label>
-      <div className="border-2 h-16 mb-8">
+      <div className="border-2 h-16 mb-8 mt-4">
         <input
           type="text"
           className="w-full h-full outline-none px-6 bg-bgWhite"
@@ -72,7 +74,7 @@ const StepOne = ({
         />
       </div>
 
-      <div className="flex space-x-6">
+      <div className="flex space-x-6 mb-8">
         <Select
           options={categories}
           onChange={onCategoryChange}
@@ -96,6 +98,34 @@ const StepOne = ({
             IndicatorSeparator: () => null,
           }}
         />
+      </div>
+
+      <label className="text-lg leading-7">Description</label>
+      <div className="border-2 my-4">
+        <textarea
+          className="w-full h-full outline-none p-6 bg-bgWhite"
+          maxLength={700}
+          rows={6}
+          value={productDetails.description}
+          onChange={handleInputData("description")}
+        />
+      </div>
+      <p className="text-textTetriary text-right mb-8">
+        100 words (700 characters)
+      </p>
+
+      <div className="border-2 my-4 h-32 mb-16">Photos here</div>
+
+      <div className="flex space-x-6 text-lg font-bold leading-7">
+        <Link
+          to={myAccountPath + profilePath}
+          className="flex-1 text-center border-4 py-3"
+        >
+          Cancel
+        </Link>
+        <button className="flex-1 bg-purple py-3 text-white" onClick={nextStep}>
+          Next
+        </button>
       </div>
     </div>
   );

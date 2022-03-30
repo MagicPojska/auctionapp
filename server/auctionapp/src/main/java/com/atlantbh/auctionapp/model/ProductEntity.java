@@ -27,7 +27,7 @@ public class ProductEntity {
     @Column(nullable = false)
     private String productName;
 
-    @Size(max = 255)
+    @Size(max = 700)
     @Column(nullable = false, columnDefinition="TEXT")
     private String description;
 
