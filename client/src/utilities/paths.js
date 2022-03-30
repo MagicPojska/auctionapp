@@ -10,3 +10,5 @@ export const categoriesPath = "/shop/categories";
 export const shopProductPath = "/shop/single-product";
 export const myAccountPath = "/my-account";
 export const profilePath = "/profile";
+export const addItemPath = myAccountPath + "/add-item";
+export const sellerPath = "/seller";

@@ -14,16 +14,20 @@ import NotFoundPage from "./Pages/NotFoundPage";
 
 import {
   aboutUsPath,
+  addItemPath,
   categoriesPath,
   homePath,
   loginPath,
   myAccountPath,
   privacyPolicyPath,
+  profilePath,
   registrationPath,
+  sellerPath,
   shopProductPath,
   termsPath,
 } from "./utilities/paths";
 import ScrollToTop from "./components/ScrollToTop";
+import AddItemPage from "./Pages/AddItemPage";
 
 const App = () => {
   return (
@@ -35,6 +39,7 @@ const App = () => {
         <Route path={`${categoriesPath}/:id`} element={<FilterPage />} />
         <Route path={loginPath} element={<LoginPage />} />
         <Route path={registrationPath} element={<RegistrationPage />} />
+        <Route path={addItemPath + sellerPath} element={<AddItemPage />} />
         <Route path={`${myAccountPath}/*`} element={<MyAccountPage />} />
         <Route
           path={`${shopProductPath}/:id`}
