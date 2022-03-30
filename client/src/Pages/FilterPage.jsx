@@ -133,7 +133,9 @@ const FilterPage = () => {
         </div>
 
         <PriceRangeSlider
-          onChange={(min, max) => getProducts(0, subCategories, min, max)}
+          onChange={(min, max) =>
+            getProducts(0, subCategories, min, max, sortBy)
+          }
           minValue={minValue}
           setMinValue={setMinValue}
           maxValue={maxValue}
