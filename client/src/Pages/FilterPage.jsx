@@ -9,6 +9,12 @@ import {
 } from "../utilities/productsApi";
 import SelectedFilters from "../components/SelectedFilters";
 import PriceRangeSlider from "../components/PriceRangeSlider";
+import { GRID, LIST, SORT_BY } from "../utilities/constants";
+import Select from "react-select";
+import { customStyles } from "../utilities/selectStyle";
+import { BsGrid3X3, BsList } from "react-icons/bs";
+import FilterProductsList from "../components/FilterProductsList";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const FilterPage = () => {
   const [categories, setCategories] = useState([]);
@@ -17,6 +23,8 @@ const FilterPage = () => {
   const [hasMore, setHasMore] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
+  const [sortBy, setSortBy] = useState("");
+  const [previewType, setPreviewType] = useState(GRID);
 
   //Had to lift up the state so it can be passed down to selectedFilters component and to update products with price range when changing subCategories
   const [minValue, setMinValue] = useState("");
@@ -40,9 +48,9 @@ const FilterPage = () => {
 
   useEffect(() => {
     subCategories.length > 0
-      ? getProducts(0, subCategories, minValue, maxValue)
+      ? getProducts(0, subCategories, minValue, maxValue, sortBy)
       : setProducts([]);
-  }, [subCategories]);
+  }, [subCategories, sortBy]);
 
   const getCategories = async () => {
     try {
@@ -57,7 +65,8 @@ const FilterPage = () => {
     page,
     subcategoryId,
     lowPrice = "",
-    highPrice = ""
+    highPrice = "",
+    sortBy = ""
   ) => {
     try {
       setIsLoading(true);
@@ -67,7 +76,8 @@ const FilterPage = () => {
         PAGE_SIZE,
         subcategoryId,
         lowPrice,
-        highPrice
+        highPrice,
+        sortBy
       );
 
       if (page === 0) {
@@ -86,7 +96,21 @@ const FilterPage = () => {
   };
 
   const loadMoreProducts = async () => {
-    await getProducts(pageNumber + 1, subCategories);
+    await getProducts(
+      pageNumber + 1,
+      subCategories,
+      minValue,
+      maxValue,
+      sortBy
+    );
+  };
+
+  const handleSortChange = (selectedOption) => {
+    setSortBy({
+      ...sortBy,
+      sortCriterium: selectedOption.sortBy,
+      sortOrder: selectedOption.orderBy,
+    });
   };
 
   return (
@@ -121,6 +145,39 @@ const FilterPage = () => {
       </div>
 
       <div className="flex flex-col w-full">
+        <div className="flex justify-between ml-6 mb-8">
+          <Select
+            defaultValue={SORT_BY[0]}
+            onChange={handleSortChange}
+            options={SORT_BY}
+            className="w-64"
+            styles={customStyles}
+            isSearchable={false}
+            components={{
+              IndicatorSeparator: () => null,
+            }}
+          />
+
+          <div className="flex space-x-5 text-textTetriary">
+            <button
+              onClick={() => setPreviewType(GRID)}
+              className={`flex items-center space-x-2 ${
+                previewType === GRID && "text-purple"
+              }`}
+            >
+              <BsGrid3X3 /> <span>Grid</span>
+            </button>
+            <button
+              onClick={() => setPreviewType(LIST)}
+              className={`flex items-center space-x-2 ${
+                previewType === LIST && "text-purple"
+              }`}
+            >
+              <BsList /> <span>List</span>
+            </button>
+          </div>
+        </div>
+
         <SelectedFilters
           categories={categories}
           subCategories={subCategories}
@@ -132,12 +189,26 @@ const FilterPage = () => {
           getProducts={getProducts}
         />
 
-        <FilterProductsGrid
-          products={products}
-          loadMoreProducts={loadMoreProducts}
-          hasMore={hasMore}
-          isLoading={isLoading}
-        />
+        {previewType === GRID ? (
+          <FilterProductsGrid products={products} isLoading={isLoading} />
+        ) : (
+          <FilterProductsList products={products} isLoading={isLoading} />
+        )}
+
+        <div className="w-full flex justify-center mt-20">
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <button
+              className={`py-4 px-14 bg-purple text-white text-base font-bold leading-7 ${
+                hasMore ? "" : "hidden"
+              }`}
+              onClick={loadMoreProducts}
+            >
+              Explore More
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

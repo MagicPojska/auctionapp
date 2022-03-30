@@ -5,6 +5,7 @@ import com.atlantbh.auctionapp.projections.PriceRangeProj;
 import com.atlantbh.auctionapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +38,11 @@ public class ProductController {
                                                                           @RequestParam(defaultValue = "9") Integer pageSize,
                                                                           @RequestParam long[] categoryId,
                                                                           @RequestParam(defaultValue = "0") double lowPrice,
-                                                                          @RequestParam(defaultValue = "99999") double highPrice){
-        Page<ProductEntity> list = productService.getAllProductsFromCategory(pageNumber, pageSize, categoryId, lowPrice, highPrice);
+                                                                          @RequestParam(defaultValue = "9999999") double highPrice,
+                                                                          @RequestParam(defaultValue = "productName") String sort,
+                                                                          Sort sortBy){
+
+        Page<ProductEntity> list = productService.getAllProductsFromCategory(pageNumber, pageSize, categoryId, lowPrice, highPrice, sortBy, sort);
 
         return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
     }
