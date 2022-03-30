@@ -10,6 +10,7 @@ import com.atlantbh.auctionapp.repository.BidRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.BidRequest;
+import com.atlantbh.auctionapp.response.BidResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ public class BidService {
         return bids;
     }
 
-    public String add(BidRequest bidRequest){
+    public BidResponse add(BidRequest bidRequest){
         ProductEntity product = productRepository.findProductById(bidRequest.getProductId());
         if (product.getStartPrice() >= bidRequest.getPrice())
             throw new BadRequestException("Price can't be lower than the product start price");
@@ -55,6 +56,7 @@ public class BidService {
 
         bidRepository.save(new BidsEntity(bidRequest.getPrice(), user, product));
 
-        return String.valueOf(bidRequest.getPrice());
+        BidResponse bid = new BidResponse(bidRequest.getPrice(), product.getNumberOfBids() + 1);
+        return bid;
     }
 }
