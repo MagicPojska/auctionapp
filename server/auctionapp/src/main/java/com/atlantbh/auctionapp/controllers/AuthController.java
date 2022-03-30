@@ -42,10 +42,9 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) throws Exception{
         try {
             authService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
-            final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getEmail());
 
             User user = authService.login(loginRequest);
-            return ResponseEntity.ok(new LoginResponse(user, jwtUtil.generateToken(userDetails)));
+            return ResponseEntity.ok(new LoginResponse(user, jwtUtil.generateToken(user)));
         } catch (AuthenticationException authExc) {
             throw new RuntimeException("Invalid Login Credentials");
         }
