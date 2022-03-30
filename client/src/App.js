@@ -8,7 +8,6 @@ import LoginPage from "./Pages/LoginPage";
 import RegistrationPage from "./Pages/RegistrationPage";
 import ProductOverviewPage from "./Pages/ProductOverviewPage";
 import MyAccountPage from "./Pages/MyAccountPage";
-import PageLayout from "./components/PageLayout";
 import LandingPage from "./Pages/LandingPage";
 import FilterPage from "./Pages/FilterPage";
 import NotFoundPage from "./Pages/NotFoundPage";
@@ -20,7 +19,6 @@ import {
   loginPath,
   myAccountPath,
   privacyPolicyPath,
-  profilePath,
   registrationPath,
   shopProductPath,
   termsPath,
@@ -42,30 +40,9 @@ const App = () => {
           path={`${shopProductPath}/:id`}
           element={<ProductOverviewPage />}
         />
-        <Route
-          path={aboutUsPath}
-          element={
-            <PageLayout>
-              <AboutPage />
-            </PageLayout>
-          }
-        />
-        <Route
-          path={termsPath}
-          element={
-            <PageLayout>
-              <TermsPage />
-            </PageLayout>
-          }
-        />
-        <Route
-          path={privacyPolicyPath}
-          element={
-            <PageLayout>
-              <PrivacyPolicyPage />
-            </PageLayout>
-          }
-        />
+        <Route path={aboutUsPath} element={<AboutPage />} />
+        <Route path={termsPath} element={<TermsPage />} />
+        <Route path={privacyPolicyPath} element={<PrivacyPolicyPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
