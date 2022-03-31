@@ -17,7 +17,7 @@ const AddItemPage = () => {
     startDate: moment().format("YYYY-MM-DD"),
     endDate: "",
     images: "",
-    addres: "",
+    address: "",
     email: "",
     city: "",
     zipCode: "",
