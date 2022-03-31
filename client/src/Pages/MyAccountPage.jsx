@@ -1,10 +1,14 @@
+import LoginPage from "../Pages/LoginPage";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import CurrentPageNav from "../components/CurrentPageNav";
-import { addItemPath, myAccountPath, sellerPath } from "../utilities/paths";
+import { useUserContext } from "../contexts/UserContextProvider";
+import { addItemPath, sellerPath } from "../utilities/paths";
 
 const MyAccountPage = () => {
-  return (
+  const { user } = useUserContext();
+
+  return user ? (
     <>
       <CurrentPageNav />
       <div className="px-40 2xl:px-72 mt-10">
@@ -21,7 +25,8 @@ const MyAccountPage = () => {
         </div>
       </div>
     </>
+  ) : (
+    <LoginPage />
   );
 };
-
 export default MyAccountPage;
