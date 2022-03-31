@@ -50,7 +50,7 @@ public class BidServiceUnitTest {
         LocalDateTime future = LocalDateTime.of(2055, 1, 1, 0, 0);
 
         BidRequest bidRequest = new BidRequest(1L, 1L, 55);
-        ProductEntity product = new ProductEntity("productName", "description", 20, now, future, "images", 1, new CategoryEntity());
+        ProductEntity product = new ProductEntity("productName", "description", 20, now, future, "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
         product.setId(1L);
         product.setNumberOfBids(3);
         UserEntity user = new UserEntity("firstName", "lastName", "email@gmail.com", "password");
@@ -73,7 +73,7 @@ public class BidServiceUnitTest {
         LocalDateTime future = LocalDateTime.of(2055, 1, 1, 0, 0);
 
         BidRequest bidRequest = new BidRequest(1L, 1L, 55);
-        ProductEntity product = new ProductEntity("productName", "description", 20, now, future, "images", 1, new CategoryEntity());
+        ProductEntity product = new ProductEntity("productName", "description", 20, now, future, "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
         product.setId(1L);
         product.setNumberOfBids(3);
         UserEntity user = new UserEntity("firstName", "lastName", "email@gmail.com", "password");
@@ -95,7 +95,7 @@ public class BidServiceUnitTest {
         LocalDateTime future = LocalDateTime.of(2019, 1, 1, 0, 0);
 
         BidRequest bidRequest = new BidRequest(1L, 1L, 55);
-        ProductEntity product = new ProductEntity("productName", "description", 20, now, future, "images", 1, new CategoryEntity());
+        ProductEntity product = new ProductEntity("productName", "description", 20, now, future, "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
         product.setId(1L);
         product.setNumberOfBids(3);
 
@@ -114,7 +114,7 @@ public class BidServiceUnitTest {
         LocalDateTime future = LocalDateTime.of(2055, 1, 1, 0, 0);
 
         BidRequest bidRequest = new BidRequest(1L, 1L, 15);
-        ProductEntity product = new ProductEntity("productName", "description", 20, now, future, "images", 1, new CategoryEntity());
+        ProductEntity product = new ProductEntity("productName", "description", 20, now, future, "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
         product.setId(2L);
         product.setNumberOfBids(3);
 
@@ -134,7 +134,7 @@ public class BidServiceUnitTest {
         LocalDateTime future = LocalDateTime.of(2055, 1, 1, 0, 0);
 
         BidRequest bidRequest = new BidRequest(1L, 1L, 30);
-        ProductEntity product = new ProductEntity("productName", "description", 20, now, future, "images", 1, new CategoryEntity());
+        ProductEntity product = new ProductEntity("productName", "description", 20, now, future, "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
         product.setId(1L);
         product.setNumberOfBids(3);
         UserEntity user = new UserEntity("firstName", "lastName", "email@gmail.com", "password");

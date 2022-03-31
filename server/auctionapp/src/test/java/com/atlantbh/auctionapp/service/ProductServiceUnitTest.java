@@ -36,8 +36,8 @@ class ProductServiceUnitTest {
         LocalDateTime future = LocalDateTime.of(2019, 1, 1, 0, 0);
         Sort sortOrder = Sort.by("startDate").descending();
         Pageable paging = PageRequest.of(0, 9, sortOrder);
-        ProductEntity product1 = new ProductEntity("productName", "description", 20, now, future, "images", 1, new CategoryEntity());
-        ProductEntity product2 = new ProductEntity("productName", "description", 20, now, future, "images", 1, new CategoryEntity());
+        ProductEntity product1 = new ProductEntity("productName", "description", 20, now, future, "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
+        ProductEntity product2 = new ProductEntity("productName", "description", 20, now, future, "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
         final Page<ProductEntity> expectedResult = new PageImpl<>(List.of(product1, product2));
 
         Mockito.when(productRepository.findAllByEndDateIsAfter(isA(LocalDateTime.class), eq(paging))).thenReturn(expectedResult);
@@ -50,7 +50,7 @@ class ProductServiceUnitTest {
     @DisplayName("Test should return product by id")
     void getProductById() {
         ProductService productService = new ProductService(productRepository);
-        ProductEntity expectedResult = new ProductEntity("productName", "description", 20, LocalDateTime.now(), LocalDateTime.now(), "images", 1L, new CategoryEntity());
+        ProductEntity expectedResult = new ProductEntity("productName", "description", 20, LocalDateTime.now(), LocalDateTime.now(), "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
         expectedResult.setId(1L);
         Mockito.when(productRepository.findProductById(1L)).thenReturn(expectedResult);
         ProductEntity product = productService.getProductById(1L);
