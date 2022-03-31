@@ -4,6 +4,7 @@ import com.atlantbh.auctionapp.exceptions.NotFoundException;
 import com.atlantbh.auctionapp.model.CategoryEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;
+import com.atlantbh.auctionapp.repository.CategoryRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,11 +27,13 @@ class ProductServiceUnitTest {
 
     @Mock
     private ProductRepository productRepository;
+    @Mock
+    private CategoryRepository categoryRepository;
 
     @Test
     @DisplayName("Test should return Page object of products")
     void getAllProducts() {
-        ProductService productService = new ProductService(productRepository);
+        ProductService productService = new ProductService(productRepository, null);
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime future = LocalDateTime.of(2019, 1, 1, 0, 0);
@@ -49,7 +52,7 @@ class ProductServiceUnitTest {
     @Test
     @DisplayName("Test should return product by id")
     void getProductById() {
-        ProductService productService = new ProductService(productRepository);
+        ProductService productService = new ProductService(productRepository, null);
         ProductEntity expectedResult = new ProductEntity("productName", "description", 20, LocalDateTime.now(), LocalDateTime.now(), "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
         expectedResult.setId(1L);
         Mockito.when(productRepository.findProductById(1L)).thenReturn(expectedResult);
@@ -60,7 +63,7 @@ class ProductServiceUnitTest {
     @Test
     @DisplayName("Test should return NotFoundException when product is not found")
     void findProductByIdAndExpectNotFoundException() {
-        ProductService productService = new ProductService(productRepository);
+        ProductService productService = new ProductService(productRepository, null);
 
         assertThatThrownBy(() -> productService.getProductById(1L)).isInstanceOf(NotFoundException.class);
     }
@@ -68,7 +71,7 @@ class ProductServiceUnitTest {
     @Test
     @DisplayName("Test should return product price range")
     void getPriceRange() {
-        ProductService productService = new ProductService(productRepository);
+        ProductService productService = new ProductService(productRepository, null);
         PriceRangeProj expectedResult = Mockito.mock(PriceRangeProj.class);
         Mockito.when(productRepository.getPriceRange()).thenReturn(expectedResult);
 

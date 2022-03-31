@@ -2,6 +2,7 @@ package com.atlantbh.auctionapp.controllers;
 
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;
+import com.atlantbh.auctionapp.request.ProductRequest;
 import com.atlantbh.auctionapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -56,5 +57,11 @@ public class ProductController {
     public ResponseEntity<PriceRangeProj> getProductPriceRange(){
         PriceRangeProj priceRange = productService.getPriceRange();
         return new ResponseEntity<>(priceRange, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @PostMapping("/add-item")
+    public ResponseEntity<ProductEntity> createProduct(@RequestBody ProductRequest productRequest){
+        ProductEntity createdProduct = productService.createProduct(productRequest);
+        return new ResponseEntity<>(createdProduct, new HttpHeaders(), HttpStatus.OK);
     }
 }

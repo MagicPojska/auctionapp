@@ -38,7 +38,6 @@ public class ProductEntity {
     @Column(nullable = false)
     private LocalDateTime startDate;
 
-    @NotBlank
     @Column(nullable = false)
     private LocalDateTime endDate;
 
@@ -68,7 +67,6 @@ public class ProductEntity {
     @javax.validation.constraints.Size(max = 32)
     private String phone;
 
-    @NotBlank
     @Column(nullable = false)
     private long userId;
 
