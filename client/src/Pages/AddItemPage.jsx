@@ -87,6 +87,7 @@ const AddItemPage = () => {
             prevStep={prevStep}
             handleInputData={handleInputData}
             productDetails={productDetails}
+            setProductDetails={setProductDetails}
           />
         );
     }

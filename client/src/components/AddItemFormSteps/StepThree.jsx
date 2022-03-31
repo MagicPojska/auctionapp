@@ -2,8 +2,18 @@ import { Link } from "react-router-dom";
 import { myAccountPath, profilePath } from "../../utilities/paths";
 import { customStyles } from "../../utilities/selectStyle";
 import Select from "react-select";
+import { countryList } from "../../utilities/countryList";
 
-const StepThree = ({ prevStep, productDetails, handleInputData }) => {
+const StepThree = ({
+  prevStep,
+  productDetails,
+  setProductDetails,
+  handleInputData,
+}) => {
+  const handleCountryChange = (selectedOption) => {
+    setProductDetails({ ...productDetails, country: selectedOption.value });
+  };
+
   return (
     <div className="border-2 pb-16 font-normal">
       <div className="py-6 bg-bgWhite mb-12">
@@ -61,10 +71,11 @@ const StepThree = ({ prevStep, productDetails, handleInputData }) => {
 
         <label className="text-lg leading-7">Country</label>
         <Select
+          options={countryList}
+          onChange={handleCountryChange}
           className="mb-8 mt-4"
           placeholder="eg. Spain"
           styles={customStyles}
-          isSearchable={false}
           components={{
             IndicatorSeparator: () => null,
           }}
