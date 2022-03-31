@@ -3,18 +3,21 @@ import CurrentPageNav from "../components/CurrentPageNav";
 import StepOne from "../components/AddItemFormSteps/StepOne";
 import StepTwo from "../components/AddItemFormSteps/StepTwo";
 import StepThree from "../components/AddItemFormSteps/StepThree";
+import moment from "moment";
+import { useUserContext } from "../contexts/UserContextProvider";
 
 const AddItemPage = () => {
+  const { user } = useUserContext();
   const [step, setStep] = useState(1);
   const [images, setImages] = useState(null);
   const [productDetails, setProductDetails] = useState({
     productName: "",
     description: "",
     startPrice: "",
-    startDate: "",
+    startDate: moment().format("YYYY-MM-DD"),
     endDate: "",
     images: "",
-    userId: "",
+    userId: user.id,
     categoryId: "",
   });
 
@@ -28,12 +31,13 @@ const AddItemPage = () => {
 
   const handleInputData = (input) => (e) => {
     const { value } = e.target;
-    console.log(productDetails);
 
     setProductDetails((prevState) => ({
       ...prevState,
       [input]: value,
     }));
+
+    console.log(productDetails);
   };
 
   const renderPurpleDot = () => (
@@ -67,6 +71,7 @@ const AddItemPage = () => {
             nextStep={nextStep}
             prevStep={prevStep}
             handleInputData={handleInputData}
+            setProductDetails={setProductDetails}
             productDetails={productDetails}
           />
         );
