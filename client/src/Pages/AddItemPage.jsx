@@ -17,6 +17,12 @@ const AddItemPage = () => {
     startDate: moment().format("YYYY-MM-DD"),
     endDate: "",
     images: "",
+    addres: "",
+    email: "",
+    city: "",
+    zipCode: "",
+    country: "",
+    phone: "",
     userId: user.id,
     categoryId: "",
   });
@@ -78,7 +84,6 @@ const AddItemPage = () => {
       case 3:
         return (
           <StepThree
-            nextStep={nextStep}
             prevStep={prevStep}
             handleInputData={handleInputData}
             productDetails={productDetails}

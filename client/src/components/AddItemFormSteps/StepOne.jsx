@@ -152,7 +152,7 @@ const StepOne = ({
           }}
         >
           <div className="border-2 border-dashed my-4 h-80 mb-16">
-            {images.length > 0 ? (
+            {images !== null && images.length > 0 ? (
               <label className="bg-bgWhite w-full h-full flex flex-col justify-center items-center space-y-3 cursor-pointer">
                 <span className="text-base font-bold leading-normal text-purple">
                   Number of images uploaded: {images.length}

@@ -70,6 +70,7 @@ const StepTwo = ({
           <div className="flex-1 border-2 h-16 p-6 flex justify-between items-center">
             <input
               type="date"
+              required="required"
               className="flex-1 outline-none"
               onChange={changeStartDate}
               value={productDetails.startDate}
@@ -80,6 +81,7 @@ const StepTwo = ({
           <div className="flex-1 border-2 h-16 p-6 flex justify-between items-center">
             <input
               type="date"
+              required="required"
               className="flex-1 outline-none"
               value={productDetails.endDate}
               onChange={changeEndDate}
