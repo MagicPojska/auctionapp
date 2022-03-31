@@ -17,6 +17,7 @@ const StepOne = ({
   setImages,
   images,
 }) => {
+  const [allCategoriesList, setAllCategoriesList] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
 
@@ -24,6 +25,7 @@ const StepOne = ({
     const getCategories = async () => {
       try {
         const response = await getCategoriesList();
+        setAllCategoriesList(response.data);
         setCategories(
           response.data
             .map((category) => ({
@@ -42,9 +44,8 @@ const StepOne = ({
 
   const onCategoryChange = async (selectedOption) => {
     try {
-      const response = await getCategoriesList();
       setSubcategories(
-        response.data
+        allCategoriesList
           .map((category) => ({
             value: category.id,
             label: category.categoryName,
