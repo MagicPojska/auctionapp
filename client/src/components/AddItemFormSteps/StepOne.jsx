@@ -152,18 +152,26 @@ const StepOne = ({
           }}
         >
           <div className="border-2 border-dashed my-4 h-80 mb-16">
-            <label className="bg-bgWhite w-full h-full flex flex-col justify-center items-center space-y-3 cursor-pointer">
-              <span className="text-base font-bold leading-normal text-purple">
-                Upload Photos
-              </span>
-              <span className="text-base leading-normal">
-                or just drag and drop
-              </span>
-              <span className="text-base font-bold leading-normal text-textTetriary">
-                (Add at least 3 photos)
-              </span>
-              <div className=""></div>
-            </label>
+            {images.length > 0 ? (
+              <label className="bg-bgWhite w-full h-full flex flex-col justify-center items-center space-y-3 cursor-pointer">
+                <span className="text-base font-bold leading-normal text-purple">
+                  Number of images uploaded: {images.length}
+                </span>
+              </label>
+            ) : (
+              <label className="bg-bgWhite w-full h-full flex flex-col justify-center items-center space-y-3 cursor-pointer">
+                <span className="text-base font-bold leading-normal text-purple">
+                  Upload Photos
+                </span>
+                <span className="text-base leading-normal">
+                  or just drag and drop
+                </span>
+                <span className="text-base font-bold leading-normal text-textTetriary">
+                  (Add at least 3 photos)
+                </span>
+                <div className=""></div>
+              </label>
+            )}
           </div>
         </FileUploader>
 
