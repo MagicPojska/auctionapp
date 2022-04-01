@@ -12,11 +12,13 @@ import {
   NOTIFICATION_SUCCESS,
 } from "../utilities/constants";
 import { BsChevronRight } from "react-icons/bs";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
   const [images, setImages] = useState([]);
   const [timeLeft, setTimeLeft] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [notification, setNotification] = useState("");
   const [bid, setBid] = useState("");
   const { id } = useParams();
@@ -34,6 +36,8 @@ const ProductOverviewPage = () => {
       setTimeLeft(calculateTimeLeft(response));
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -74,7 +78,11 @@ const ProductOverviewPage = () => {
 
   return (
     <>
-      {product ? (
+      {isLoading ? (
+        <div className="flex justify-center my-44 text-2xl font-bold">
+          <LoadingSpinner />
+        </div>
+      ) : product ? (
         <>
           <CurrentPageNav title={product.productName} />
           {notification && (
