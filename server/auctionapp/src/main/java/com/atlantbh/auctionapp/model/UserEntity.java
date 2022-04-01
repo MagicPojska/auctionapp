@@ -39,6 +39,30 @@ public class UserEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    private String address;
+
+    private String city;
+
+    @javax.validation.constraints.Size(max = 32)
+    private String zipCode;
+
+    private String country;
+
+    @javax.validation.constraints.Size(max = 32)
+    private String phone;
+
+    public UserEntity(String firstName, String lastName, String email, String password, String address, String city, String zipCode, String country, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.phone = phone;
+    }
+
     public UserEntity(String firstName, String lastName, String email, String password){
         this.firstName = firstName;
         this.lastName = lastName;
