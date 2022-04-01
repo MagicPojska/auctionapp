@@ -30,15 +30,14 @@ const StepThree = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(user);
     setProductDetails({
       ...productDetails,
-      address: user.address,
+      address: user.address === null ? "" : user.address,
       email: user.email,
-      phone: user.phone,
-      city: user.city,
-      country: user.country,
-      zipCode: user.zipCode,
+      phone: user.phone === null ? "" : user.phone,
+      city: user.city === null ? "" : user.city,
+      country: user.country === null ? "" : user.country,
+      zipCode: user.zipCode === null ? "" : user.zipCode,
     });
   }, []);
 
