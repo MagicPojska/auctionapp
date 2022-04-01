@@ -1,17 +1,21 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import {
   myAccountPath,
   profilePath,
   shopProductPath,
 } from "../../utilities/paths";
-import { customStyles } from "../../utilities/selectStyle";
 import Select from "react-select";
+import { customStyles } from "../../utilities/selectStyle";
 import { countryList } from "../../utilities/countryList";
 import { postProduct } from "../../utilities/productsApi";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { DATETIME_FORMAT } from "../../utilities/constants";
 import { postImagesToCloudinary } from "../../utilities/cloudinaryApi";
+import LoadingSpinner from "../LoadingSpinner";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StepThree = ({
   prevStep,
@@ -20,6 +24,7 @@ const StepThree = ({
   handleInputData,
   images,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleCountryChange = (selectedOption) => {
@@ -27,6 +32,7 @@ const StepThree = ({
   };
 
   const handlePostItem = async () => {
+    setIsLoading(true);
     let imageUrls = [];
     try {
       for (let i = 0; i < images.length; i++) {
@@ -54,7 +60,12 @@ const StepThree = ({
       const res = await postProduct(formData);
       navigate(shopProductPath + `/${res.data.id}`);
     } catch (error) {
+      toast.error("Something went wrong!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -152,15 +163,20 @@ const StepThree = ({
             >
               Back
             </button>
-            <button
-              onClick={handlePostItem}
-              className="flex-1 bg-purple py-3 text-white"
-            >
-              Done
-            </button>
+            {isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <button
+                onClick={handlePostItem}
+                className="flex-1 bg-purple py-3 text-white"
+              >
+                Done
+              </button>
+            )}
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
