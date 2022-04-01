@@ -6,28 +6,31 @@ export const capitalizeWord = (e) => {
 
 export const calculateTimeLeft = (response) => {
   const startDate = moment();
-  const endDate = new Date(response.data.endDate);
+  const endDate = moment(response.data.endDate);
 
-  const date = endDate - startDate;
+  const diff = endDate.diff(startDate);
+  const diffDuration = moment.duration(diff);
 
-  const diff = {
-    weeks: moment.duration(date).weeks(),
-    days: moment.duration(date).days(),
-    hours: moment.duration(date).hours(),
-    minutes: moment.duration(date).minutes(),
+  const daysBetween = endDate.diff(startDate, "days");
+
+  const differenceInTime = {
+    weeks: Math.floor(daysBetween / 7),
+    days: daysBetween % 7,
+    hours: diffDuration.hours(),
+    minutes: diffDuration.minutes(),
   };
-  return diff;
+  return differenceInTime;
 };
+
+// calculate
 
 export const parseTimeLeft = (timeLeft) => {
   return timeLeft.minutes < 0
     ? "Expired"
     : timeLeft.weeks > 0
-    ? `${timeLeft.weeks} ${
-        timeLeft.weeks === 1 ? "Week" : "Weeks"
-      } ${Math.floor(timeLeft.days % 7)} ${
-        timeLeft.days === 1 ? "Day" : "Days"
-      }`
+    ? `${timeLeft.weeks} ${timeLeft.weeks === 1 ? "Week" : "Weeks"} ${
+        timeLeft.days % 7
+      } ${timeLeft.days === 1 ? "Day" : "Days"}`
     : timeLeft.days > 0
     ? `${timeLeft.days} ${timeLeft.days === 1 ? "Day" : "Days"} ${
         timeLeft.days
