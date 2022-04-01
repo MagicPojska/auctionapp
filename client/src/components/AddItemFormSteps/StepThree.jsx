@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   myAccountPath,
   profilePath,
@@ -16,6 +16,7 @@ import { postImagesToCloudinary } from "../../utilities/cloudinaryApi";
 import LoadingSpinner from "../LoadingSpinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useUserContext } from "../../contexts/UserContextProvider";
 
 const StepThree = ({
   prevStep,
@@ -24,8 +25,22 @@ const StepThree = ({
   handleInputData,
   images,
 }) => {
+  const { user } = useUserContext();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(user);
+    setProductDetails({
+      ...productDetails,
+      address: user.address,
+      email: user.email,
+      phone: user.phone,
+      city: user.city,
+      country: user.country,
+      zipCode: user.zipCode,
+    });
+  }, []);
 
   const handleCountryChange = (selectedOption) => {
     setProductDetails({ ...productDetails, country: selectedOption.value });
