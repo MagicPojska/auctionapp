@@ -49,7 +49,11 @@ const LandingPage = () => {
       }
 
       if (!highlightedProduct) {
-        setHighlightedProduct(response.data.content[0]);
+        setHighlightedProduct({
+          ...highlightedProduct,
+          ...response.data.content[0],
+          images: response.data.content[0].images.split(",")[0],
+        });
       }
 
       setHasMore(!response.data.last);

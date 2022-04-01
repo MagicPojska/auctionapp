@@ -24,7 +24,7 @@ const HighlightedProduct = ({ highlightedProduct }) => {
       </div>
 
       <img
-        src={highlightedProduct.images.split(",")[0]}
+        src={highlightedProduct.images}
         alt=""
         className="h-[26rem] w-[22rem] object-cover"
       />
