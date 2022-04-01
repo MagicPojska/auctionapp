@@ -37,19 +37,35 @@ public class User implements UserDetails {
         return new User(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getEmail(), entity.getPassword(), entity.getAddress(), entity.getCity(), entity.getCountry(), entity.getPhone(), entity.getZipCode());
     }
 
+    public long getId() {
+        return id;
+    }
+
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public void setUsername(String email) {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -57,16 +73,44 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public long getId() {
-        return id;
+    public String getAddress() {
+        return address;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     @Override
