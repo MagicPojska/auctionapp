@@ -47,7 +47,6 @@ const CategoriesAccordion = ({
           </div>
           <div
             ref={contentElement}
-            // style={{ height: height }}
             className={`overflow-hidden transition-all duration-200 ${
               !isOpened && "hidden"
             }`}
@@ -65,14 +64,14 @@ const CategoriesAccordion = ({
                         className="accent-purple"
                         value={subcategory.id}
                         onChange={filterItems}
-                        defaultChecked={
-                          subcategory.supercategoryId === parseInt(id)
-                        }
+                        checked={subCategories.includes(
+                          subcategory.id.toString()
+                        )}
                       />
-                      <p className="text-textTetriary text-base font-light ml-3">
+                      <label className="text-textTetriary text-base font-light ml-3">
                         {subcategory.categoryName}&nbsp;(
                         {subcategory.numberOfProducts})
-                      </p>
+                      </label>
                     </div>
                   )
               )}

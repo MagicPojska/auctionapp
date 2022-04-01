@@ -1,15 +1,25 @@
 import { createContext, useContext, useState } from "react";
-import { getToken, removeUser, setUserSession } from "../utilities/auth";
+import {
+  removeUserFromSession,
+  removeUserFromStorage,
+  setUserInSession,
+  setUserInStorage,
+} from "../utilities/auth";
 import { logoutUser, signIn, signUp } from "../utilities/authApi";
 
 const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState("");
-  const login = async (user) => {
+  const [token, setToken] = useState("");
+  const login = async (user, rememberMe) => {
     try {
       const response = await signIn(user);
-      setUserSession(response.data.user, response.data.token);
+      if (rememberMe) {
+        setUserInStorage(response.data.user, response.data.token);
+      } else {
+        setUserInSession(response.data.user, response.data.token);
+      }
       return response;
     } catch (error) {
       console.error(error);
@@ -20,7 +30,7 @@ export const UserContextProvider = ({ children }) => {
   const register = async (user) => {
     try {
       const response = await signUp(user);
-      setUserSession(response.data.user, response.data.token);
+      setUserInStorage(response.data.user, response.data.token);
       return response;
     } catch (error) {
       console.error(error);
@@ -30,17 +40,21 @@ export const UserContextProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const token = getToken();
+      removeUserFromStorage();
+      removeUserFromSession();
+      setUser("");
       await logoutUser(token);
-      removeUser();
+      setToken("");
     } catch (error) {
+      setToken("");
       console.error(error);
-      removeUser();
     }
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, login, register, logout }}>
+    <UserContext.Provider
+      value={{ user, setUser, token, setToken, login, register, logout }}
+    >
       {children}
     </UserContext.Provider>
   );

@@ -7,3 +7,25 @@
 .scrollbar {
   scrollbar-width: thin;
 }
+
+input[type="range"]::-webkit-slider-thumb {
+  pointer-events: auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 6px solid white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  -webkit-appearance: none;
+  @apply bg-purple;
+}
+
+input[type="range"]::-moz-range-thumb {
+  pointer-events: auto;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 6px solid white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  -webkit-appearance: none;
+  @apply bg-purple;
+}

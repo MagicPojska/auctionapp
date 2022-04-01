@@ -1,5 +1,3 @@
-import { getToken } from "./auth";
-import { API, addAuthHeader } from "./authApi";
+import { API } from "./authApi";
 
-export const postBid = (formData) =>
-  API.post("/bids/add", formData, addAuthHeader(getToken()));
+export const postBid = (formData) => API.post("/bids/add", formData);

@@ -14,5 +14,5 @@ public interface BidRepository extends JpaRepository<BidsEntity, Long> {
 
     @Query(value = "SELECT MAX(price) FROM auction.bids b " +
             "WHERE b.product_id = :product_id", nativeQuery = true)
-    BigDecimal getMaxBidFromProduct(@Param("product_id") Long productId);
+    Double getMaxBidFromProduct(@Param("product_id") Long productId);
 }

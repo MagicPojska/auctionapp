@@ -10,16 +10,27 @@ import {
   shopPath,
 } from "../utilities/paths";
 import SocialMedia from "../components/SocialMedia";
-import { getUserSession } from "../utilities/auth";
+import {
+  getTokenFromSession,
+  getTokenFromStorage,
+  getUserFromSession,
+  getUserFromStorage,
+} from "../utilities/auth";
 import { useUserContext } from "../contexts/UserContextProvider";
 
 const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
-  const { logout, user, setUser } = useUserContext();
+  const { logout, user, setUser, setToken } = useUserContext();
 
   useEffect(() => {
-    setUser(getUserSession());
+    if (getUserFromStorage() !== null) {
+      setUser(getUserFromStorage());
+      setToken(getTokenFromStorage());
+    } else if (getUserFromSession() !== null) {
+      setUser(getUserFromSession());
+      setToken(getTokenFromSession());
+    }
   }, [location]);
 
   const handleSearch = (e) => {
@@ -28,7 +39,6 @@ const Navbar = () => {
   };
 
   const handleLogout = async () => {
-    setUser("");
     await logout();
   };
   return (
