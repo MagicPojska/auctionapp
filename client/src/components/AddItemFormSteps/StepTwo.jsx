@@ -14,16 +14,16 @@ const StepTwo = ({
 }) => {
   const changeStartDate = (e) => {
     //check if date is lower than current date
-    let startDateInput = moment(e.target.value).format("YYYY-MM-DD");
+    const startDateInput = moment(e.target.value).format("YYYY-MM-DD");
     const currentDate = moment().format("YYYY-MM-DD");
 
     if (moment(startDateInput).isBefore(currentDate)) {
       setProductDetails({ ...productDetails, startDate: currentDate });
       toast.error("Date cannot be in the past");
     } else {
-      setProductDetails({ ...productDetails, startDate: startDateInput });
       setProductDetails({
         ...productDetails,
+        startDate: startDateInput,
         endDate: moment(startDateInput).add(7, "days").format("YYYY-MM-DD"),
       });
     }
