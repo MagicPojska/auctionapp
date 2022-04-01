@@ -1,17 +1,61 @@
 import { Link } from "react-router-dom";
-import { myAccountPath, profilePath } from "../../utilities/paths";
+import {
+  myAccountPath,
+  profilePath,
+  shopProductPath,
+} from "../../utilities/paths";
 import { customStyles } from "../../utilities/selectStyle";
 import Select from "react-select";
 import { countryList } from "../../utilities/countryList";
+import { postProduct } from "../../utilities/productsApi";
+import { useNavigate } from "react-router-dom";
+import moment from "moment";
+import { DATETIME_FORMAT } from "../../utilities/constants";
+import { postImagesToCloudinary } from "../../utilities/cloudinaryApi";
 
 const StepThree = ({
   prevStep,
   productDetails,
   setProductDetails,
   handleInputData,
+  images,
 }) => {
+  const navigate = useNavigate();
+
   const handleCountryChange = (selectedOption) => {
     setProductDetails({ ...productDetails, country: selectedOption.value });
+  };
+
+  const handlePostItem = async () => {
+    let imageUrls = [];
+    try {
+      for (let i = 0; i < images.length; i++) {
+        const imageData = new FormData();
+        imageData.append("file", images[i]);
+        imageData.append(
+          "upload_preset",
+          process.env.REACT_APP_CLOUDINARY_PRESET_NAME
+        );
+
+        const response = await postImagesToCloudinary(imageData);
+
+        imageUrls.push(response.data.url);
+      }
+
+      const formData = productDetails;
+      formData.images = imageUrls.join();
+      formData.startDate = moment(productDetails.startDate).format(
+        DATETIME_FORMAT
+      );
+      formData.endDate = moment(productDetails.startDate).format(
+        DATETIME_FORMAT
+      );
+
+      const res = await postProduct(formData);
+      navigate(shopProductPath + `/${res.data.id}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -108,7 +152,12 @@ const StepThree = ({
             >
               Back
             </button>
-            <button className="flex-1 bg-purple py-3 text-white">Done</button>
+            <button
+              onClick={handlePostItem}
+              className="flex-1 bg-purple py-3 text-white"
+            >
+              Done
+            </button>
           </div>
         </div>
       </div>

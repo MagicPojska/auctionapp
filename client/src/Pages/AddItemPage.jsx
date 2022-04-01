@@ -42,8 +42,6 @@ const AddItemPage = () => {
       ...prevState,
       [input]: value,
     }));
-
-    console.log(productDetails);
   };
 
   const renderPurpleDot = () => (
@@ -88,6 +86,7 @@ const AddItemPage = () => {
             handleInputData={handleInputData}
             productDetails={productDetails}
             setProductDetails={setProductDetails}
+            images={images}
           />
         );
     }
