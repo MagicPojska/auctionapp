@@ -21,7 +21,7 @@ const StepTwo = ({
       setProductDetails({ ...productDetails, startDate: currentDate });
       toast.error("Date cannot be in the past");
     } else {
-      setProductDetails({ ...productDetails, endDate: startDateInput });
+      setProductDetails({ ...productDetails, startDate: startDateInput });
     }
   };
 
@@ -72,8 +72,8 @@ const StepTwo = ({
               type="date"
               required="required"
               className="flex-1 outline-none"
-              onChange={changeStartDate}
               value={productDetails.startDate}
+              onChange={changeStartDate}
             />
             <AiOutlineCalendar className="text-2xl" />
           </div>
