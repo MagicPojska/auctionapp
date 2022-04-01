@@ -67,9 +67,7 @@ const StepThree = ({
       formData.startDate = moment(productDetails.startDate).format(
         DATETIME_FORMAT
       );
-      formData.endDate = moment(productDetails.startDate).format(
-        DATETIME_FORMAT
-      );
+      formData.endDate = moment(productDetails.endDate).format(DATETIME_FORMAT);
 
       const res = await postProduct(formData);
       navigate(shopProductPath + `/${res.data.id}`);
