@@ -69,8 +69,8 @@ class AuthServiceUnitTest {
         AuthService authService = new AuthService(userRepository, null, null, null);
 
         LoginRequest loginRequest = new LoginRequest("test@gmail.com", "password");
-        UserEntity userEntity = new UserEntity("Safet", "Pojskic", "test@gmail.com", "password");
-        User expectedUserResult = new User(1L, "Safet", "Pojskic", "test@gmail.com", "password");
+        UserEntity userEntity = new UserEntity("Safet", "Pojskic", "test@gmail.com", "testPassword", null, null, null, null, null);
+        User expectedUserResult = new User(1L, "Safet", "Pojskic", "test@gmail.com", "testPassword", null, null, null, null, null);
 
         Mockito.when(userRepository.findByEmail(loginRequest.getEmail())).thenReturn(userEntity);
         UserDetails actualResult = authService.login(loginRequest);

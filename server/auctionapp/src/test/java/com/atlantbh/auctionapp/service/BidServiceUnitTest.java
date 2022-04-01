@@ -53,7 +53,7 @@ public class BidServiceUnitTest {
         ProductEntity product = new ProductEntity("productName", "description", 20, now, future, "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
         product.setId(1L);
         product.setNumberOfBids(3);
-        UserEntity user = new UserEntity("firstName", "lastName", "email@gmail.com", "password");
+        UserEntity user = new UserEntity("Safet", "Pojskic", "test@gmail.com", "testPassword", null, null, null, null, null);
         user.setId(2L);
         Double highestBid = 40.0;
 
@@ -76,7 +76,7 @@ public class BidServiceUnitTest {
         ProductEntity product = new ProductEntity("productName", "description", 20, now, future, "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
         product.setId(1L);
         product.setNumberOfBids(3);
-        UserEntity user = new UserEntity("firstName", "lastName", "email@gmail.com", "password");
+        UserEntity user = new UserEntity("Safet", "Pojskic", "test@gmail.com", "testPassword", null, null, null, null, null);
         user.setId(1L);
 
         Mockito.when(productRepository.findProductById(bidRequest.getProductId())).thenReturn(product);
@@ -137,7 +137,7 @@ public class BidServiceUnitTest {
         ProductEntity product = new ProductEntity("productName", "description", 20, now, future, "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
         product.setId(1L);
         product.setNumberOfBids(3);
-        UserEntity user = new UserEntity("firstName", "lastName", "email@gmail.com", "password");
+        UserEntity user = new UserEntity("Safet", "Pojskic", "test@gmail.com", "testPassword", null, null, null, null, null);
         user.setId(2L);
         Double highestBid = 40.0;
 

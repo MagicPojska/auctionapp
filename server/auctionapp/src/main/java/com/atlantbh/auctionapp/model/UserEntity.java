@@ -62,11 +62,4 @@ public class UserEntity {
         this.country = country;
         this.phone = phone;
     }
-
-    public UserEntity(String firstName, String lastName, String email, String password){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-    }
 }

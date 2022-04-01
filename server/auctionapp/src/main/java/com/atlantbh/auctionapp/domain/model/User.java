@@ -14,19 +14,27 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
+    private String address;
+    private String city;
+    private String country;
+    private String phone;
+    private String zipCode;
 
-    public User(long id, String firstName, String lastName, String email, String password) {
+    public User(long id, String firstName, String lastName, String email, String password, String address, String city, String country, String phone, String zipCode) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.address = address;
+        this.city = city;
+        this.country = country;
+        this.phone = phone;
+        this.zipCode = zipCode;
     }
 
     public static User createFromEntity(UserEntity entity) {
-        User user = new User(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getEmail(), entity.getPassword());
-
-        return user;
+        return new User(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getEmail(), entity.getPassword(), entity.getAddress(), entity.getCity(), entity.getCountry(), entity.getPhone(), entity.getZipCode());
     }
 
     public void setId(long id) {
