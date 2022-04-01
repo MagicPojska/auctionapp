@@ -4,10 +4,8 @@ import StepOne from "../components/AddItemFormSteps/StepOne";
 import StepTwo from "../components/AddItemFormSteps/StepTwo";
 import StepThree from "../components/AddItemFormSteps/StepThree";
 import moment from "moment";
-import { useUserContext } from "../contexts/UserContextProvider";
 
 const AddItemPage = () => {
-  const { user } = useUserContext();
   const [step, setStep] = useState(1);
   const [images, setImages] = useState(null);
   const [productDetails, setProductDetails] = useState({
@@ -23,7 +21,7 @@ const AddItemPage = () => {
     zipCode: "",
     country: "",
     phone: "",
-    userId: user.id,
+    userId: "",
     categoryId: "",
   });
 

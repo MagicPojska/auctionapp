@@ -68,16 +68,16 @@ const StepThree = ({
         DATETIME_FORMAT
       );
       formData.endDate = moment(productDetails.endDate).format(DATETIME_FORMAT);
+      formData.userId = user.id;
 
       const res = await postProduct(formData);
       navigate(shopProductPath + `/${res.data.id}`);
     } catch (error) {
+      setIsLoading(false);
       toast.error("Something went wrong!", {
         position: toast.POSITION.TOP_CENTER,
       });
       console.log(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -168,24 +168,25 @@ const StepThree = ({
               Cancel
             </Link>
           </div>
-          <div className="flex-1 flex space-x-6">
-            <button
-              className="flex-1 bg-purple py-3 text-white"
-              onClick={prevStep}
-            >
-              Back
-            </button>
-            {isLoading ? (
-              <LoadingSpinner />
-            ) : (
+          {isLoading ? (
+            <LoadingSpinner width={"w-12 h-12"} />
+          ) : (
+            <div className="flex-1 flex space-x-6">
+              <button
+                className="flex-1 bg-purple py-3 text-white"
+                onClick={prevStep}
+              >
+                Back
+              </button>
+
               <button
                 onClick={handlePostItem}
                 className="flex-1 bg-purple py-3 text-white"
               >
                 Done
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
       <ToastContainer />
