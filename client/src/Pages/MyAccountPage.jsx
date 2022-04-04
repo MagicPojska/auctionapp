@@ -3,8 +3,15 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { Link, useLocation } from "react-router-dom";
 import CurrentPageNav from "../components/CurrentPageNav";
 import { useUserContext } from "../contexts/UserContextProvider";
-import { addItemPath, sellerPath } from "../utilities/paths";
+import {
+  addItemPath,
+  becomeSellerPath,
+  myAccountPath,
+  profilePath,
+  sellerPath,
+} from "../utilities/paths";
 import { profileTabs } from "../utilities/constants";
+import ProfileTab from "../components/MyAccount/ProfileTab";
 
 const MyAccountPage = () => {
   const { user } = useUserContext();
@@ -38,6 +45,13 @@ const MyAccountPage = () => {
             <span>ADD ITEM</span>
           </Link>
         </div>
+
+        {(() => {
+          switch (location.pathname) {
+            case `${myAccountPath}${profilePath}`:
+              return <ProfileTab />;
+          }
+        })()}
       </div>
     </>
   ) : (
