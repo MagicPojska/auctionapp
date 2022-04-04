@@ -1,9 +1,15 @@
+import { useState } from "react";
 import Select from "react-select";
 import { countryList } from "../../utilities/countryList";
-
 import { customStyles } from "../../utilities/selectStyle";
+import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 
 const ProfileTab = () => {
+  const [isOpened, setIsOpened] = useState(false);
+
+  const handleOpening = () => {
+    setIsOpened(!isOpened);
+  };
   return (
     <div className="mt-16">
       <div className="w-full border-2">
@@ -105,11 +111,21 @@ const ProfileTab = () => {
       </div>
 
       <div className="w-full border-2 mt-6 font-normal">
-        <h2 className="px-8 py-4 text-lg font-normal leading-7 bg-bgWhite">
+        <h2
+          className="px-8 py-4 text-lg font-normal leading-7 bg-bgWhite cursor-pointer flex items-center"
+          onClick={handleOpening}
+        >
+          <span className="mr-4">
+            {isOpened ? <BsChevronUp /> : <BsChevronDown />}
+          </span>{" "}
           Shipping Address (Optional)
         </h2>
 
-        <div className="pt-5 pl-5 2xl:pl-20 pr-24 2xl:pr-36 flex">
+        <div
+          className={`${
+            !isOpened && "hidden"
+          } pt-5 pl-5 2xl:pl-20 pr-24 2xl:pr-36 flex`}
+        >
           <div className="mr-28 min-w-fit w-80">
             <div className="w-80"></div>
           </div>
@@ -156,7 +172,7 @@ const ProfileTab = () => {
             <label className="text-lg leading-7">Country</label>
             <Select
               options={countryList}
-              className="mb-8 mt-4"
+              className="mb-16 mt-4"
               placeholder="eg. Spain"
               styles={customStyles}
               components={{

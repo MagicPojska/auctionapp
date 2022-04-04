@@ -10,7 +10,6 @@ const CategoriesAccordion = ({
   const [isOpened, setOpened] = useState(
     parseInt(id) === item.id ? true : false
   );
-  const contentElement = useRef(null);
 
   useEffect(() => {
     const idList = categories
@@ -46,7 +45,6 @@ const CategoriesAccordion = ({
             <p className="font-normal">{isOpened ? "-" : "+"}</p>
           </div>
           <div
-            ref={contentElement}
             className={`overflow-hidden transition-all duration-200 ${
               !isOpened && "hidden"
             }`}
