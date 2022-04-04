@@ -1,4 +1,5 @@
 import Select from "react-select";
+import { countryList } from "../../utilities/countryList";
 
 import { customStyles } from "../../utilities/selectStyle";
 
@@ -99,6 +100,69 @@ const ProfileTab = () => {
                 placeholder="+32534231564"
               />
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full border-2 mt-6 font-normal">
+        <h2 className="px-8 py-4 text-lg font-normal leading-7 bg-bgWhite">
+          Shipping Address (Optional)
+        </h2>
+
+        <div className="pt-5 pl-5 2xl:pl-20 pr-24 2xl:pr-36 flex">
+          <div className="mr-28 min-w-fit w-80">
+            <div className="w-80"></div>
+          </div>
+
+          <div className="flex flex-col w-full">
+            <label className="text-lg leading-7">Street</label>
+            <div className="border-2 h-16 mb-8 mt-4">
+              <input
+                type="text"
+                className="w-full h-full outline-none px-6 bg-bgWhite"
+                placeholder="123 Main Street"
+              />
+            </div>
+
+            <div className="flex space-x-6 mb-8">
+              <div className=" flex-1  flex flex-col">
+                <label className="text-lg leading-7">City</label>
+                <input
+                  type="text"
+                  placeholder="eg. Madrid"
+                  className="w-full border-2 h-16 p-6 mt-4 bg-bgWhite outline-none"
+                />
+              </div>
+
+              <div className=" flex-1  flex flex-col">
+                <label className="text-lg leading-7">Zip Code</label>
+                <input
+                  type="number"
+                  placeholder="XXXXXX"
+                  className="w-full border-2 h-16 p-6 mt-4 bg-bgWhite outline-none"
+                />
+              </div>
+            </div>
+
+            <label className="text-lg leading-7">State</label>
+            <div className="border-2 h-16 mb-8 mt-4">
+              <input
+                type="text"
+                className="w-full h-full outline-none px-6 bg-bgWhite"
+                placeholder="eg. Asturias"
+              />
+            </div>
+
+            <label className="text-lg leading-7">Country</label>
+            <Select
+              options={countryList}
+              className="mb-8 mt-4"
+              placeholder="eg. Spain"
+              styles={customStyles}
+              components={{
+                IndicatorSeparator: () => null,
+              }}
+            />
           </div>
         </div>
       </div>
