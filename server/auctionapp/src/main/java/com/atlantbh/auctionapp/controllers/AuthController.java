@@ -6,11 +6,9 @@ import com.atlantbh.auctionapp.request.RegisterRequest;
 import com.atlantbh.auctionapp.response.LoginResponse;
 import com.atlantbh.auctionapp.security.JwtUtil;
 import com.atlantbh.auctionapp.service.AuthService;
-import com.atlantbh.auctionapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,14 +19,12 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final AuthService authService;
-    private final UserService userService;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public AuthController(AuthService authService, JwtUtil jwtUtil, UserService userService) {
+    public AuthController(AuthService authService, JwtUtil jwtUtil) {
         this.authService = authService;
         this.jwtUtil = jwtUtil;
-        this.userService = userService;
     }
 
     @PostMapping("/register")
