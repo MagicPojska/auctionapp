@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { shopProductPath } from "../utilities/paths";
-import LoadingSpinner from "./LoadingSpinner";
+import { shopProductPath } from "../../utilities/paths";
+import LoadingSpinner from "../LoadingSpinner";
 import { AiOutlineHeart, AiOutlineDollarCircle } from "react-icons/ai";
 
 const FilterProductsList = ({ products, isLoading }) => {

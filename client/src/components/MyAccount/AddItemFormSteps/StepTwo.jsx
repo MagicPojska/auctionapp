@@ -1,6 +1,6 @@
 import { AiOutlineCalendar } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { myAccountPath, profilePath } from "../../utilities/paths";
+import { myAccountPath, profilePath } from "../../../utilities/paths";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";

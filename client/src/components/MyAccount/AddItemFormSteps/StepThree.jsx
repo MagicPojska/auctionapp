@@ -4,19 +4,19 @@ import {
   myAccountPath,
   profilePath,
   shopProductPath,
-} from "../../utilities/paths";
+} from "../../../utilities/paths";
 import Select from "react-select";
-import { customStyles } from "../../utilities/selectStyle";
-import { countryList } from "../../utilities/countryList";
-import { postProduct } from "../../utilities/productsApi";
+import { customStyles } from "../../../utilities/selectStyle";
+import { countryList } from "../../../utilities/countryList";
+import { postProduct } from "../../../utilities/productsApi";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { DATETIME_FORMAT } from "../../utilities/constants";
-import { postImagesToCloudinary } from "../../utilities/cloudinaryApi";
-import LoadingSpinner from "../LoadingSpinner";
+import { DATETIME_FORMAT } from "../../../utilities/constants";
+import { postImagesToCloudinary } from "../../../utilities/cloudinaryApi";
+import LoadingSpinner from "../../LoadingSpinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useUserContext } from "../../contexts/UserContextProvider";
+import { useUserContext } from "../../../contexts/UserContextProvider";
 
 const StepThree = ({
   prevStep,

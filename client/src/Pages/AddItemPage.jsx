@@ -1,8 +1,8 @@
 import { useState } from "react";
 import CurrentPageNav from "../components/CurrentPageNav";
-import StepOne from "../components/AddItemFormSteps/StepOne";
-import StepTwo from "../components/AddItemFormSteps/StepTwo";
-import StepThree from "../components/AddItemFormSteps/StepThree";
+import StepOne from "../components/MyAccount/AddItemFormSteps/StepOne";
+import StepTwo from "../components/MyAccount/AddItemFormSteps/StepTwo";
+import StepThree from "../components/MyAccount/AddItemFormSteps/StepThree";
 import moment from "moment";
 
 const AddItemPage = () => {
