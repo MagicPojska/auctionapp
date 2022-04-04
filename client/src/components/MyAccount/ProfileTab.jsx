@@ -54,7 +54,10 @@ const ProfileTab = () => {
               />
             </div>
 
-            <div className="flex space-x-6 mb-8">
+            <label className="text-lg leading-7 font-normal">
+              Date of Birth
+            </label>
+            <div className="flex space-x-6 mb-8 mt-4">
               <Select
                 className="flex-1"
                 placeholder="DD"
