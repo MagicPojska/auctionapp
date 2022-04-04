@@ -1,11 +1,11 @@
 package com.atlantbh.auctionapp.domain.model;
 
-
 import com.atlantbh.auctionapp.model.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 
 public class User implements UserDetails {
 
@@ -14,27 +14,41 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
+    private Date dateOfBirth;
+    private boolean isActive;
     private String address;
     private String city;
     private String country;
     private String phone;
     private String zipCode;
+    private String profileImage;
 
-    public User(long id, String firstName, String lastName, String email, String password, String address, String city, String country, String phone, String zipCode) {
+    public User(long id, String firstName, String lastName, String email, String password, Date dateOfBirth, boolean isActive, String address, String city, String country, String phone, String zipCode, String profileImage) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.dateOfBirth = dateOfBirth;
+        this.isActive = isActive;
         this.address = address;
         this.city = city;
         this.country = country;
         this.phone = phone;
         this.zipCode = zipCode;
+        this.profileImage = profileImage;
+    }
+
+    public User(long id, String firstName, String lastName, String email, String password) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
     }
 
     public static User createFromEntity(UserEntity entity) {
-        return new User(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getEmail(), entity.getPassword(), entity.getAddress(), entity.getCity(), entity.getCountry(), entity.getPhone(), entity.getZipCode());
+        return new User(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getEmail(), entity.getPassword(), entity.getDateOfBirth(), entity.isActive(), entity.getAddress(), entity.getCity(), entity.getCountry(), entity.getPhone(), entity.getZipCode(), entity.getProfileImage());
     }
 
     public long getId() {
@@ -71,6 +85,22 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public String getAddress() {
@@ -111,6 +141,14 @@ public class User implements UserDetails {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     @Override

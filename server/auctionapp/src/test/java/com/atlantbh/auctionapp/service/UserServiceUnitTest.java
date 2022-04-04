@@ -26,8 +26,8 @@ public class UserServiceUnitTest {
     @DisplayName("Test if User is returned if user is found by email")
     void loadUserByUsername() {
         UserService userService = new UserService(userRepository);
-        UserEntity userEntity = new UserEntity("Safet", "Pojskic", "test@gmail.com", "testPassword", null, null, null, null, null);
-        User expectedUserResult = new User(1L, "Safet", "Pojskic", "test@gmail.com", "testPassword", null, null, null, null, null);
+        UserEntity userEntity = new UserEntity("Safet", "Pojskic", "test@gmail.com", "testPassword");
+        User expectedUserResult = new User(1L, "Safet", "Pojskic", "test@gmail.com", "testPassword");
 
         Mockito.when(userRepository.findByEmail("test@gmail.com")).thenReturn(userEntity);
         UserDetails actualResult = userService.loadUserByUsername("test@gmail.com");

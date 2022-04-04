@@ -19,7 +19,7 @@ const MyAccountPage = () => {
             {profileTabs.map((tab) => (
               <Link
                 to={tab.path}
-                className={`p-4 flex items-center ${
+                className={`px-4 py-3 flex items-center ${
                   location.pathname.includes(tab.path) && "bg-purple text-white"
                 }`}
               >
@@ -27,6 +27,7 @@ const MyAccountPage = () => {
               </Link>
             ))}
           </div>
+
           <Link
             to={addItemPath + sellerPath}
             className="bg-purple text-white font-bold text-base leading-7 py-3 px-14 flex items-center space-x-8"

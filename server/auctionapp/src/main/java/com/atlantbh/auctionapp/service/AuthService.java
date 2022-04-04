@@ -48,12 +48,7 @@ public class AuthService {
                 registerRequest.getFirstName(),
                 registerRequest.getLastName(),
                 registerRequest.getEmail(),
-                passwordEncoder.encode(registerRequest.getPassword()),
-                null,
-                null,
-                null,
-                null,
-                null);
+                passwordEncoder.encode(registerRequest.getPassword()));
 
         userRepository.save(entity);
 
