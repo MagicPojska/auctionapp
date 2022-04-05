@@ -5,7 +5,6 @@ import CurrentPageNav from "../components/CurrentPageNav";
 import { useUserContext } from "../contexts/UserContextProvider";
 import {
   addItemPath,
-  becomeSellerPath,
   myAccountPath,
   profilePath,
   sellerPath,
@@ -23,15 +22,18 @@ const MyAccountPage = () => {
       <div className="px-40 2xl:px-72 mt-10">
         <div className="flex justify-between">
           <div className="flex space-x-2 font-normal">
-            {profileTabs.map((tab) => (
-              <Link
-                to={tab.path}
-                className={`px-4 py-3 flex items-center ${
-                  location.pathname.includes(tab.path) && "bg-purple text-white"
-                }`}
-              >
-                <tab.icon className="mr-4" /> {tab.title}
-              </Link>
+            {profileTabs.map((tab, id) => (
+              <div key={id}>
+                <Link
+                  to={tab.path}
+                  className={`px-4 py-3 flex items-center ${
+                    location.pathname.includes(tab.path) &&
+                    "bg-purple text-white"
+                  }`}
+                >
+                  <tab.icon className="mr-4" /> {tab.title}
+                </Link>
+              </div>
             ))}
           </div>
 

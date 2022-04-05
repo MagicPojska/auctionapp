@@ -9,43 +9,36 @@ import {
   generateMonths,
   generateYears,
 } from "../../utilities/helperFunctions";
+import moment from "moment";
 
 const ProfileTab = () => {
   const { user } = useUserContext();
   const [isOpened, setIsOpened] = useState(false);
   const [userDetails, setUserDetails] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    dateOfBirth: "",
-    address: "",
-    city: "",
-    zipCode: "",
-    country: "",
-    state: "",
-    phone: "",
-    profileImage: "",
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    dateOfBirth:
+      user.dateOfBirth === null
+        ? ""
+        : moment(user.dateOfBirth).format("YYYY-MM-DD"),
+    address: user.address === null ? "" : user.address,
+    city: user.city === null ? "" : user.city,
+    zipCode: user.zipCode === null ? "" : user.zipCode,
+    country: user.country === null ? "" : user.country,
+    state: user.state === null ? "" : user.state,
+    phone: user.phone === null ? "" : user.phone,
+    profileImage: user.profileImage === null ? "" : user.profileImage,
   });
-  const [birthDate, setBirthDate] = useState("");
+  const [birthDate, setBirthDate] = useState({
+    day: user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("DD"),
+    month:
+      user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("MM"),
+    year:
+      user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("YYYY"),
+  });
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [file, setFile] = useState(null);
-
-  useEffect(() => {
-    setUserDetails({
-      ...userDetails,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      dateOfBirth: user.dateOfBirth === null ? "" : user.dateOfBirth,
-      address: user.address === null ? "" : user.address,
-      city: user.city === null ? "" : user.city,
-      zipCode: user.zipCode === null ? "" : user.zipCode,
-      country: user.country === null ? "" : user.country,
-      state: user.state === null ? "" : user.state,
-      phone: user.phone === null ? "" : user.phone,
-      profileImage: user.profileImage === null ? "" : user.profileImage,
-    });
-  }, []);
 
   useEffect(() => {
     setDaysInMonth(generateDays(birthDate.year, birthDate.month));
@@ -112,7 +105,7 @@ const ProfileTab = () => {
             </label>
             <div className="border-2 h-16 mb-8 mt-4">
               <input
-                type="text"
+                type="email"
                 disabled={true}
                 className="w-full h-full outline-none px-6 bg-textSecondary"
                 placeholder="user@domain.com"
@@ -125,6 +118,9 @@ const ProfileTab = () => {
             </label>
             <div className="flex space-x-6 mb-8 mt-4">
               <Select
+                defaultValue={generateYears().find(
+                  (year) => year.value === parseInt(birthDate.year)
+                )}
                 options={generateYears()}
                 className="flex-1"
                 placeholder="YYYY"
@@ -139,6 +135,9 @@ const ProfileTab = () => {
               />
 
               <Select
+                defaultValue={generateMonths().find(
+                  (month) => month.value === parseInt(birthDate.month)
+                )}
                 options={generateMonths()}
                 className="flex-1"
                 placeholder="MM"
@@ -153,6 +152,10 @@ const ProfileTab = () => {
               />
 
               <Select
+                defaultValue={generateDays(
+                  birthDate.year,
+                  birthDate.month
+                ).find((day) => day.value === parseInt(birthDate.day))}
                 options={daysInMonth}
                 className="flex-1"
                 placeholder="DD"
@@ -230,7 +233,7 @@ const ProfileTab = () => {
               <div className=" flex-1  flex flex-col">
                 <label className="text-lg leading-7">Zip Code</label>
                 <input
-                  type="number"
+                  type="text"
                   placeholder="XXXXXX"
                   className="w-full border-2 h-16 p-6 mt-4 bg-bgWhite outline-none"
                   onChange={handleInputData("zipCode")}
@@ -252,6 +255,9 @@ const ProfileTab = () => {
 
             <label className="text-lg leading-7">Country</label>
             <Select
+              defaultValue={countryList.find(
+                (country) => country.value === userDetails.country
+              )}
               options={countryList}
               className="mb-16 mt-4"
               placeholder="eg. Spain"

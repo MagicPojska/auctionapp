@@ -138,6 +138,9 @@ const StepThree = ({
 
         <label className="text-lg leading-7">Country</label>
         <Select
+          defaultValue={countryList.find(
+            (country) => country.value === user.country
+          )}
           options={countryList}
           onChange={handleCountryChange}
           className="mb-8 mt-4"

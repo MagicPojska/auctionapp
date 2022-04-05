@@ -9,7 +9,6 @@ import {
   profilePath,
   registrationPath,
   shopPath,
-  addItemPath,
   myBidsPath,
   settingsPath,
   becomeSellerPath,
