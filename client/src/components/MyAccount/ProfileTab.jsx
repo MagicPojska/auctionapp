@@ -10,10 +10,26 @@ import {
   generateYears,
 } from "../../utilities/helperFunctions";
 import moment from "moment";
+import { postImagesToCloudinary } from "../../utilities/cloudinaryApi";
+import { DATETIME_FORMAT } from "../../utilities/constants";
+import { updateUser } from "../../utilities/userApi";
+import {
+  getUserFromSession,
+  getUserFromStorage,
+  updateUserInSession,
+  updateUserInStorage,
+} from "../../utilities/auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProfileTab = () => {
   const { user } = useUserContext();
   const [isOpened, setIsOpened] = useState(false);
+  const [daysInMonth, setDaysInMonth] = useState([]);
+  const [files, setFiles] = useState(null);
+  const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [userDetails, setUserDetails] = useState({
     firstName: user.firstName,
     lastName: user.lastName,
@@ -37,9 +53,6 @@ const ProfileTab = () => {
     year:
       user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("YYYY"),
   });
-  const [daysInMonth, setDaysInMonth] = useState([]);
-  const [files, setFiles] = useState(null);
-  const [image, setImage] = useState(null);
 
   useEffect(() => {
     setDaysInMonth(generateDays(birthDate.year, birthDate.month));
@@ -60,6 +73,7 @@ const ProfileTab = () => {
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
+      setFiles(event.target.files[0]);
       let reader = new FileReader();
       let file = event.target.files[0];
       reader.onloadend = () => {
@@ -70,6 +84,49 @@ const ProfileTab = () => {
         });
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSaveUserInfo = async () => {
+    try {
+      setIsLoading(true);
+      const userInfo = userDetails;
+
+      if (files) {
+        const imageData = new FormData();
+        imageData.append("file", files);
+        imageData.append(
+          "upload_preset",
+          process.env.REACT_APP_CLOUDINARY_PRESET_NAME
+        );
+
+        const cloudinaryResponse = await postImagesToCloudinary(imageData);
+
+        userInfo.profileImage = cloudinaryResponse.data.url;
+      }
+
+      userInfo.dateOfBirth = moment(
+        `${birthDate.year}-${birthDate.month}-${birthDate.day}`
+      ).format(DATETIME_FORMAT);
+
+      const responseData = await updateUser(userInfo);
+
+      if (getUserFromStorage() !== null) {
+        updateUserInStorage(responseData.data);
+      } else if (getUserFromSession() !== null) {
+        updateUserInSession(responseData.data);
+      }
+
+      toast.success("Your info has been saved", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Something went wrong!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      console.log(error);
     }
   };
 
@@ -297,6 +354,15 @@ const ProfileTab = () => {
           </div>
         </div>
       </div>
+      <div className="w-full flex justify-end">
+        <button
+          className="text-center font-bold border-4 border-purple py-2 px-8 mt-6"
+          onClick={handleSaveUserInfo}
+        >
+          SAVE INFO
+        </button>
+      </div>
+      <ToastContainer />
     </div>
   );
 };
