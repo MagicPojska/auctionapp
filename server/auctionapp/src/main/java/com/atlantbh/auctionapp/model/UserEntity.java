@@ -44,6 +44,8 @@ public class UserEntity {
 
     private boolean isActive = true;
 
+    private String state;
+
     private String address;
 
     private String city;
@@ -58,13 +60,14 @@ public class UserEntity {
 
     private String profileImage;
 
-    public UserEntity(String firstName, String lastName, String email, String password, Date dateOfBirth, boolean isActive, String address, String city, String zipCode, String country, String phone, String profileImage) {
+    public UserEntity(String firstName, String lastName, String email, String password, Date dateOfBirth, boolean isActive, String state, String address, String city, String zipCode, String country, String phone, String profileImage) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.isActive = isActive;
+        this.state = state;
         this.address = address;
         this.city = city;
         this.zipCode = zipCode;

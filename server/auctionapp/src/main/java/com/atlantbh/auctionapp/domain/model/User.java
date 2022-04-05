@@ -16,6 +16,7 @@ public class User implements UserDetails {
     private String password;
     private Date dateOfBirth;
     private boolean isActive;
+    private String state;
     private String address;
     private String city;
     private String country;
@@ -23,7 +24,7 @@ public class User implements UserDetails {
     private String zipCode;
     private String profileImage;
 
-    public User(long id, String firstName, String lastName, String email, String password, Date dateOfBirth, boolean isActive, String address, String city, String country, String phone, String zipCode, String profileImage) {
+    public User(long id, String firstName, String lastName, String email, String password, Date dateOfBirth, boolean isActive, String state, String address, String city, String country, String phone, String zipCode, String profileImage) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,6 +32,7 @@ public class User implements UserDetails {
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.isActive = isActive;
+        this.state = state;
         this.address = address;
         this.city = city;
         this.country = country;
@@ -48,7 +50,7 @@ public class User implements UserDetails {
     }
 
     public static User createFromEntity(UserEntity entity) {
-        return new User(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getEmail(), entity.getPassword(), entity.getDateOfBirth(), entity.isActive(), entity.getAddress(), entity.getCity(), entity.getCountry(), entity.getPhone(), entity.getZipCode(), entity.getProfileImage());
+        return new User(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getEmail(), entity.getPassword(), entity.getDateOfBirth(), entity.isActive(), entity.getState(), entity.getAddress(), entity.getCity(), entity.getCountry(), entity.getPhone(), entity.getZipCode(), entity.getProfileImage());
     }
 
     public long getId() {
@@ -150,6 +152,10 @@ public class User implements UserDetails {
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
+
+    public String getState() { return state; }
+
+    public void setState(String state) { this.state = state; }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
