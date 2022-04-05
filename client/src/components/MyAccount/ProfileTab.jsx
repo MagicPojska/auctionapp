@@ -38,7 +38,8 @@ const ProfileTab = () => {
       user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("YYYY"),
   });
   const [daysInMonth, setDaysInMonth] = useState([]);
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState(null);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     setDaysInMonth(generateDays(birthDate.year, birthDate.month));
@@ -57,6 +58,21 @@ const ProfileTab = () => {
     }));
   };
 
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+      let file = event.target.files[0];
+      reader.onloadend = () => {
+        setImage({
+          ...image,
+          imagePreview: reader.result,
+          file: file,
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="mt-16">
       <div className="w-full border-2">
@@ -67,12 +83,18 @@ const ProfileTab = () => {
         <div className="pt-5 pl-5 2xl:pl-20 pr-24 2xl:pr-36 flex">
           <div className="flex flex-col items-center space-y-6 mr-28 min-w-fit">
             <img
-              className="h-80 w-80 rounded-full mb-5"
-              src="/images/placeholder.png"
+              className="h-80 w-80 rounded-full mb-5 object-cover"
+              src={`${
+                image !== null
+                  ? image.imagePreview
+                  : userDetails.profileImage
+                  ? userDetails.profileImage
+                  : "/images/placeholder.png"
+              }`}
               alt="profile-photo"
             />
             <label className="w-full text-center py-3 border-4 border-purple">
-              <input type="file" />
+              <input type="file" onChange={onImageChange} />
               Change photo
             </label>
           </div>
