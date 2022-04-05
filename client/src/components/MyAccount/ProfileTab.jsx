@@ -21,6 +21,7 @@ import {
 } from "../../utilities/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingSpinner from "../LoadingSpinner";
 
 const ProfileTab = () => {
   const { user } = useUserContext();
@@ -355,12 +356,16 @@ const ProfileTab = () => {
         </div>
       </div>
       <div className="w-full flex justify-end">
-        <button
-          className="text-center font-bold border-4 border-purple py-2 px-8 mt-6"
-          onClick={handleSaveUserInfo}
-        >
-          SAVE INFO
-        </button>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <button
+            className="text-center font-bold border-4 border-purple py-2 px-8 mt-6"
+            onClick={handleSaveUserInfo}
+          >
+            SAVE INFO
+          </button>
+        )}
       </div>
       <ToastContainer />
     </div>
