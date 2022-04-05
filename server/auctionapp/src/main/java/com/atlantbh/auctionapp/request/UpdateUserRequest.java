@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -27,7 +26,7 @@ public class UpdateUserRequest {
 
     @javax.validation.constraints.Size(max = 32)
     private String zipCode;
-    
+
     private String state;
     private String country;
     private String profileImage;
