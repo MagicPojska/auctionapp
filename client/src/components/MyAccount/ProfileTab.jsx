@@ -1,15 +1,69 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import { countryList } from "../../utilities/countryList";
 import { customStyles } from "../../utilities/selectStyle";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
+import { useUserContext } from "../../contexts/UserContextProvider";
+import {
+  generateDays,
+  generateMonths,
+  generateYears,
+} from "../../utilities/helperFunctions";
 
 const ProfileTab = () => {
+  const { user } = useUserContext();
   const [isOpened, setIsOpened] = useState(false);
+  const [userDetails, setUserDetails] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    dateOfBirth: "",
+    address: "",
+    city: "",
+    zipCode: "",
+    country: "",
+    state: "",
+    phone: "",
+    profileImage: "",
+  });
+  const [birthDate, setBirthDate] = useState("");
+  const [daysInMonth, setDaysInMonth] = useState([]);
+  const [file, setFile] = useState(null);
+
+  useEffect(() => {
+    setUserDetails({
+      ...userDetails,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      dateOfBirth: user.dateOfBirth === null ? "" : user.dateOfBirth,
+      address: user.address === null ? "" : user.address,
+      city: user.city === null ? "" : user.city,
+      zipCode: user.zipCode === null ? "" : user.zipCode,
+      country: user.country === null ? "" : user.country,
+      state: user.state === null ? "" : user.state,
+      phone: user.phone === null ? "" : user.phone,
+      profileImage: user.profileImage === null ? "" : user.profileImage,
+    });
+  }, []);
+
+  useEffect(() => {
+    setDaysInMonth(generateDays(birthDate.year, birthDate.month));
+  }, [birthDate.year, birthDate.month]);
 
   const handleOpening = () => {
     setIsOpened(!isOpened);
   };
+
+  const handleInputData = (input) => (e) => {
+    const { value } = e.target;
+
+    setUserDetails((prevState) => ({
+      ...prevState,
+      [input]: value,
+    }));
+  };
+
   return (
     <div className="mt-16">
       <div className="w-full border-2">
@@ -37,6 +91,8 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="John"
+                onChange={handleInputData("firstName")}
+                value={userDetails.firstName}
               />
             </div>
 
@@ -46,6 +102,8 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="Doe"
+                onChange={handleInputData("lastName")}
+                value={userDetails.lastName}
               />
             </div>
 
@@ -58,6 +116,7 @@ const ProfileTab = () => {
                 disabled={true}
                 className="w-full h-full outline-none px-6 bg-textSecondary"
                 placeholder="user@domain.com"
+                value={userDetails.email}
               />
             </div>
 
@@ -66,16 +125,21 @@ const ProfileTab = () => {
             </label>
             <div className="flex space-x-6 mb-8 mt-4">
               <Select
+                options={generateYears()}
                 className="flex-1"
-                placeholder="DD"
+                placeholder="YYYY"
                 styles={customStyles}
                 isSearchable={false}
                 components={{
                   IndicatorSeparator: () => null,
                 }}
+                onChange={(selectedOption) => {
+                  setBirthDate({ ...birthDate, year: selectedOption.value });
+                }}
               />
 
               <Select
+                options={generateMonths()}
                 className="flex-1"
                 placeholder="MM"
                 styles={customStyles}
@@ -83,15 +147,22 @@ const ProfileTab = () => {
                 components={{
                   IndicatorSeparator: () => null,
                 }}
+                onChange={(selectedOption) => {
+                  setBirthDate({ ...birthDate, month: selectedOption.value });
+                }}
               />
 
               <Select
+                options={daysInMonth}
                 className="flex-1"
-                placeholder="YYYY"
+                placeholder="DD"
                 styles={customStyles}
                 isSearchable={false}
                 components={{
                   IndicatorSeparator: () => null,
+                }}
+                onChange={(selectedOption) => {
+                  setBirthDate({ ...birthDate, day: selectedOption.value });
                 }}
               />
             </div>
@@ -104,6 +175,8 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="+32534231564"
+                onChange={handleInputData("phone")}
+                value={userDetails.phone}
               />
             </div>
           </div>
@@ -137,6 +210,8 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="123 Main Street"
+                onChange={handleInputData("address")}
+                value={userDetails.address}
               />
             </div>
 
@@ -147,6 +222,8 @@ const ProfileTab = () => {
                   type="text"
                   placeholder="eg. Madrid"
                   className="w-full border-2 h-16 p-6 mt-4 bg-bgWhite outline-none"
+                  onChange={handleInputData("city")}
+                  value={userDetails.city}
                 />
               </div>
 
@@ -156,6 +233,8 @@ const ProfileTab = () => {
                   type="number"
                   placeholder="XXXXXX"
                   className="w-full border-2 h-16 p-6 mt-4 bg-bgWhite outline-none"
+                  onChange={handleInputData("zipCode")}
+                  value={userDetails.zipCode}
                 />
               </div>
             </div>
@@ -166,6 +245,8 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="eg. Asturias"
+                onChange={handleInputData("state")}
+                value={userDetails.state}
               />
             </div>
 
@@ -177,6 +258,12 @@ const ProfileTab = () => {
               styles={customStyles}
               components={{
                 IndicatorSeparator: () => null,
+              }}
+              onChange={(selectedOption) => {
+                setUserDetails({
+                  ...userDetails,
+                  country: selectedOption.value,
+                });
               }}
             />
           </div>

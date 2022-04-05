@@ -43,21 +43,15 @@ const StepOne = ({
   }, []);
 
   const onCategoryChange = async (selectedOption) => {
-    try {
-      setSubcategories(
-        allCategoriesList
-          .map((category) => ({
-            value: category.id,
-            label: category.categoryName,
-            supercategoryId: category.supercategoryId,
-          }))
-          .filter(
-            (category) => category.supercategoryId === selectedOption.value
-          )
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    setSubcategories(
+      allCategoriesList
+        .map((category) => ({
+          value: category.id,
+          label: category.categoryName,
+          supercategoryId: category.supercategoryId,
+        }))
+        .filter((category) => category.supercategoryId === selectedOption.value)
+    );
   };
 
   const handleSubcategoryChange = (selectedOption) => {
