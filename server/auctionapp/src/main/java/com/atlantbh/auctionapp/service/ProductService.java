@@ -81,20 +81,15 @@ public class ProductService {
     public List<ProductEntity> getProductsFromUser(long userId, String type) {
         LocalDateTime time = LocalDateTime.now();
         List<ProductEntity> products;
-        if (type.equals("sold")){
-            products = productRepository.findAllByUserIdAndEndDateIsBefore(userId, time);
-            if(products == null){
-                logger.error("Products from user with id: " + userId + " not found");
-                throw new NotFoundException("Products from user with id: " + userId + " not found");
-            }
-            return products;
+        if (type.equals("sold")) {
+            products = productRepository.findAllByUserIdAndEndDateIsBefore(userId, time, Sort.by(Sort.Direction.DESC, "endDate"));
         } else {
-            products = productRepository.findAllByUserIdAndEndDateIsAfter(userId, time);
-            if(products == null){
-                logger.error("Products from user with id: " + userId + " not found");
-                throw new NotFoundException("Products from user with id: " + userId + " not found");
-            }
-            return products;
+            products = productRepository.findAllByUserIdAndEndDateIsAfter(userId, time, Sort.by(Sort.Direction.DESC, "startDate"));
         }
+        if (products == null) {
+            logger.error("Products from user with id: " + userId + " not found");
+            throw new NotFoundException("Products from user with id: " + userId + " not found");
+        }
+        return products;
     }
 }
