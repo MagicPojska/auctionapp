@@ -31,4 +31,4 @@ export const getProductsByCategory = (
 
 export const getProductPriceRange = () => API.get("/product/items/price-range");
 
-export const postProduct = (product) => API.post("/product/add-item", product);
+export const addProduct = (product) => API.post("/product/add-item", product);

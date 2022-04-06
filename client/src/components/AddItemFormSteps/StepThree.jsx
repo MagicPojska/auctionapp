@@ -8,7 +8,7 @@ import {
 import Select from "react-select";
 import { customStyles } from "../../utilities/selectStyle";
 import { countryList } from "../../utilities/countryList";
-import { postProduct } from "../../utilities/productsApi";
+import { addProduct } from "../../utilities/productsApi";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { DATETIME_FORMAT } from "../../utilities/constants";
@@ -70,7 +70,7 @@ const StepThree = ({
       formData.endDate = moment(productDetails.endDate).format(DATETIME_FORMAT);
       formData.userId = user.id;
 
-      const res = await postProduct(formData);
+      const res = await addProduct(formData);
       navigate(`${shopProductPath}/${res.data.id}`);
     } catch (error) {
       setIsLoading(false);
