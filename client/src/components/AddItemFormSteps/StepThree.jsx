@@ -1,20 +1,11 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {
-  myAccountPath,
-  profilePath,
-  shopProductPath,
-} from "../../utilities/paths";
+import { myAccountPath, profilePath } from "../../utilities/paths";
 import Select from "react-select";
 import { customStyles } from "../../utilities/selectStyle";
 import { countryList } from "../../utilities/countryList";
-import { addProduct } from "../../utilities/productsApi";
-import { useNavigate } from "react-router-dom";
-import moment from "moment";
-import { DATETIME_FORMAT } from "../../utilities/constants";
-import { uploadImage } from "../../utilities/imageApi";
 import LoadingSpinner from "../LoadingSpinner";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUserContext } from "../../contexts/UserContextProvider";
 
@@ -23,11 +14,10 @@ const StepThree = ({
   productDetails,
   setProductDetails,
   handleInputData,
-  images,
+  handlePostItem,
+  isLoading,
 }) => {
   const { user } = useUserContext();
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setProductDetails({
@@ -43,42 +33,6 @@ const StepThree = ({
 
   const handleCountryChange = (selectedOption) => {
     setProductDetails({ ...productDetails, country: selectedOption.value });
-  };
-
-  const handlePostItem = async () => {
-    setIsLoading(true);
-    let imageUrls = [];
-    try {
-      for (let i = 0; i < images.length; i++) {
-        const imageData = new FormData();
-        imageData.append("file", images[i]);
-        imageData.append(
-          "upload_preset",
-          process.env.REACT_APP_CLOUDINARY_PRESET_NAME
-        );
-
-        const response = await uploadImage(imageData);
-
-        imageUrls.push(response.data.url);
-      }
-
-      const formData = productDetails;
-      formData.images = imageUrls.join();
-      formData.startDate = moment(productDetails.startDate).format(
-        DATETIME_FORMAT
-      );
-      formData.endDate = moment(productDetails.endDate).format(DATETIME_FORMAT);
-      formData.userId = user.id;
-
-      const res = await addProduct(formData);
-      navigate(`${shopProductPath}/${res.data.id}`);
-    } catch (error) {
-      setIsLoading(false);
-      toast.error("Adding new product failed, please try again", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-      console.log(error);
-    }
   };
 
   return (
