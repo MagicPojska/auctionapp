@@ -22,8 +22,6 @@ export const calculateTimeLeft = (response) => {
   return differenceInTime;
 };
 
-// calculate
-
 export const parseTimeLeft = (timeLeft) => {
   return timeLeft.minutes < 0
     ? "Expired"
