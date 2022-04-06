@@ -12,7 +12,7 @@ import { postProduct } from "../../utilities/productsApi";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { DATETIME_FORMAT } from "../../utilities/constants";
-import { postImagesToCloudinary } from "../../utilities/cloudinaryApi";
+import { uploadImage } from "../../utilities/imageApi";
 import LoadingSpinner from "../LoadingSpinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -57,7 +57,7 @@ const StepThree = ({
           process.env.REACT_APP_CLOUDINARY_PRESET_NAME
         );
 
-        const response = await postImagesToCloudinary(imageData);
+        const response = await uploadImage(imageData);
 
         imageUrls.push(response.data.url);
       }
