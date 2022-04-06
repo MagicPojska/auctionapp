@@ -12,7 +12,10 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 public class UpdateUserRequest {
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String lastName;
 
     @NotBlank(message = "Field can't be empty")
