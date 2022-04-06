@@ -74,7 +74,7 @@ const StepThree = ({
       navigate(`${shopProductPath}/${res.data.id}`);
     } catch (error) {
       setIsLoading(false);
-      toast.error("Something went wrong!", {
+      toast.error("Adding new product failed, please try again", {
         position: toast.POSITION.TOP_CENTER,
       });
       console.log(error);
