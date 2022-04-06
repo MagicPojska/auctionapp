@@ -7,7 +7,7 @@ import {
   sellerPath,
   shopProductPath,
 } from "../../utilities/paths";
-import { FiShoppingCart } from "react-icons/fi";
+import { RiAuctionFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
 const BidsTab = () => {
@@ -89,15 +89,16 @@ const BidsTab = () => {
               <tr>
                 <td colSpan={7}>
                   <div className="flex flex-col justify-center items-center py-9">
-                    <FiShoppingCart className="text-8xl text-purple" />
+                    <RiAuctionFill className="text-8xl text-purple" />
                     <p className="font-normal my-9">
-                      You do not have any scheduled items for sale.
+                      You don’t have any bids and there are so many cool
+                      products available for sale.
                     </p>
                     <Link
                       to={addItemPath + sellerPath}
                       className="py-4 px-16 border-4 border-purple font-bold"
                     >
-                      START SELLING
+                      START BIDDING
                     </Link>
                   </div>
                 </td>
