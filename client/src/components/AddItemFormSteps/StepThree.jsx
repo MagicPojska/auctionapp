@@ -71,7 +71,7 @@ const StepThree = ({
       formData.userId = user.id;
 
       const res = await postProduct(formData);
-      navigate(shopProductPath + `/${res.data.id}`);
+      navigate(`${shopProductPath}/${res.data.id}`);
     } catch (error) {
       setIsLoading(false);
       toast.error("Something went wrong!", {
