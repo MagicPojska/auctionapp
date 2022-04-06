@@ -8,11 +8,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     Page<ProductEntity> findAllByEndDateIsAfter(LocalDateTime time ,Pageable paging);
     Page<ProductEntity> findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfter(long[] categoryId, double lowPrice, double highPrice, LocalDateTime time, Pageable paging);
     ProductEntity findProductById(long id);
+    List<ProductEntity> findAllByUserIdAndEndDateIsAfter(long userId, LocalDateTime time);
+    List<ProductEntity> findAllByUserIdAndEndDateIsBefore(long userId, LocalDateTime time);
 
     @Query(value = "SELECT MAX(start_price), MIN(start_price)" +
             "FROM auction.product", nativeQuery = true)

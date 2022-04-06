@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -75,5 +76,25 @@ public class ProductService {
         CategoryEntity category = categoryRepository.findById(productRequest.getCategoryId()).orElseThrow(() -> new NotFoundException("Category with id: " + productRequest.getCategoryId() + " does not exist"));
         ProductEntity product = new ProductEntity(productRequest.getProductName(), productRequest.getDescription(), productRequest.getStartPrice(), productRequest.getStartDate(), productRequest.getEndDate(), productRequest.getImages(), productRequest.getAddress(), productRequest.getCity(), productRequest.getZipCode(), productRequest.getCountry(), productRequest.getPhone(), productRequest.getUserId(), category);
         return productRepository.save(product);
+    }
+
+    public List<ProductEntity> getProductsFromUser(long userId, String type) {
+        LocalDateTime time = LocalDateTime.now();
+        List<ProductEntity> products;
+        if (type.equals("sold")){
+            products = productRepository.findAllByUserIdAndEndDateIsBefore(userId, time);
+            if(products == null){
+                logger.error("Products from user with id: " + userId + " not found");
+                throw new NotFoundException("Products from user with id: " + userId + " not found");
+            }
+            return products;
+        } else {
+            products = productRepository.findAllByUserIdAndEndDateIsAfter(userId, time);
+            if(products == null){
+                logger.error("Products from user with id: " + userId + " not found");
+                throw new NotFoundException("Products from user with id: " + userId + " not found");
+            }
+            return products;
+        }
     }
 }

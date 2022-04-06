@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -63,5 +65,14 @@ public class ProductController {
     public ResponseEntity<ProductEntity> createProduct(@RequestBody ProductRequest productRequest){
         ProductEntity createdProduct = productService.createProduct(productRequest);
         return new ResponseEntity<>(createdProduct, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @GetMapping("/items/user")
+    public ResponseEntity<List<ProductEntity>> getAllActiveProductsFromUser(@RequestParam long userId,
+                                                                            @RequestParam String type){
+
+        List<ProductEntity> products = productService.getProductsFromUser(userId, type);
+
+        return new ResponseEntity<>(products, new HttpHeaders(), HttpStatus.OK);
     }
 }
