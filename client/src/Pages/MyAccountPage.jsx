@@ -7,12 +7,14 @@ import {
   addItemPath,
   becomeSellerPath,
   myAccountPath,
+  myBidsPath,
   profilePath,
   sellerPath,
 } from "../utilities/paths";
 import { profileTabs } from "../utilities/constants";
 import ProfileTab from "../components/MyAccount/ProfileTab";
 import SellerTab from "../components/MyAccount/SellerTab";
+import BidsTab from "../components/MyAccount/BidsTab";
 
 const MyAccountPage = () => {
   const { user } = useUserContext();
@@ -56,6 +58,8 @@ const MyAccountPage = () => {
               return <ProfileTab />;
             case becomeSellerPath:
               return <SellerTab />;
+            case myBidsPath:
+              return <BidsTab />;
           }
         })()}
       </div>
