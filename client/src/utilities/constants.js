@@ -80,3 +80,6 @@ export const profileTabs = [
     icon: FiSettings,
   },
 ];
+
+export const ACTIVE = "active";
+export const SOLD = "sold";

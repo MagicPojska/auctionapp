@@ -5,12 +5,14 @@ import CurrentPageNav from "../components/CurrentPageNav";
 import { useUserContext } from "../contexts/UserContextProvider";
 import {
   addItemPath,
+  becomeSellerPath,
   myAccountPath,
   profilePath,
   sellerPath,
 } from "../utilities/paths";
 import { profileTabs } from "../utilities/constants";
 import ProfileTab from "../components/MyAccount/ProfileTab";
+import SellerTab from "../components/MyAccount/SellerTab";
 
 const MyAccountPage = () => {
   const { user } = useUserContext();
@@ -50,8 +52,10 @@ const MyAccountPage = () => {
 
         {(() => {
           switch (location.pathname) {
-            case `${myAccountPath}${profilePath}`:
+            case myAccountPath + profilePath:
               return <ProfileTab />;
+            case becomeSellerPath:
+              return <SellerTab />;
           }
         })()}
       </div>

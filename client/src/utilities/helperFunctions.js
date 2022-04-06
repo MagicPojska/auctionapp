@@ -83,3 +83,15 @@ export const generateDays = (year, month) => {
 
   return daysArray;
 };
+
+export const getHoursDiff = (date) => {
+  const currentDate = moment();
+  const endDate = moment(date);
+  const diff = endDate.diff(currentDate, "hours");
+
+  if (diff < 0) {
+    return 0;
+  }
+
+  return diff;
+};
