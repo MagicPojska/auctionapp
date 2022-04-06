@@ -70,4 +70,12 @@ public class BidService {
 
         return new BidResponse(bidRequest.getPrice(), product.getNumberOfBids() + 1);
     }
+
+    public List<BidsEntity> getBidsForUserById(long id) {
+        List<BidsEntity> bids = bidRepository.findAllByUserId(id);
+        if(bids == null) {
+            throw new NotFoundException("Bids from user with id: " + id + " not found");
+        }
+        return bids;
+    }
 }

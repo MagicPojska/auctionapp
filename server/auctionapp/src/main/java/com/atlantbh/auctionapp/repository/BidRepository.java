@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface BidRepository extends JpaRepository<BidsEntity, Long> {
     List<BidProj> findAllByProductId(long productId);
+    List<BidsEntity> findAllByUserId(long userId);
 
     @Query(value = "SELECT MAX(price) FROM auction.bids b " +
             "WHERE b.product_id = :product_id", nativeQuery = true)
