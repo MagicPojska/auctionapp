@@ -39,7 +39,7 @@ const StepThree = ({
       country: user.country === null ? "" : user.country,
       zipCode: user.zipCode === null ? "" : user.zipCode,
     });
-  }, []);
+  }, [user]);
 
   const handleCountryChange = (selectedOption) => {
     setProductDetails({ ...productDetails, country: selectedOption.value });
