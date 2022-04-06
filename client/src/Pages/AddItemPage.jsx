@@ -54,7 +54,7 @@ const AddItemPage = () => {
     </div>
   );
 
-  const renderSwitch = () => {
+  const renderStep = () => {
     switch (step) {
       case 1:
         return (
@@ -101,7 +101,7 @@ const AddItemPage = () => {
         {step === 3 ? renderPurpleDot() : renderHollowDot()}
       </div>
       <div className="w-[46rem] mx-auto mt-12 justify-center">
-        {renderSwitch()}
+        {renderStep()}
       </div>
     </>
   );
