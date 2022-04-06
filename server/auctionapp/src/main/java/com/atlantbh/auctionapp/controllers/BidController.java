@@ -36,7 +36,7 @@ public class BidController {
         return new ResponseEntity<>(bid, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @GetMapping("/product/user")
+    @GetMapping("/user")
     public ResponseEntity<List<BidsEntity>> getBidsForUser(@RequestParam long id){
         List<BidsEntity> bids = bidService.getBidsForUserById(id);
 
