@@ -10,7 +10,7 @@ import {
   generateYears,
 } from "../../utilities/helperFunctions";
 import moment from "moment";
-import { postImagesToCloudinary } from "../../utilities/cloudinaryApi";
+import { uploadImage } from "../../utilities/imageApi";
 import { DATETIME_FORMAT } from "../../utilities/constants";
 import { updateUser } from "../../utilities/userApi";
 import {
@@ -101,7 +101,7 @@ const ProfileTab = () => {
           process.env.REACT_APP_CLOUDINARY_PRESET_NAME
         );
 
-        const cloudinaryResponse = await postImagesToCloudinary(imageData);
+        const cloudinaryResponse = await uploadImage(imageData);
 
         userInfo.profileImage = cloudinaryResponse.data.url;
       }

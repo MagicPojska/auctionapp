@@ -1,13 +1,22 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CurrentPageNav from "../components/CurrentPageNav";
 import StepOne from "../components/MyAccount/AddItemFormSteps/StepOne";
 import StepTwo from "../components/MyAccount/AddItemFormSteps/StepTwo";
 import StepThree from "../components/MyAccount/AddItemFormSteps/StepThree";
 import moment from "moment";
+import { toast } from "react-toastify";
+import { addProduct } from "../utilities/productsApi";
+import { DATETIME_FORMAT } from "../utilities/constants";
+import { uploadImage } from "../utilities/imageApi";
+import { useUserContext } from "../contexts/UserContextProvider";
+import { shopProductPath } from "../utilities/paths";
 
 const AddItemPage = () => {
+  const { user } = useUserContext();
   const [step, setStep] = useState(1);
   const [images, setImages] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [productDetails, setProductDetails] = useState({
     productName: "",
     description: "",
@@ -24,6 +33,8 @@ const AddItemPage = () => {
     userId: "",
     categoryId: "",
   });
+
+  const navigate = useNavigate();
 
   const nextStep = () => {
     setStep(step + 1);
@@ -54,7 +65,43 @@ const AddItemPage = () => {
     </div>
   );
 
-  const renderSwitch = () => {
+  const handlePostItem = async () => {
+    setIsLoading(true);
+    let imageUrls = [];
+    try {
+      for (let i = 0; i < images.length; i++) {
+        const imageData = new FormData();
+        imageData.append("file", images[i]);
+        imageData.append(
+          "upload_preset",
+          process.env.REACT_APP_CLOUDINARY_PRESET_NAME
+        );
+
+        const response = await uploadImage(imageData);
+
+        imageUrls.push(response.data.url);
+      }
+
+      const formData = productDetails;
+      formData.images = imageUrls.join();
+      formData.startDate = moment(productDetails.startDate).format(
+        DATETIME_FORMAT
+      );
+      formData.endDate = moment(productDetails.endDate).format(DATETIME_FORMAT);
+      formData.userId = user.id;
+
+      const res = await addProduct(formData);
+      navigate(`${shopProductPath}/${res.data.id}`);
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Adding new product failed, please try again", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      console.log(error);
+    }
+  };
+
+  const renderStep = () => {
     switch (step) {
       case 1:
         return (
@@ -84,7 +131,8 @@ const AddItemPage = () => {
             handleInputData={handleInputData}
             productDetails={productDetails}
             setProductDetails={setProductDetails}
-            images={images}
+            handlePostItem={handlePostItem}
+            isLoading={isLoading}
           />
         );
     }
@@ -101,7 +149,7 @@ const AddItemPage = () => {
         {step === 3 ? renderPurpleDot() : renderHollowDot()}
       </div>
       <div className="w-[46rem] mx-auto mt-12 justify-center">
-        {renderSwitch()}
+        {renderStep()}
       </div>
     </>
   );
