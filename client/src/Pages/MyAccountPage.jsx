@@ -33,7 +33,7 @@ const MyAccountPage = () => {
                     "bg-purple text-white"
                   }`}
                 >
-                  <tab.icon className="mr-4" /> {tab.title}
+                  <tab.icon className="mr-4 text-lg" /> {tab.title}
                 </Link>
               </div>
             ))}
