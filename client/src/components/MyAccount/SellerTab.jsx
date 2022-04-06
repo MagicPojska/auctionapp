@@ -1,11 +1,15 @@
-import moment from "moment";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../../contexts/UserContextProvider";
 import { ACTIVE, SOLD } from "../../utilities/constants";
 import { getHoursDiff } from "../../utilities/helperFunctions";
-import { shopProductPath } from "../../utilities/paths";
+import {
+  addItemPath,
+  sellerPath,
+  shopProductPath,
+} from "../../utilities/paths";
 import { getProductsFromUser } from "../../utilities/productsApi";
+import { FiShoppingCart } from "react-icons/fi";
 
 const SellerTab = () => {
   const { user } = useUserContext();
@@ -60,41 +64,62 @@ const SellerTab = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
-              <tr key={product.id} className="bg-white">
-                <th className="pl-8 pr-4 py-4">
-                  <img
-                    src={product.images.split(",")[0]}
-                    alt="item"
-                    className="w-20 h-20 object-cover"
-                  />
-                </th>
-                <th className="pr-24">
-                  <div className="flex flex-col">
-                    <span>{product.productName}</span>
-                    <span className="text-sm font-normal text-purple">
-                      #{product.id}
-                    </span>
+            {products.length > 0 ? (
+              products.map((product) => (
+                <tr key={product.id} className="bg-white">
+                  <th className="pl-8 pr-4 py-4">
+                    <img
+                      src={product.images.split(",")[0]}
+                      alt="item"
+                      className="w-20 h-20 object-cover"
+                    />
+                  </th>
+                  <th className="pr-24">
+                    <div className="flex flex-col">
+                      <span>{product.productName}</span>
+                      <span className="text-sm font-normal text-purple">
+                        #{product.id}
+                      </span>
+                    </div>
+                  </th>
+                  <td className="px-6 py-4">
+                    {getHoursDiff(product.endDate)}h
+                  </td>
+                  <td className="px-6 py-4">$ {product.startPrice}</td>
+                  <td className="px-6 py-4">{product.numberOfBids}</td>
+                  <td className="px-6 py-4 text-blue-600">
+                    {product.highestBid !== null
+                      ? "$ " + product.highestBid
+                      : "No bids"}
+                  </td>
+                  <td className="pl-6 pr-8 py-4 text-right">
+                    <Link
+                      to={shopProductPath + "/" + product.id}
+                      className="font-bold px-8 py-3 border-4"
+                    >
+                      VIEW
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={7}>
+                  <div className="flex flex-col justify-center items-center py-9">
+                    <FiShoppingCart className="text-8xl text-purple" />
+                    <p className="font-normal my-9">
+                      You do not have any scheduled items for sale.
+                    </p>
+                    <Link
+                      to={addItemPath + sellerPath}
+                      className="py-4 px-16 border-4 border-purple font-bold"
+                    >
+                      START SELLING
+                    </Link>
                   </div>
-                </th>
-                <td className="px-6 py-4">{getHoursDiff(product.endDate)}h</td>
-                <td className="px-6 py-4">$ {product.startPrice}</td>
-                <td className="px-6 py-4">{product.numberOfBids}</td>
-                <td className="px-6 py-4 text-blue-600">
-                  {product.highestBid !== null
-                    ? "$ " + product.highestBid
-                    : "No bids"}
-                </td>
-                <td className="pl-6 pr-8 py-4 text-right">
-                  <Link
-                    to={shopProductPath + "/" + product.id}
-                    className="font-bold px-8 py-3 border-4"
-                  >
-                    VIEW
-                  </Link>
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
