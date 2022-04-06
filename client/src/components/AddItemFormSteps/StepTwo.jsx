@@ -42,7 +42,7 @@ const StepTwo = ({
     }
   };
 
-  const checkAllTheFields = () =>
+  const validateDataAndNavigateToNextStep = () => {
     productDetails.startPrice &&
     productDetails.startDate &&
     productDetails.endDate
@@ -50,6 +50,7 @@ const StepTwo = ({
       : toast.error("Please add all the details!", {
           position: toast.POSITION.TOP_CENTER,
         });
+  };
 
   return (
     <div className="border-2 pb-16 font-normal">
@@ -117,7 +118,7 @@ const StepTwo = ({
             </button>
             <button
               className="flex-1 bg-purple py-3 text-white"
-              onClick={checkAllTheFields}
+              onClick={validateDataAndNavigateToNextStep}
             >
               Next
             </button>

@@ -74,7 +74,7 @@ const StepOne = ({
     }
   };
 
-  const checkAllTheFields = () =>
+  const validateDataAndNavigateToNextStep = () => {
     images !== null &&
     productDetails.categoryId &&
     productDetails.description &&
@@ -83,6 +83,7 @@ const StepOne = ({
       : toast.error("Please add all the details!", {
           position: toast.POSITION.TOP_CENTER,
         });
+  };
 
   return (
     <div className="border-2 pb-16 font-normal">
@@ -185,7 +186,7 @@ const StepOne = ({
           </Link>
           <button
             className="flex-1 bg-purple py-3 text-white"
-            onClick={checkAllTheFields}
+            onClick={validateDataAndNavigateToNextStep}
           >
             Next
           </button>
