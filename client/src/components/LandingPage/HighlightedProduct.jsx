@@ -4,7 +4,7 @@ import { shopProductPath } from "../../utilities/paths";
 
 const HighlightedProduct = ({ highlightedProduct }) => {
   return (
-    <div className="my-24 w-[46rem] 2xl:w-[50rem] flex ml-5">
+    <div className="my-24 w-[46rem] 2xl:w-[50rem] flex justify-between ml-5">
       <div className="flex flex-col mr-3">
         <h2 className="text-3xl leading-10 font-normal mb-4">
           {highlightedProduct.productName}
