@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import { useUserContext } from "../../contexts/UserContextProvider";
 import { getBidsForUser } from "../../utilities/bidApi";
 import { getHoursDiff } from "../../utilities/helperFunctions";
-import {
-  addItemPath,
-  sellerPath,
-  shopProductPath,
-} from "../../utilities/paths";
+import { categoriesPath, shopProductPath } from "../../utilities/paths";
 import { RiAuctionFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
@@ -95,7 +91,7 @@ const BidsTab = () => {
                       products available for sale.
                     </p>
                     <Link
-                      to={addItemPath + sellerPath}
+                      to={categoriesPath + "/1"}
                       className="py-4 px-16 border-4 border-purple font-bold"
                     >
                       START BIDDING
