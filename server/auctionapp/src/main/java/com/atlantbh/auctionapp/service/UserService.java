@@ -61,6 +61,7 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("Could not findUser with id = " + userId);
         }
         existingUser.setActive(false);
+        userRepository.save(existingUser);
     }
 }
 

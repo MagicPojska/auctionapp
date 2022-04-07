@@ -29,7 +29,7 @@ public class UserController {
         return new ResponseEntity<>(user, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @GetMapping("deactivate")
+    @GetMapping("/deactivate")
     public ResponseEntity deactivateUser(@RequestParam("userId") Long userId) {
         userService.deactivateUser(userId);
 
