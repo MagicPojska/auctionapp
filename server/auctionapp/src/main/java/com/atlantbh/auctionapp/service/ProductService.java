@@ -86,7 +86,7 @@ public class ProductService {
         } else {
             products = productRepository.findAllByUserIdAndEndDateIsAfter(userId, time, Sort.by(Sort.Direction.DESC, "startDate"));
         }
-        if (products == null) {
+        if (products.isEmpty()) {
             logger.error("Products from user with id: " + userId + " not found");
             throw new NotFoundException("Products from user with id: " + userId + " not found");
         }
