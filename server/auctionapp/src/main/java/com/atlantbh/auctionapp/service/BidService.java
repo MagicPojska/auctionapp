@@ -74,7 +74,7 @@ public class BidService {
 
     public List<BidsEntity> getBidsForUserById(long id) {
         List<BidsEntity> bids = bidRepository.findAllByUserId(id, Sort.by(Sort.Direction.DESC, "bidDate"));
-        if(bids == null) {
+        if(bids.isEmpty()) {
             throw new NotFoundException("Bids from user with id: " + id + " not found");
         }
         return bids;
