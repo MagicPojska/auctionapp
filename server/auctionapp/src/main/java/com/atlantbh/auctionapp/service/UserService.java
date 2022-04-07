@@ -53,6 +53,15 @@ public class UserService implements UserDetailsService {
 
         return userRepository.save(existingUser);
     }
+
+    public void deactivateUser(Long userId) {
+        UserEntity existingUser = userRepository.findById(userId).orElse(null);
+        if(existingUser == null){
+            logger.error("User with id: " + userId + " not found");
+            throw new UsernameNotFoundException("Could not findUser with id = " + userId);
+        }
+        existingUser.setActive(false);
+    }
 }
 
 
