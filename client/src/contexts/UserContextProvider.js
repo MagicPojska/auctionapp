@@ -6,12 +6,14 @@ import {
   setUserInStorage,
 } from "../utilities/auth";
 import { logoutUser, signIn, signUp } from "../utilities/authApi";
+import { toast } from "react-toastify";
 
 const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState("");
   const [token, setToken] = useState("");
+
   const login = async (user, rememberMe) => {
     try {
       const response = await signIn(user);
@@ -22,7 +24,17 @@ export const UserContextProvider = ({ children }) => {
       }
       return response;
     } catch (error) {
-      console.error(error);
+      if (error.response.status === 403) {
+        toast.error("Your account is deactivated! Please contact support", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+      if (error.response.status === 401) {
+        toast.error("Wrong username or password!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+      console.log(error);
       return null;
     }
   };
@@ -44,7 +56,6 @@ export const UserContextProvider = ({ children }) => {
       removeUserFromSession();
       setUser("");
       await logoutUser(token);
-      setToken("");
     } catch (error) {
       setToken("");
       console.error(error);

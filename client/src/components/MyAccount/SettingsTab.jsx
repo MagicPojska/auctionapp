@@ -1,7 +1,20 @@
 import { useUserContext } from "../../contexts/UserContextProvider";
+import { deactivateUserAccount } from "../../utilities/userApi";
 
 const SettingsTab = () => {
-  const { user } = useUserContext();
+  const { user, logout } = useUserContext();
+
+  const deactivateUser = async () => {
+    if (window.confirm("Are you sure you want to deactivate your account?")) {
+      try {
+        await deactivateUserAccount(user.id);
+        await logout();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <div className="mt-16 grid grid-cols-2 gap-6">
       <div className="flex-1 border-2 px-8 pb-12">
@@ -55,7 +68,12 @@ const SettingsTab = () => {
           Do you want to deactivate account?
         </h2>
 
-        <button className="px-8 py-3 border-4 font-bold">DEACTIVATE</button>
+        <button
+          onClick={deactivateUser}
+          className="px-8 py-3 border-4 font-bold"
+        >
+          DEACTIVATE
+        </button>
       </div>
     </div>
   );

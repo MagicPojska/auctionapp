@@ -18,7 +18,7 @@ API.interceptors.response.use(
       removeUserFromStorage();
       window.location = "/login";
     }
-    return error;
+    return Promise.reject(error);
   }
 );
 
