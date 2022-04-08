@@ -1,7 +1,6 @@
 package com.atlantbh.auctionapp.service;
 
 import com.atlantbh.auctionapp.exceptions.NotFoundException;
-import com.atlantbh.auctionapp.model.BidsEntity;
 import com.atlantbh.auctionapp.model.CategoryEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;

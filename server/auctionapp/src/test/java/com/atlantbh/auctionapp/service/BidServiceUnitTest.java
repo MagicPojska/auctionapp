@@ -10,7 +10,6 @@ import com.atlantbh.auctionapp.repository.BidRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.BidRequest;
-import org.aspectj.weaver.ast.Not;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,9 +41,7 @@ public class BidServiceUnitTest {
     void expectNotFoundExceptionForNonExistingBidsForProductId() {
         BidService bidService = new BidService(bidRepository, null, null);
 
-        assertThatThrownBy(() -> {
-            bidService.getBidsForProduct(1L);
-        }).isInstanceOf(NotFoundException.class);
+        assertThatThrownBy(() -> bidService.getBidsForProduct(1L)).isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -88,9 +84,7 @@ public class BidServiceUnitTest {
         Mockito.when(productRepository.findProductById(bidRequest.getProductId())).thenReturn(product);
         Mockito.when(userRepository.getById(bidRequest.getUserId())).thenReturn(user);
 
-        assertThatThrownBy(() -> {
-            bidService.add(bidRequest);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> bidService.add(bidRequest)).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -107,9 +101,7 @@ public class BidServiceUnitTest {
 
         Mockito.when(productRepository.findProductById(bidRequest.getProductId())).thenReturn(product);
 
-        assertThatThrownBy(() -> {
-            bidService.add(bidRequest);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> bidService.add(bidRequest)).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -127,9 +119,7 @@ public class BidServiceUnitTest {
         Mockito.when(productRepository.findProductById(bidRequest.getProductId())).thenReturn(product);
 
 
-        assertThatThrownBy(() -> {
-            bidService.add(bidRequest);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> bidService.add(bidRequest)).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -151,9 +141,7 @@ public class BidServiceUnitTest {
         Mockito.when(userRepository.getById(bidRequest.getUserId())).thenReturn(user);
         Mockito.when(bidRepository.getMaxBidFromProduct(product.getId())).thenReturn(highestBid);
 
-        assertThatThrownBy(() -> {
-            bidService.add(bidRequest);
-        }).isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> bidService.add(bidRequest)).isInstanceOf(BadRequestException.class);
     }
 
     @Test
@@ -181,8 +169,6 @@ public class BidServiceUnitTest {
     void testGetAllBidsFromUserAndReturnNotFoundException() {
         BidService bidService = new BidService(bidRepository, null, null);
 
-        assertThatThrownBy(() -> {
-            bidService.getBidsForUserById(1L);
-        }).isInstanceOf(NotFoundException.class);
+        assertThatThrownBy(() -> bidService.getBidsForUserById(1L)).isInstanceOf(NotFoundException.class);
     }
 }

@@ -44,9 +44,7 @@ public class UserServiceUnitTest {
     void returnExceptionNotFoundOnFindByEmail() {
         UserService userService = new UserService(userRepository);
 
-        assertThatThrownBy(() -> {
-            userService.loadUserByUsername("test@gmail.com");
-        }).isInstanceOf(UsernameNotFoundException.class);
+        assertThatThrownBy(() -> userService.loadUserByUsername("test@gmail.com")).isInstanceOf(UsernameNotFoundException.class);
     }
 
     @Test
@@ -55,9 +53,7 @@ public class UserServiceUnitTest {
         UserService userService = new UserService(userRepository);
 
         UpdateUserRequest updateUserRequest = new UpdateUserRequest("Safet", "Pojskic", "email@gmail.com", "+123123123", new Date(), "address", "city", "72000", "state", "country", "image");
-        assertThatThrownBy(() -> {
-            userService.updateUser(updateUserRequest);
-        }).isInstanceOf(UsernameNotFoundException.class);
+        assertThatThrownBy(() -> userService.updateUser(updateUserRequest)).isInstanceOf(UsernameNotFoundException.class);
     }
 
     @Test
@@ -92,8 +88,6 @@ public class UserServiceUnitTest {
     void testDeactivateUserAndReturnException() {
         UserService userService = new UserService(userRepository);
 
-        assertThatThrownBy(() -> {
-            userService.deactivateUser(1L);
-        }).isInstanceOf(UsernameNotFoundException.class);
+        assertThatThrownBy(() -> userService.deactivateUser(1L)).isInstanceOf(UsernameNotFoundException.class);
     }
 }
