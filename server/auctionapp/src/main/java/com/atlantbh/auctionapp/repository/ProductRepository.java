@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
-    Page<ProductEntity> findAllByEndDateIsAfter(LocalDateTime time ,Pageable paging);
-    Page<ProductEntity> findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfterAndProductNameContainingIgnoreCase(ArrayList<Long> categoryId, @Positive double startPrice, @Positive double startPrice2, LocalDateTime endDate, String searchTerm, Pageable pageable);
+    Page<ProductEntity> findAllByEndDateIsAfterAndStartDateIsBefore(LocalDateTime date , LocalDateTime time, Pageable paging);
+    Page<ProductEntity> findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfterAndStartDateIsBeforeAndProductNameContainingIgnoreCase(ArrayList<Long> categoryId, @Positive double startPrice, @Positive double startPrice2, LocalDateTime endDate, LocalDateTime time, String searchTerm, Pageable pageable);
     ProductEntity findProductById(long id);
     List<ProductEntity> findAllByUserIdAndEndDateIsAfter(long userId, LocalDateTime time, Sort sort);
     List<ProductEntity> findAllByUserIdAndEndDateIsBefore(long userId, LocalDateTime time, Sort sort);

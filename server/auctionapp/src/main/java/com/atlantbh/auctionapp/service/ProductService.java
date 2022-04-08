@@ -45,7 +45,7 @@ public class ProductService {
         }
         Pageable paging = PageRequest.of(pageNumber, pageSize, sortOrder);
 
-        return productRepository.findAllByEndDateIsAfter(time, paging);
+        return productRepository.findAllByEndDateIsAfterAndStartDateIsBefore(time, time, paging);
 
     }
 
@@ -64,7 +64,7 @@ public class ProductService {
         }
 
         Pageable paging = PageRequest.of(pageNumber, pageSize, sortBy);
-        return productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfterAndProductNameContainingIgnoreCase(categoryId, lowPrice, highPrice, time, searchTerm, paging );
+        return productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfterAndStartDateIsBeforeAndProductNameContainingIgnoreCase(categoryId, lowPrice, highPrice, time, time, searchTerm, paging );
     }
 
     public ProductEntity getProductById(long id){
