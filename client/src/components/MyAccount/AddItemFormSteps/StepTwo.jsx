@@ -13,33 +13,19 @@ const StepTwo = ({
   handleInputData,
 }) => {
   const changeStartDate = (e) => {
-    //check if date is lower than current date
     const startDateInput = moment(e.target.value).format("YYYY-MM-DD");
-    const currentDate = moment().format("YYYY-MM-DD");
 
-    if (moment(startDateInput).isBefore(currentDate)) {
-      setProductDetails({ ...productDetails, startDate: currentDate });
-      toast.error("Date cannot be in the past");
-    } else {
-      setProductDetails({
-        ...productDetails,
-        startDate: startDateInput,
-        endDate: moment(startDateInput).add(7, "days").format("YYYY-MM-DD"),
-      });
-    }
+    setProductDetails({
+      ...productDetails,
+      startDate: startDateInput,
+      endDate: moment(startDateInput).add(7, "days").format("YYYY-MM-DD"),
+    });
   };
 
   const changeEndDate = (e) => {
     const endDateInput = moment(e.target.value).format("YYYY-MM-DD");
-    const startDate = moment(new Date(productDetails.startDate)).format(
-      "YYYY-MM-DD"
-    );
 
-    if (moment(endDateInput).isBefore(startDate)) {
-      toast.error("End date cannot be before start date");
-    } else {
-      setProductDetails({ ...productDetails, endDate: endDateInput });
-    }
+    setProductDetails({ ...productDetails, endDate: endDateInput });
   };
 
   const validateDataAndNavigateToNextStep = () => {
@@ -79,6 +65,7 @@ const StepTwo = ({
               className="flex-1 outline-none"
               value={productDetails.startDate}
               onChange={changeStartDate}
+              min={moment().format("YYYY-MM-DD")}
             />
             <AiOutlineCalendar className="text-2xl" />
           </div>
@@ -90,6 +77,7 @@ const StepTwo = ({
               className="flex-1 outline-none"
               value={productDetails.endDate}
               onChange={changeEndDate}
+              min={productDetails.startDate}
             />
             <AiOutlineCalendar className="text-2xl" />
           </div>
