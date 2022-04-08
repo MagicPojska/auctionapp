@@ -37,6 +37,9 @@ const Navbar = () => {
       setUser(getUserFromSession());
       setToken(getTokenFromSession());
     }
+    if (!location.pathname.includes(shopPath)) {
+      setSearchTerm("");
+    }
   }, [location]);
 
   const handleSearch = (e) => {
@@ -107,6 +110,7 @@ const Navbar = () => {
                 placeholder="Try enter: Shoes"
                 className="w-full pl-5 font-light text-base focus:outline-none"
                 onChange={(e) => setSearchTerm(e.target.value)}
+                value={searchTerm}
               />
               <button className="text-lg mr-5">
                 <AiOutlineSearch />
