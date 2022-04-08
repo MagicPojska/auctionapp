@@ -1,6 +1,6 @@
 import { AiOutlineSearch } from "react-icons/ai";
 import { useState, useEffect } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   categoriesPath,
   homePath,
@@ -26,6 +26,7 @@ import { useUserContext } from "../contexts/UserContextProvider";
 const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
   const { logout, user, setUser, setToken } = useUserContext();
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const Navbar = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(searchTerm);
+    navigate(`${categoriesPath}/search/${searchTerm}`);
   };
 
   const handleLogout = async () => {
@@ -127,7 +128,7 @@ const Navbar = () => {
               </li>
               <li>
                 <NavLink
-                  to={`${categoriesPath}/1`}
+                  to={`${categoriesPath}/search`}
                   className={
                     location.pathname.includes(shopPath)
                       ? "text-purple font-bold"

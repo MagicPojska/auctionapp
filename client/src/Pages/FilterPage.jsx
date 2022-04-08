@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import CategoriesAccordion from "../components/ShopPage/CategoriesAccordion";
 import FilterProductsGrid from "../components/ShopPage//FilterProductsGrid";
 import {
@@ -32,7 +32,10 @@ const FilterPage = () => {
   const [minProductPrice, setMinProductPrice] = useState("");
   const [maxProductPrice, setMaxProductPrice] = useState("");
 
+  const location = useLocation();
+
   const { id } = useParams();
+  const { query } = useParams();
 
   const PAGE_SIZE = 9;
 
@@ -46,11 +49,11 @@ const FilterPage = () => {
     })();
   }, []);
 
+  useEffect(() => {}, [location]);
+
   useEffect(() => {
-    subCategories.length > 0
-      ? getProducts(0, subCategories, minValue, maxValue, sortBy)
-      : setProducts([]);
-  }, [subCategories, sortBy]);
+    getProducts(0, subCategories, minValue, maxValue, query, sortBy);
+  }, [subCategories, sortBy, query]);
 
   const getCategories = async () => {
     try {
@@ -66,6 +69,7 @@ const FilterPage = () => {
     subcategoryId,
     lowPrice = "",
     highPrice = "",
+    searchTerm = query,
     sortBy = ""
   ) => {
     try {
@@ -77,6 +81,7 @@ const FilterPage = () => {
         subcategoryId,
         lowPrice,
         highPrice,
+        typeof searchTerm !== "undefined" ? searchTerm : "",
         sortBy
       );
 
@@ -92,6 +97,8 @@ const FilterPage = () => {
     } catch (error) {
       setProducts([]);
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -101,6 +108,7 @@ const FilterPage = () => {
       subCategories,
       minValue,
       maxValue,
+      query,
       sortBy
     );
   };

@@ -15,6 +15,7 @@ export const getProductsByCategory = (
   categoryId,
   lowPrice,
   highPrice,
+  searchTerm,
   sortBy
 ) =>
   API.get(
@@ -22,7 +23,7 @@ export const getProductsByCategory = (
       .map((item) => `categoryId=${item}&`)
       .join(
         ""
-      )}pageSize=${pageSize}&lowPrice=${lowPrice}&highPrice=${highPrice}&sort=${
+      )}pageSize=${pageSize}&lowPrice=${lowPrice}&highPrice=${highPrice}&searchTerm=${searchTerm}&sort=${
       sortBy.sortCriterium && sortBy.sortOrder
         ? `${sortBy.sortCriterium},${sortBy.sortOrder}`
         : ""
