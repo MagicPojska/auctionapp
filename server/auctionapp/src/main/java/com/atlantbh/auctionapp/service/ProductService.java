@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,15 +49,22 @@ public class ProductService {
 
     }
 
-    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, long[] categoryId, double lowPrice, double highPrice, Sort sortBy, String sort){
+    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, ArrayList<Long> categoryId, double lowPrice, double highPrice, String searchTerm, Sort sortBy, String sort){
         LocalDateTime time = LocalDateTime.now();
+        if(categoryId == null){
+            categoryId = new ArrayList<>();
+            long countOfCategories = categoryRepository.count();
+            for(long i = 1; i <= countOfCategories; i++){
+                categoryId.add(i);
+            }
+        }
 
         if(sortBy == Sort.unsorted()){
             sortBy = Sort.by(sort).ascending();
         }
 
         Pageable paging = PageRequest.of(pageNumber, pageSize, sortBy);
-        return productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfter(categoryId, lowPrice, highPrice, time, paging );
+        return productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfterAndProductNameContainingIgnoreCase(categoryId, lowPrice, highPrice, time, searchTerm, paging );
     }
 
     public ProductEntity getProductById(long id){
