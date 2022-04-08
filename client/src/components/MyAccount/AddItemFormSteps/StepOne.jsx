@@ -20,6 +20,7 @@ const StepOne = ({
   const [allCategoriesList, setAllCategoriesList] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+  const [imagePreview, setImagePreview] = useState([]);
 
   useEffect(() => {
     const getCategories = async () => {
@@ -61,6 +62,16 @@ const StepOne = ({
   const handlePhotoChange = (photos) => {
     if (photos.length >= 3 && photos.length <= 5) {
       setImages(photos);
+
+      const selectedFiles = [];
+      const targetFiles = photos;
+      const targetFileObject = [...targetFiles];
+      targetFileObject.map((file) => {
+        return selectedFiles.push(URL.createObjectURL(file));
+      });
+      setImagePreview(selectedFiles);
+
+      console.log(selectedFiles);
     } else {
       toast.error("Wrong number of pictures!", {
         position: toast.POSITION.TOP_CENTER,
@@ -148,11 +159,18 @@ const StepOne = ({
           }}
         >
           <div className="border-2 border-dashed my-4 h-80 mb-16">
-            {images !== null && images.length > 0 ? (
+            {imagePreview.length > 0 ? (
               <label className="bg-bgWhite w-full h-full flex flex-col justify-center items-center space-y-3 cursor-pointer">
-                <span className="text-base font-bold leading-normal text-purple">
-                  Number of images uploaded: {images.length}
-                </span>
+                <div className="p-12 grid grid-cols-3 gap-4">
+                  {imagePreview.map((url, id) => (
+                    <img
+                      src={url}
+                      className="object-cover h-24 w-24"
+                      alt="uploaded image"
+                      key={id}
+                    />
+                  ))}
+                </div>
               </label>
             ) : (
               <label className="bg-bgWhite w-full h-full flex flex-col justify-center items-center space-y-3 cursor-pointer">
