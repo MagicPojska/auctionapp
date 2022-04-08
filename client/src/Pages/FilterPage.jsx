@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import CategoriesAccordion from "../components/ShopPage/CategoriesAccordion";
 import FilterProductsGrid from "../components/ShopPage//FilterProductsGrid";
 import {
@@ -32,8 +32,6 @@ const FilterPage = () => {
   const [minProductPrice, setMinProductPrice] = useState("");
   const [maxProductPrice, setMaxProductPrice] = useState("");
 
-  const location = useLocation();
-
   const { id } = useParams();
   const { query } = useParams();
 
@@ -48,8 +46,6 @@ const FilterPage = () => {
       setMaxProductPrice(parseFloat(response.data.max));
     })();
   }, []);
-
-  useEffect(() => {}, [location]);
 
   useEffect(() => {
     getProducts(0, subCategories, minValue, maxValue, query, sortBy);
