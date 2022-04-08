@@ -44,3 +44,20 @@ input[type=number] {
 textarea {
   resize: none;
 }
+
+/* Made date picker in chrome clickable without native icon*/
+input[type="date"] {
+  position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  color: transparent;
+  background: transparent;
+}
