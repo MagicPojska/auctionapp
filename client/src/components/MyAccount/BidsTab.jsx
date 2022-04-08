@@ -69,7 +69,9 @@ const BidsTab = () => {
                         : "text-blue-600"
                     }`}
                   >
-                    {bid.price !== null ? "$ " + bid.price : "No bids"}
+                    {bid.price !== null
+                      ? "$ " + bid.product.highestBid
+                      : "No bids"}
                   </td>
                   <td className="pl-6 pr-8 py-4 text-right">
                     <Link
