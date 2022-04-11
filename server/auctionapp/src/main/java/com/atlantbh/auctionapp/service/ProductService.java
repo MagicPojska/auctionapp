@@ -5,9 +5,12 @@ import com.atlantbh.auctionapp.model.CategoryEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.model.enums.SortBy;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;
+import com.atlantbh.auctionapp.projections.ProductNameProj;
 import com.atlantbh.auctionapp.repository.CategoryRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
 import com.atlantbh.auctionapp.request.ProductRequest;
+import com.atlantbh.auctionapp.response.ProductResponse;
+import com.atlantbh.auctionapp.utilities.CalculateSimilarity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +52,7 @@ public class ProductService {
 
     }
 
-    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, ArrayList<Long> categoryId, double lowPrice, double highPrice, String searchTerm, Sort sortBy, String sort){
+    public ProductResponse getAllProductsFromCategory(Integer pageNumber, Integer pageSize, ArrayList<Long> categoryId, double lowPrice, double highPrice, String searchTerm, Sort sortBy, String sort){
         LocalDateTime time = LocalDateTime.now();
         if(categoryId == null){
             categoryId = new ArrayList<>();
@@ -64,7 +67,25 @@ public class ProductService {
         }
 
         Pageable paging = PageRequest.of(pageNumber, pageSize, sortBy);
-        return productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfterAndStartDateIsBeforeAndProductNameContainingIgnoreCase(categoryId, lowPrice, highPrice, time, time, searchTerm, paging );
+        Page<ProductEntity> products = productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfterAndStartDateIsBeforeAndProductNameContainingIgnoreCase(categoryId, lowPrice, highPrice, time, time, searchTerm, paging );
+
+        String suggestion = "";
+        if(products.getTotalElements() == 0 && !searchTerm.isEmpty() && !productRepository.existsByProductNameAndEndDateIsAfterAndStartDateIsBefore(searchTerm, time, time)){
+           List<ProductNameProj> listOfProductNames = productRepository.findAllByEndDateIsAfterAndStartDateIsBefore(time, time);
+           Double editDistance = null;
+           for(ProductNameProj productNameProj : listOfProductNames){
+                double newEditDistance = CalculateSimilarity.calculate(productNameProj.getProductName(), searchTerm);
+                if(editDistance == null){
+                    editDistance = newEditDistance;
+                }
+                if(newEditDistance > editDistance){
+                    editDistance = newEditDistance;
+                    suggestion = productNameProj.getProductName();
+                }
+           }
+        }
+
+        return new ProductResponse(products, suggestion);
     }
 
     public ProductEntity getProductById(long id){
