@@ -55,7 +55,7 @@ const ProductOverviewPage = () => {
 
     try {
       const bidDetails = {
-        price: bid,
+        price: Math.round(bid * 100) / 100,
         userId: user.id,
         productId: product.id,
       };
