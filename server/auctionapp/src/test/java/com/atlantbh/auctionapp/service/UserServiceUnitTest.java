@@ -4,6 +4,7 @@ import com.atlantbh.auctionapp.domain.model.User;
 import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.UpdateUserRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,10 +27,16 @@ public class UserServiceUnitTest {
     @Mock
     private UserRepository userRepository;
 
+    UserService userService;
+
+    @BeforeEach
+    void setUp() {
+        userService = new UserService(userRepository);
+    }
+
     @Test
     @DisplayName("Test if User is returned if user is found by email")
     void loadUserByUsername() {
-        UserService userService = new UserService(userRepository);
         UserEntity userEntity = new UserEntity("Safet", "Pojskic", "test@gmail.com", "testPassword");
         User expectedUserResult = new User(1L, "Safet", "Pojskic", "test@gmail.com", "testPassword");
 
@@ -42,16 +49,12 @@ public class UserServiceUnitTest {
     @Test
     @DisplayName("Test if NotFoundException is returned if user is not found by email")
     void returnExceptionNotFoundOnFindByEmail() {
-        UserService userService = new UserService(userRepository);
-
         assertThatThrownBy(() -> userService.loadUserByUsername("test@gmail.com")).isInstanceOf(UsernameNotFoundException.class);
     }
 
     @Test
     @DisplayName("Update user test should return UserNotFoundException if user is not found by email")
     void testUpdateUserShouldReturnException() {
-        UserService userService = new UserService(userRepository);
-
         UpdateUserRequest updateUserRequest = new UpdateUserRequest("Safet", "Pojskic", "email@gmail.com", "+123123123", new Date(), "address", "city", "72000", "state", "country", "image");
         assertThatThrownBy(() -> userService.updateUser(updateUserRequest)).isInstanceOf(UsernameNotFoundException.class);
     }
@@ -59,7 +62,6 @@ public class UserServiceUnitTest {
     @Test
     @DisplayName("Update user successfully")
     void testUpdateUserShouldSaveUser() {
-        UserService userService = new UserService(userRepository);
         UpdateUserRequest updateUserRequest = new UpdateUserRequest("Safet", "Pojskic", "email@gmail.com", "+123123123", new Date(), "address", "city", "72000", "state", "country", "image");
         UserEntity userEntity = new UserEntity("Safet", "Pojskic", "email@gmail.com", "testPassword");
 
@@ -72,7 +74,6 @@ public class UserServiceUnitTest {
     @Test
     @DisplayName("Deactivate user and save it to database")
     void testDeactivateUser() {
-        UserService userService = new UserService(userRepository);
         UserEntity userEntity = new UserEntity("Safet", "Pojskic", "email@gmail.com", "pw", new Date(), true, "state", "address", "city", "72000",  "country", "+123123", "image");
 
         userEntity.setId(1L);
@@ -86,8 +87,6 @@ public class UserServiceUnitTest {
     @Test
     @DisplayName("Deactivate user service should throw exception for nonexisting user")
     void testDeactivateUserAndReturnException() {
-        UserService userService = new UserService(userRepository);
-
         assertThatThrownBy(() -> userService.deactivateUser(1L)).isInstanceOf(UsernameNotFoundException.class);
     }
 }

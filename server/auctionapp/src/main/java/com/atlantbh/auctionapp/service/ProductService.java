@@ -1,5 +1,6 @@
 package com.atlantbh.auctionapp.service;
 
+import com.atlantbh.auctionapp.exceptions.BadRequestException;
 import com.atlantbh.auctionapp.exceptions.NotFoundException;
 import com.atlantbh.auctionapp.model.CategoryEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
@@ -62,7 +63,7 @@ public class ProductService {
             }
         }
 
-        if (sortBy == Sort.unsorted()){
+        if (sortBy == Sort.unsorted()) {
             sortBy = Sort.by(sort).ascending();
         }
 
@@ -104,6 +105,14 @@ public class ProductService {
     public ProductEntity createProduct(ProductRequest productRequest) {
         CategoryEntity category = categoryRepository.findById(productRequest.getCategoryId()).orElseThrow(() -> new NotFoundException("Category with id: " + productRequest.getCategoryId() + " does not exist"));
         ProductEntity product = new ProductEntity(productRequest.getProductName(), productRequest.getDescription(), productRequest.getStartPrice(), productRequest.getStartDate(), productRequest.getEndDate(), productRequest.getImages(), productRequest.getAddress(), productRequest.getCity(), productRequest.getZipCode(), productRequest.getCountry(), productRequest.getPhone(), productRequest.getUserId(), category);
+        if (productRequest.getStartDate().isBefore(LocalDateTime.now()))
+            throw new BadRequestException("Start date can't be before current date");
+        if (productRequest.getEndDate().isBefore(LocalDateTime.now()))
+            throw new BadRequestException("End date can't be before current date");
+        if (productRequest.getEndDate().isBefore(productRequest.getStartDate()))
+            throw new BadRequestException("End date must be after start date");
+
+        
         return productRepository.save(product);
     }
 

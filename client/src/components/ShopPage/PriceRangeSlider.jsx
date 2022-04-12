@@ -3,7 +3,6 @@ import debounce from "lodash.debounce";
 
 const PriceRangeSlider = ({
   onChange,
-  subCategories,
   minValue,
   setMinValue,
   maxValue,
@@ -62,7 +61,7 @@ const PriceRangeSlider = ({
         setMinValue(e.target.value);
       }
 
-      onChange(0, subCategories, e.target.value, maxValue);
+      onChange(e.target.value, maxValue);
     }
   };
 
@@ -79,19 +78,19 @@ const PriceRangeSlider = ({
         if (parseFloat(e.target.value) < minValue) {
           e.target.value = parseFloat(minValue) + 50;
           setMaxValue(e.target.value);
-          onChange(0, subCategories, minValue, e.target.value);
+          onChange(minValue, e.target.value);
         }
       }, 1000);
       debouncedMaxValue();
 
       if (parseFloat(e.target.value) > minValue) {
-        onChange(0, subCategories, minValue, e.target.value);
+        onChange(minValue, e.target.value);
       }
     }
   };
 
   const filterByPrice = () => {
-    onChange(0, subCategories, minValue, maxValue);
+    onChange(minValue, maxValue);
   };
 
   return (
