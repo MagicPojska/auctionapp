@@ -64,8 +64,7 @@ const StepOne = ({
       setImages(photos);
 
       const selectedFiles = [];
-      const targetFiles = photos;
-      const targetFileObject = [...targetFiles];
+      const targetFileObject = [...photos];
       targetFileObject.map((file) => {
         return selectedFiles.push(URL.createObjectURL(file));
       });
