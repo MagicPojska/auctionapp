@@ -101,9 +101,9 @@ const ProfileTab = () => {
           process.env.REACT_APP_CLOUDINARY_PRESET_NAME
         );
 
-        const cloudinaryResponse = await uploadImage(imageData);
+        const imageResponse = await uploadImage(imageData);
 
-        userInfo.profileImage = cloudinaryResponse.data.url;
+        userInfo.profileImage = imageResponse.data.url;
       }
 
       userInfo.dateOfBirth = moment(
