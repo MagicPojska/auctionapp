@@ -12,7 +12,7 @@ const PriceRangeSlider = ({
 }) => {
   const progressRef = useRef(null);
 
-  const step = 1;
+  const step = 0.01;
   const priceCap = 50;
 
   useEffect(() => {
