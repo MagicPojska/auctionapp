@@ -70,7 +70,7 @@ public class ProductService {
         Page<ProductEntity> products = productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfterAndStartDateIsBeforeAndProductNameContainingIgnoreCase(categoryId, lowPrice, highPrice, time, time, searchTerm, paging );
 
         String suggestion = "";
-        if (products.getTotalElements() == 0 && !searchTerm.isEmpty() && !productRepository.existsByProductNameAndEndDateIsAfterAndStartDateIsBefore(searchTerm, time, time)) {
+        if (products.getTotalElements() == 0 && !searchTerm.isEmpty()) {
            List<ProductNameProj> listOfProductNames = productRepository.findAllByEndDateIsAfterAndStartDateIsBefore(time, time);
            Double editDistance = null;
            for (ProductNameProj productNameProj : listOfProductNames) {
