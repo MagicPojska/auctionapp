@@ -27,7 +27,7 @@ const LandingPageCategories = ({ categories }) => {
       </div>
       <div className="bg-white h-14 w-64 flex p-4 border-b-[1px] border-gray-300 items-center">
         <Link
-          to={`${categoriesPath}/1`}
+          to={`${categoriesPath}/search`}
           className="text-base leading-6 font-normal"
         >
           All Categories

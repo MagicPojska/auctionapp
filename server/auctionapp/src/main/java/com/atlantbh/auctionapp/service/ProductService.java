@@ -6,9 +6,12 @@ import com.atlantbh.auctionapp.model.CategoryEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.model.enums.SortBy;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;
+import com.atlantbh.auctionapp.projections.ProductNameProj;
 import com.atlantbh.auctionapp.repository.CategoryRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
 import com.atlantbh.auctionapp.request.ProductRequest;
+import com.atlantbh.auctionapp.response.ProductResponse;
+import com.atlantbh.auctionapp.utilities.CalculateSimilarity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,31 +42,56 @@ public class ProductService {
     public Page<ProductEntity> getAllProducts(Integer pageNumber, Integer pageSize, String sortBy){
         Sort sortOrder;
         LocalDateTime time = LocalDateTime.now();
-        if (sortBy.equals(SortBy.START_DATE.getSort())){
+        if (sortBy.equals(SortBy.START_DATE.getSort())) {
             sortOrder = Sort.by(sortBy).descending();
         } else {
             sortOrder = Sort.by(sortBy);
         }
         Pageable paging = PageRequest.of(pageNumber, pageSize, sortOrder);
 
-        return productRepository.findAllByEndDateIsAfter(time, paging);
+        return productRepository.findAllByEndDateIsAfterAndStartDateIsBefore(time, time, paging);
 
     }
 
-    public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, long[] categoryId, double lowPrice, double highPrice, Sort sortBy, String sort){
+    public ProductResponse getAllProductsFromCategory(Integer pageNumber, Integer pageSize, ArrayList<Long> categoryId, double lowPrice, double highPrice, String searchTerm, Sort sortBy, String sort){
         LocalDateTime time = LocalDateTime.now();
+        if (categoryId == null) {
+            categoryId = new ArrayList<>();
+            long countOfCategories = categoryRepository.count();
+            for(long i = 1; i <= countOfCategories; i++){
+                categoryId.add(i);
+            }
+        }
 
         if (sortBy == Sort.unsorted()) {
             sortBy = Sort.by(sort).ascending();
         }
 
         Pageable paging = PageRequest.of(pageNumber, pageSize, sortBy);
-        return productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfter(categoryId, lowPrice, highPrice, time, paging );
+        Page<ProductEntity> products = productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfterAndStartDateIsBeforeAndProductNameContainingIgnoreCase(categoryId, lowPrice, highPrice, time, time, searchTerm, paging );
+
+        String suggestion = "";
+        if (products.getTotalElements() == 0 && !searchTerm.isEmpty()) {
+           List<ProductNameProj> listOfProductNames = productRepository.findAllByEndDateIsAfterAndStartDateIsBefore(time, time);
+           Double editDistance = null;
+           for (ProductNameProj productNameProj : listOfProductNames) {
+                double newEditDistance = CalculateSimilarity.calculate(productNameProj.getProductName(), searchTerm);
+                if (editDistance == null){
+                    editDistance = newEditDistance;
+                }
+                if(newEditDistance > editDistance){
+                    editDistance = newEditDistance;
+                    suggestion = productNameProj.getProductName();
+                }
+           }
+        }
+
+        return new ProductResponse(products, suggestion);
     }
 
     public ProductEntity getProductById(long id){
         ProductEntity product = productRepository.findProductById(id);
-        if(product == null){
+        if (product == null) {
             logger.error("Product with id: " + id + " not found");
             throw new NotFoundException("Product with id:" + id + " does not exist");
         }
@@ -90,7 +119,7 @@ public class ProductService {
     public List<ProductEntity> getProductsFromUser(long userId, String type) {
         LocalDateTime time = LocalDateTime.now();
         List<ProductEntity> products;
-        if (type.equals(SortBy.SOLD.getSort())){
+        if (type.equals(SortBy.SOLD.getSort())) {
             products = productRepository.findAllByUserIdAndEndDateIsBefore(userId, time, Sort.by(Sort.Direction.DESC, SortBy.END_DATE.getSort()));
         } else {
             products = productRepository.findAllByUserIdAndEndDateIsAfter(userId, time, Sort.by(Sort.Direction.DESC, SortBy.START_DATE.getSort()));

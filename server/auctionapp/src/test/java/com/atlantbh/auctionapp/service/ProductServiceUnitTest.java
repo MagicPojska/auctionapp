@@ -52,7 +52,7 @@ class ProductServiceUnitTest {
         ProductEntity product2 = new ProductEntity("productName", "description", 20, now, future, "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
         final Page<ProductEntity> expectedResult = new PageImpl<>(List.of(product1, product2));
 
-        Mockito.when(productRepository.findAllByEndDateIsAfter(isA(LocalDateTime.class), eq(paging))).thenReturn(expectedResult);
+        Mockito.when(productRepository.findAllByEndDateIsAfterAndStartDateIsBefore(isA(LocalDateTime.class), isA(LocalDateTime.class), eq(paging))).thenReturn(expectedResult);
 
         Page<ProductEntity> list = productService.getAllProducts(0, 9, "startDate");
         assertThat(list.getContent()).isEqualTo(expectedResult.getContent());

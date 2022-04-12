@@ -12,11 +12,13 @@ const CategoriesAccordion = ({
   );
 
   useEffect(() => {
-    const idList = categories
-      .filter((cat) => cat && cat.supercategoryId === parseInt(id))
-      .map((cat) => cat.id.toString());
+    if (id != "search") {
+      const idList = categories
+        .filter((cat) => cat && cat.supercategoryId === parseInt(id))
+        .map((cat) => cat.id.toString());
 
-    setSubCategories(idList);
+      setSubCategories(idList);
+    }
   }, []);
 
   const handleOpening = () => {

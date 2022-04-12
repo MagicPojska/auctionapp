@@ -3,6 +3,7 @@ package com.atlantbh.auctionapp.controllers;
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;
 import com.atlantbh.auctionapp.request.ProductRequest;
+import com.atlantbh.auctionapp.response.ProductResponse;
 import com.atlantbh.auctionapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,17 +44,18 @@ public class ProductController {
     }
 
     @GetMapping("/items/category")
-    public ResponseEntity<Page<ProductEntity>> getAllProductsFromCategory(@RequestParam(defaultValue = "0") Integer pageNumber,
-                                                                          @RequestParam(defaultValue = "9") Integer pageSize,
-                                                                          @RequestParam long[] categoryId,
-                                                                          @RequestParam(defaultValue = "0") double lowPrice,
-                                                                          @RequestParam(defaultValue = "9999999") double highPrice,
-                                                                          @RequestParam(defaultValue = "productName") String sort,
-                                                                          Sort sortBy){
+    public ResponseEntity<ProductResponse> getAllProductsFromCategory(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                                                      @RequestParam(defaultValue = "9") Integer pageSize,
+                                                                      @RequestParam(required = false) ArrayList<Long> categoryId,
+                                                                      @RequestParam(defaultValue = "0") double lowPrice,
+                                                                      @RequestParam(defaultValue = "9999999") double highPrice,
+                                                                      @RequestParam(defaultValue = "") String searchTerm,
+                                                                      @RequestParam(defaultValue = "productName") String sort,
+                                                                      Sort sortBy){
 
-        Page<ProductEntity> list = productService.getAllProductsFromCategory(pageNumber, pageSize, categoryId, lowPrice, highPrice, sortBy, sort);
+        ProductResponse list = productService.getAllProductsFromCategory(pageNumber, pageSize, categoryId, lowPrice, highPrice, searchTerm, sortBy, sort);
 
-        return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(list , new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping("/items/price-range")

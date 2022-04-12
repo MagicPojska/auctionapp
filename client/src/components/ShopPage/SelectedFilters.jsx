@@ -59,7 +59,7 @@ const SelectedFilters = ({
           </div>
         )}
 
-        <div className="flex h-fit">
+        <div className="flex h-fit mb-4">
           {(minValue || maxValue) && (
             <div className="flex flex-col mr-16 font-normal text-base ">
               <label className="text-sm text-textTetriary mb-2">
@@ -80,12 +80,13 @@ const SelectedFilters = ({
             </div>
           )}
 
-          <div className="flex justify-center items-center mt-1 border-2 h-10 w-32 text-textTetriary">
+          <button
+            onClick={clearAllFilters}
+            className="flex justify-center items-center mt-1 border-2 h-10 w-32 text-textTetriary"
+          >
             <p>Clear all</p>
-            <button onClick={clearAllFilters}>
-              <GrFormClose className="text-sm opacity-40 ml-3" />
-            </button>
-          </div>
+            <GrFormClose className="text-sm opacity-40 ml-3" />
+          </button>
         </div>
       </div>
     )

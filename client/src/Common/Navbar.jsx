@@ -1,6 +1,6 @@
 import { AiOutlineSearch } from "react-icons/ai";
 import { useState, useEffect } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   categoriesPath,
   homePath,
@@ -22,10 +22,12 @@ import {
   getUserFromStorage,
 } from "../utilities/auth";
 import { useUserContext } from "../contexts/UserContextProvider";
+import { GrFormClose } from "react-icons/gr";
 
 const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
   const { logout, user, setUser, setToken } = useUserContext();
 
   useEffect(() => {
@@ -36,11 +38,14 @@ const Navbar = () => {
       setUser(getUserFromSession());
       setToken(getTokenFromSession());
     }
+    if (!location.pathname.includes(shopPath)) {
+      setSearchTerm("");
+    }
   }, [location]);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(searchTerm);
+    navigate(`${categoriesPath}/search/${searchTerm}`);
   };
 
   const handleLogout = async () => {
@@ -99,17 +104,26 @@ const Navbar = () => {
             <form
               action="submit"
               onSubmit={handleSearch}
-              className="flex justify-between w-full  h-12 border-2 "
+              className="flex justify-between w-full h-12 border-2 "
             >
               <input
                 type="text"
                 placeholder="Try enter: Shoes"
                 className="w-full pl-5 font-light text-base focus:outline-none"
                 onChange={(e) => setSearchTerm(e.target.value)}
+                value={searchTerm}
               />
-              <button className="text-lg mr-5">
-                <AiOutlineSearch />
-              </button>
+              <div className="flex items-center space-x-4 mr-5">
+                <GrFormClose
+                  className="text-lg cursor-pointer"
+                  onClick={() => {
+                    setSearchTerm("");
+                  }}
+                />
+                <button className="text-lg ">
+                  <AiOutlineSearch />
+                </button>
+              </div>
             </form>
 
             <ul className="flex justify-start w-[262px] min-w-fit text-base leading-5 font-light ml-6 space-x-[30px] mt-5 lg:mt-0">
@@ -127,7 +141,7 @@ const Navbar = () => {
               </li>
               <li>
                 <NavLink
-                  to={`${categoriesPath}/1`}
+                  to={`${categoriesPath}/search`}
                   className={
                     location.pathname.includes(shopPath)
                       ? "text-purple font-bold"

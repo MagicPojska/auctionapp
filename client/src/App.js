@@ -36,6 +36,7 @@ const App = () => {
       <Routes>
         <Route path={homePath} element={<LandingPage />} />
         <Route path={`${categoriesPath}/:id`} element={<FilterPage />} />
+        <Route path={`${categoriesPath}/:id/:query`} element={<FilterPage />} />
         <Route path={loginPath} element={<LoginPage />} />
         <Route path={registrationPath} element={<RegistrationPage />} />
         <Route path={addItemPath + sellerPath} element={<AddItemPage />} />
