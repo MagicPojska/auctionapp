@@ -3,6 +3,10 @@ const setUserInStorage = (user, token) => {
   localStorage.setItem("user", JSON.stringify(user));
 };
 
+const updateUserInStorage = (user) => {
+  localStorage.setItem("user", JSON.stringify(user));
+};
+
 const removeUserFromStorage = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
@@ -19,6 +23,10 @@ const getTokenFromStorage = () => {
 
 const setUserInSession = (user, token) => {
   sessionStorage.setItem("token", token);
+  sessionStorage.setItem("user", JSON.stringify(user));
+};
+
+const updateUserInSession = (user) => {
   sessionStorage.setItem("user", JSON.stringify(user));
 };
 
@@ -43,11 +51,13 @@ const getUserId = () => {
 
 export {
   setUserInStorage,
+  updateUserInStorage,
   removeUserFromStorage,
   getUserFromStorage,
   getUserId,
   getTokenFromStorage,
   setUserInSession,
+  updateUserInSession,
   removeUserFromSession,
   getUserFromSession,
   getTokenFromSession,

@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @NoArgsConstructor
 @Getter
@@ -39,7 +40,43 @@ public class UserEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    public UserEntity(String firstName, String lastName, String email, String password){
+    private Date dateOfBirth;
+
+    private boolean isActive = true;
+
+    private String state;
+
+    private String address;
+
+    private String city;
+
+    @javax.validation.constraints.Size(max = 32)
+    private String zipCode;
+
+    private String country;
+
+    @javax.validation.constraints.Size(max = 32)
+    private String phone;
+
+    private String profileImage;
+
+    public UserEntity(String firstName, String lastName, String email, String password, Date dateOfBirth, boolean isActive, String state, String address, String city, String zipCode, String country, String phone, String profileImage) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.dateOfBirth = dateOfBirth;
+        this.isActive = isActive;
+        this.state = state;
+        this.address = address;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.phone = phone;
+        this.profileImage = profileImage;
+    }
+
+    public UserEntity(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

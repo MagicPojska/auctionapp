@@ -6,11 +6,9 @@ import com.atlantbh.auctionapp.request.RegisterRequest;
 import com.atlantbh.auctionapp.response.LoginResponse;
 import com.atlantbh.auctionapp.security.JwtUtil;
 import com.atlantbh.auctionapp.service.AuthService;
-import com.atlantbh.auctionapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,14 +19,12 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final AuthService authService;
-    private final UserService userService;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public AuthController(AuthService authService, JwtUtil jwtUtil, UserService userService) {
+    public AuthController(AuthService authService, JwtUtil jwtUtil) {
         this.authService = authService;
         this.jwtUtil = jwtUtil;
-        this.userService = userService;
     }
 
     @PostMapping("/register")
@@ -42,10 +38,9 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) throws Exception{
         try {
             authService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
-            final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getEmail());
 
             User user = authService.login(loginRequest);
-            return ResponseEntity.ok(new LoginResponse(user, jwtUtil.generateToken(userDetails)));
+            return ResponseEntity.ok(new LoginResponse(user, jwtUtil.generateToken(user)));
         } catch (AuthenticationException authExc) {
             throw new RuntimeException("Invalid Login Credentials");
         }

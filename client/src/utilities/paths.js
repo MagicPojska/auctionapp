@@ -12,3 +12,7 @@ export const myAccountPath = "/my-account";
 export const profilePath = "/profile";
 export const addItemPath = myAccountPath + "/add-item";
 export const sellerPath = "/seller";
+export const myBidsPath = myAccountPath + "/bids";
+export const becomeSellerPath = myAccountPath + "/seller";
+export const settingsPath = myAccountPath + "/settings";
+export const wishlistPath = myAccountPath + "/wishlist";

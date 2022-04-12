@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContextProvider";
 
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { forgotPasswordPath, homePath } from "../utilities/paths";
 
@@ -20,11 +20,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     const data = await login(user, rememberMe);
-    if (data === null) {
-      toast.error("Wrong username or password!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    } else {
+    if (data !== null) {
       navigate(homePath);
     }
   };
