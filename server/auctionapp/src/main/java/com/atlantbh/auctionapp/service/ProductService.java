@@ -52,7 +52,7 @@ public class ProductService {
     public Page<ProductEntity> getAllProductsFromCategory(Integer pageNumber, Integer pageSize, long[] categoryId, double lowPrice, double highPrice, Sort sortBy, String sort){
         LocalDateTime time = LocalDateTime.now();
 
-        if(sortBy == Sort.unsorted()){
+        if (sortBy == Sort.unsorted()) {
             sortBy = Sort.by(sort).ascending();
         }
 
