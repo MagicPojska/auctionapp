@@ -1,5 +1,6 @@
 package com.atlantbh.auctionapp.controllers;
 
+import com.atlantbh.auctionapp.model.BidsEntity;
 import com.atlantbh.auctionapp.projections.BidProj;
 import com.atlantbh.auctionapp.request.BidRequest;
 import com.atlantbh.auctionapp.response.BidResponse;
@@ -15,8 +16,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/bids")
 public class BidController {
+
+    private final BidService bidService;
+
     @Autowired
-    private BidService bidService;
+    public BidController(BidService bidService) {
+        this.bidService = bidService;
+    }
 
     @GetMapping("/product")
     public ResponseEntity<List<BidProj>> getBidsForProduct(@RequestParam long id){
@@ -28,5 +34,12 @@ public class BidController {
         BidResponse bid = bidService.add(bidRequest);
 
         return new ResponseEntity<>(bid, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<BidsEntity>> getBidsForUser(@RequestParam long id){
+        List<BidsEntity> bids = bidService.getBidsForUserById(id);
+
+        return new ResponseEntity<>(bids, new HttpHeaders(), HttpStatus.OK);
     }
 }

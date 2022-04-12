@@ -7,22 +7,26 @@ import PrivacyPolicyPage from "./Pages/PrivacyPolicyPage";
 import LoginPage from "./Pages/LoginPage";
 import RegistrationPage from "./Pages/RegistrationPage";
 import ProductOverviewPage from "./Pages/ProductOverviewPage";
-import PageLayout from "./components/PageLayout";
+import MyAccountPage from "./Pages/MyAccountPage";
 import LandingPage from "./Pages/LandingPage";
 import FilterPage from "./Pages/FilterPage";
 import NotFoundPage from "./Pages/NotFoundPage";
 
 import {
   aboutUsPath,
+  addItemPath,
   categoriesPath,
   homePath,
   loginPath,
+  myAccountPath,
   privacyPolicyPath,
   registrationPath,
+  sellerPath,
   shopProductPath,
   termsPath,
 } from "./utilities/paths";
 import ScrollToTop from "./components/ScrollToTop";
+import AddItemPage from "./Pages/AddItemPage";
 
 const App = () => {
   return (
@@ -34,34 +38,15 @@ const App = () => {
         <Route path={`${categoriesPath}/:id`} element={<FilterPage />} />
         <Route path={loginPath} element={<LoginPage />} />
         <Route path={registrationPath} element={<RegistrationPage />} />
+        <Route path={addItemPath + sellerPath} element={<AddItemPage />} />
+        <Route path={`${myAccountPath}/*`} element={<MyAccountPage />} />
         <Route
           path={`${shopProductPath}/:id`}
           element={<ProductOverviewPage />}
         />
-        <Route
-          path={aboutUsPath}
-          element={
-            <PageLayout>
-              <AboutPage />
-            </PageLayout>
-          }
-        />
-        <Route
-          path={termsPath}
-          element={
-            <PageLayout>
-              <TermsPage />
-            </PageLayout>
-          }
-        />
-        <Route
-          path={privacyPolicyPath}
-          element={
-            <PageLayout>
-              <PrivacyPolicyPage />
-            </PageLayout>
-          }
-        />
+        <Route path={aboutUsPath} element={<AboutPage />} />
+        <Route path={termsPath} element={<TermsPage />} />
+        <Route path={privacyPolicyPath} element={<PrivacyPolicyPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />

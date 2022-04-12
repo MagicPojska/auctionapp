@@ -1,6 +1,6 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
-import { shopProductPath } from "../utilities/paths";
+import { shopProductPath } from "../../utilities/paths";
 
 const LandingPageItems = ({ products, fetchNextPage, hasMore }) => {
   return (

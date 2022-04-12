@@ -3,6 +3,7 @@ import CurrentPageNav from "../components/CurrentPageNav";
 const AboutPage = () => {
   return (
     <>
+      <CurrentPageNav />
       <div className="mx-10 lg:mx-40 2xl:mx-60 flex flex-col md:flex-row justify-center mt-16">
         <div className="md:basis-1/2 text-base font-light leading-relaxed text-gray-400 mr-[22px]">
           <h1 className="font-normal leading-tight text-4xl text-black mb-8">

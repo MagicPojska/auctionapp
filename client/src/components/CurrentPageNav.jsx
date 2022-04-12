@@ -31,7 +31,7 @@ const CurrentPageNav = ({ title }) => {
 
   return (
     <div className="h-[60px] bg-bgWhite flex justify-between items-center px-40 2xl:px-72 font-normal text-base">
-      <span>{title ? title : lastElement}</span>
+      <span className="font-bold">{title ? title : lastElement}</span>
       <div className="font-normal text-base flex text-textTetriary">
         <span>{secondToLastElement} &nbsp;</span>
         <p>&#10132; &nbsp;</p>

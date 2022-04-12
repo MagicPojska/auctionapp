@@ -1,52 +1,39 @@
 package com.atlantbh.auctionapp.controllers;
 
-import com.atlantbh.auctionapp.domain.model.User;
-import com.atlantbh.auctionapp.request.LoginRequest;
-import com.atlantbh.auctionapp.request.RegisterRequest;
-import com.atlantbh.auctionapp.response.LoginResponse;
-import com.atlantbh.auctionapp.security.JwtUtil;
+import com.atlantbh.auctionapp.model.UserEntity;
+import com.atlantbh.auctionapp.request.UpdateUserRequest;
 import com.atlantbh.auctionapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/user")
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     @Autowired
-    private JwtUtil jwtUtil;
-
-
-    @PostMapping("/register")
-    public ResponseEntity<LoginResponse> register(@RequestBody @Valid RegisterRequest registerRequest) {
-        User user = userService.register(registerRequest);
-        return ResponseEntity.ok(new LoginResponse(user, jwtUtil.generateToken(user)));
-
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) throws Exception{
-        try {
-            userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
-            final UserDetails userDetails = userService.loadUserByUsername(loginRequest.getEmail());
+    @PutMapping("/update")
+    public ResponseEntity<UserEntity> updateUser(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
+        UserEntity user = userService.updateUser(updateUserRequest);
 
-            User user = userService.login(loginRequest);
-            return ResponseEntity.ok(new LoginResponse(user, jwtUtil.generateToken(userDetails)));
-        } catch (AuthenticationException authExc) {
-            throw new RuntimeException("Invalid Login Credentials");
-        }
+        return new ResponseEntity<>(user, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @GetMapping("/logout")
-    public void logout(HttpServletRequest request) {
-        userService.logout(request);
+    @GetMapping("/deactivate")
+    public ResponseEntity deactivateUser(@RequestParam("userId") Long userId) {
+        userService.deactivateUser(userId);
+
+        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
+
 }

@@ -27,7 +27,7 @@ public class ProductEntity {
     @Column(nullable = false)
     private String productName;
 
-    @Size(max = 255)
+    @Size(max = 700)
     @Column(nullable = false, columnDefinition="TEXT")
     private String description;
 
@@ -41,8 +41,31 @@ public class ProductEntity {
     @Column(nullable = false)
     private LocalDateTime endDate;
 
+    @NotBlank
     @Column(nullable = false, columnDefinition="TEXT")
     private String images;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String address;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String city;
+
+    @NotBlank
+    @Column(nullable = false)
+    @javax.validation.constraints.Size(max = 32)
+    private String zipCode;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String country;
+
+    @NotBlank
+    @Column(nullable = false)
+    @javax.validation.constraints.Size(max = 32)
+    private String phone;
 
     @Column(nullable = false)
     private long userId;
@@ -59,13 +82,18 @@ public class ProductEntity {
     @JoinColumn(name = "categoryId", nullable = false)
     private CategoryEntity category;
 
-    public ProductEntity(String productName, String description, double startPrice, LocalDateTime startDate, LocalDateTime endDate, String images, long userId, CategoryEntity category) {
+    public ProductEntity(String productName, String description, double startPrice, LocalDateTime startDate, LocalDateTime endDate, String images, String address, String city, String zipCode, String country, String phone, long userId, CategoryEntity category) {
         this.productName = productName;
         this.description = description;
         this.startPrice = startPrice;
         this.startDate = startDate;
         this.endDate = endDate;
         this.images = images;
+        this.address = address;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.phone = phone;
         this.userId = userId;
         this.category = category;
     }

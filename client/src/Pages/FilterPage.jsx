@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import CategoriesAccordion from "../components/CategoriesAccordion";
-import FilterProductsGrid from "../components/FilterProductsGrid";
+import CategoriesAccordion from "../components/ShopPage/CategoriesAccordion";
+import FilterProductsGrid from "../components/ShopPage//FilterProductsGrid";
 import {
   getCategoriesList,
   getProductPriceRange,
   getProductsByCategory,
 } from "../utilities/productsApi";
-import SelectedFilters from "../components/SelectedFilters";
-import PriceRangeSlider from "../components/PriceRangeSlider";
+import SelectedFilters from "../components/ShopPage/SelectedFilters";
+import PriceRangeSlider from "../components/ShopPage/PriceRangeSlider";
 import { GRID, LIST, SORT_BY } from "../utilities/constants";
 import Select from "react-select";
 import { customStyles } from "../utilities/selectStyle";
 import { BsGrid3X3, BsList } from "react-icons/bs";
-import FilterProductsList from "../components/FilterProductsList";
+import FilterProductsList from "../components/ShopPage/FilterProductsList";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const FilterPage = () => {

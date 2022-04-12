@@ -16,9 +16,8 @@ API.interceptors.response.use(
     if (error.response.status === 401) {
       removeUserFromSession();
       removeUserFromStorage();
-      window.location = "/login";
     }
-    return error;
+    return Promise.reject(error);
   }
 );
 

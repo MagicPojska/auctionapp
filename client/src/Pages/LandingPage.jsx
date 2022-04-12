@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getCategoriesList, getProductsSorted } from "../utilities/productsApi";
-import LandingPageCategories from "../components/LandingPageCategories";
-import HighlightedProduct from "../components/HighlightedProduct";
-import LandingPageItems from "../components/LandingPageItems";
+import LandingPageCategories from "../components/LandingPage/LandingPageCategories";
+import HighlightedProduct from "../components/LandingPage/HighlightedProduct";
+import LandingPageItems from "../components/LandingPage/LandingPageItems";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const LandingPage = () => {
@@ -49,7 +49,11 @@ const LandingPage = () => {
       }
 
       if (!highlightedProduct) {
-        setHighlightedProduct(response.data.content[0]);
+        setHighlightedProduct({
+          ...highlightedProduct,
+          ...response.data.content[0],
+          images: response.data.content[0].images.split(",")[0],
+        });
       }
 
       setHasMore(!response.data.last);
