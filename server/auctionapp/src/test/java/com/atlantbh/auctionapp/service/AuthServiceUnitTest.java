@@ -6,6 +6,7 @@ import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.LoginRequest;
 import com.atlantbh.auctionapp.request.RegisterRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,11 +28,16 @@ class AuthServiceUnitTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    AuthService authService;
+
+    @BeforeEach
+    void setUp() {
+        authService = new AuthService(userRepository, passwordEncoder, null, null);
+    }
+
     @Test
     @DisplayName("Test if register service will save user in database")
     void register() {
-        AuthService authService = new AuthService(userRepository, passwordEncoder, null, null);
-
         RegisterRequest registerRequest = new RegisterRequest("username", "password", "email", "password");
 
         Mockito.when(userRepository.existsByEmail(registerRequest.getEmail())).thenReturn(false);
@@ -44,8 +50,6 @@ class AuthServiceUnitTest {
     @Test
     @DisplayName("Test if an existing user can be found by email and return ConflictException")
     void whenUserRegistersExpectConflictException() {
-        AuthService authService = new AuthService(userRepository, null, null, null);
-
         RegisterRequest registerRequest = new RegisterRequest("username", "password", "email", "password");
         Mockito.when(userRepository.existsByEmail(registerRequest.getEmail())).thenReturn(true);
 
@@ -55,8 +59,6 @@ class AuthServiceUnitTest {
     @Test
     @DisplayName("Test if user can be found by email and return user")
     void login() {
-        AuthService authService = new AuthService(userRepository, null, null, null);
-
         LoginRequest loginRequest = new LoginRequest("test@gmail.com", "password");
         UserEntity userEntity = new UserEntity("Safet", "Pojskic", "test@gmail.com", "testPassword");
         User expectedUserResult = new User(1L, "Safet", "Pojskic", "test@gmail.com", "testPassword");
