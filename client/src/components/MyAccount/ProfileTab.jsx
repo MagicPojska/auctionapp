@@ -59,7 +59,7 @@ const ProfileTab = () => {
     setDaysInMonth(generateDays(birthDate.year, birthDate.month));
   }, [birthDate.year, birthDate.month]);
 
-  const handleOpening = () => {
+  const toggleTabOpened = () => {
     setIsOpened(!isOpened);
   };
 
@@ -269,7 +269,7 @@ const ProfileTab = () => {
       <div className="w-full border-2 mt-6 font-normal">
         <h2
           className="px-8 py-4 text-lg font-normal leading-7 bg-bgWhite cursor-pointer flex items-center"
-          onClick={handleOpening}
+          onClick={toggleTabOpened}
         >
           <span className="mr-4">
             {isOpened ? <BsChevronUp /> : <BsChevronDown />}
