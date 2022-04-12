@@ -68,9 +68,8 @@ const StepOne = ({
       targetFileObject.map((file) => {
         return selectedFiles.push(URL.createObjectURL(file));
       });
-      setImagePreview(selectedFiles);
 
-      console.log(selectedFiles);
+      setImagePreview(selectedFiles);
     } else {
       toast.error("Wrong number of pictures!", {
         position: toast.POSITION.TOP_CENTER,
