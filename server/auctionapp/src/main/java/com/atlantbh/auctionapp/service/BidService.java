@@ -14,6 +14,7 @@ import com.atlantbh.auctionapp.response.BidResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -69,5 +70,13 @@ public class BidService {
         bidRepository.save(new BidsEntity(bidRequest.getPrice(), user, product));
 
         return new BidResponse(bidRequest.getPrice(), product.getNumberOfBids() + 1);
+    }
+
+    public List<BidsEntity> getBidsForUserById(long id) {
+        List<BidsEntity> bids = bidRepository.findAllByUserId(id, Sort.by(Sort.Direction.DESC, "bidDate"));
+        if(bids.isEmpty()) {
+            throw new NotFoundException("Bids from user with id: " + id + " not found");
+        }
+        return bids;
     }
 }

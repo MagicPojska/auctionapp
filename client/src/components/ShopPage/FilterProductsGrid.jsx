@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { shopProductPath } from "../utilities/paths";
-import LoadingSpinner from "./LoadingSpinner";
+import { shopProductPath } from "../../utilities/paths";
+import LoadingSpinner from "../LoadingSpinner";
 
 const FilterProductsGrid = ({ products, isLoading }) => {
   return products.length !== 0 ? (

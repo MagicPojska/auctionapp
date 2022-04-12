@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { myAccountPath, profilePath } from "../../utilities/paths";
+import { useEffect } from "react";
+import { myAccountPath, profilePath } from "../../../utilities/paths";
 import Select from "react-select";
-import { customStyles } from "../../utilities/selectStyle";
-import { countryList } from "../../utilities/countryList";
-import LoadingSpinner from "../LoadingSpinner";
+import { customStyles } from "../../../utilities/selectStyle";
+import { countryList } from "../../../utilities/countryList";
+import LoadingSpinner from "../../LoadingSpinner";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useUserContext } from "../../contexts/UserContextProvider";
+import { useUserContext } from "../../../contexts/UserContextProvider";
 
 const StepThree = ({
   prevStep,
@@ -92,6 +92,9 @@ const StepThree = ({
 
         <label className="text-lg leading-7">Country</label>
         <Select
+          defaultValue={countryList.find(
+            (country) => country.value === user.country
+          )}
           options={countryList}
           onChange={handleCountryChange}
           className="mb-8 mt-4"

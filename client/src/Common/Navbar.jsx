@@ -9,6 +9,10 @@ import {
   profilePath,
   registrationPath,
   shopPath,
+  myBidsPath,
+  settingsPath,
+  becomeSellerPath,
+  wishlistPath,
 } from "../utilities/paths";
 import SocialMedia from "../components/SocialMedia";
 import {
@@ -134,16 +138,76 @@ const Navbar = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to={`${myAccountPath}${profilePath}`}
-                  className={
-                    location.pathname.includes(myAccountPath)
-                      ? "text-purple font-bold"
-                      : ""
-                  }
-                >
-                  MY ACCOUNT
-                </NavLink>
+                <div className="relative group">
+                  <NavLink
+                    to={`${myAccountPath}${profilePath}`}
+                    className={
+                      location.pathname.includes(myAccountPath)
+                        ? "text-purple font-bold"
+                        : ""
+                    }
+                  >
+                    MY ACCOUNT
+                  </NavLink>
+                  <div className="absolute z-10 hidden group-hover:block  -left-8 pt-10">
+                    <div className="py-8 w-44 flex justify-center bg-white border-2">
+                      <div className="grid grid-cols-1 gap-6">
+                        <Link
+                          to={myAccountPath + profilePath}
+                          className={
+                            location.pathname.includes(
+                              myAccountPath + profilePath
+                            )
+                              ? "text-purple"
+                              : ""
+                          }
+                        >
+                          Profile
+                        </Link>
+                        <Link
+                          to={becomeSellerPath}
+                          className={
+                            location.pathname.includes(becomeSellerPath)
+                              ? "text-purple"
+                              : ""
+                          }
+                        >
+                          Become Seller
+                        </Link>
+                        <Link
+                          to={myBidsPath}
+                          className={
+                            location.pathname.includes(myBidsPath)
+                              ? "text-purple"
+                              : ""
+                          }
+                        >
+                          Your Bids
+                        </Link>
+                        <Link
+                          to={wishlistPath}
+                          className={
+                            location.pathname.includes(wishlistPath)
+                              ? "text-purple"
+                              : ""
+                          }
+                        >
+                          Wishlist
+                        </Link>
+                        <Link
+                          to={settingsPath}
+                          className={
+                            location.pathname.includes(settingsPath)
+                              ? "text-purple"
+                              : ""
+                          }
+                        >
+                          Settings
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>

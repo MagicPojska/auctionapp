@@ -32,3 +32,6 @@ export const getProductsByCategory = (
 export const getProductPriceRange = () => API.get("/product/items/price-range");
 
 export const addProduct = (product) => API.post("/product/add-item", product);
+
+export const getProductsFromUser = (userId, type) =>
+  API.get(`/product/items/user?userId=${userId}&type=${type}`);

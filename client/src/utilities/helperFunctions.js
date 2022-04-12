@@ -37,3 +37,61 @@ export const parseTimeLeft = (timeLeft) => {
         timeLeft.minutes
       } ${timeLeft.minutes === 1 ? "Minute" : "Minutes"}`;
 };
+
+export const generateYears = () => {
+  const years = [];
+
+  const startYear = 1900;
+  const endYear = new Date().getFullYear();
+
+  for (let i = endYear; i >= startYear; i--) {
+    years.push({
+      value: i,
+      label: i,
+    });
+  }
+
+  return years;
+};
+
+export const generateMonths = () => {
+  const months = [];
+
+  for (let i = 1; i <= 12; i++) {
+    months.push({
+      value: i,
+      label: i,
+    });
+  }
+
+  return months;
+};
+
+export const generateDays = (year, month) => {
+  const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  let daysInMonth = days[month - 1];
+  if (month === 2 && year % 4 === 0) {
+    daysInMonth = 29;
+  }
+  const daysArray = [];
+  for (let i = 1; i <= daysInMonth; i++) {
+    daysArray.push({
+      value: i,
+      label: i,
+    });
+  }
+
+  return daysArray;
+};
+
+export const getHoursDiff = (date) => {
+  const currentDate = moment();
+  const endDate = moment(date);
+  const diff = endDate.diff(currentDate, "hours");
+
+  if (diff < 0) {
+    return 0;
+  }
+
+  return diff;
+};

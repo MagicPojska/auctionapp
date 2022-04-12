@@ -6,9 +6,11 @@ import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;
 import com.atlantbh.auctionapp.repository.CategoryRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
+import com.atlantbh.auctionapp.request.ProductRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -77,4 +80,49 @@ class ProductServiceUnitTest {
 
         assertThat(productService.getPriceRange()).isEqualTo(expectedResult);
     }
+
+    @Test
+    @DisplayName("Test should save product to a database")
+    void createProduct() {
+        ProductService productService = new ProductService(productRepository, categoryRepository);
+        ProductRequest productRequest = new ProductRequest("productName", "description", 20, LocalDateTime.now(), LocalDateTime.now(), "images", "address", "city", "5555", "country", "+38766666666", 1, 1);
+
+        Mockito.when(categoryRepository.findById(1L)).thenReturn(Optional.of(new CategoryEntity()));
+
+        productService.createProduct(productRequest);
+
+        Mockito.verify(productRepository, Mockito.times(1)).save(ArgumentMatchers.any(ProductEntity.class));
+    }
+
+    @Test
+    @DisplayName("Test should return NotFoundException for nonexisting category")
+    void testCreateProduct() {
+        ProductService productService = new ProductService(productRepository, categoryRepository);
+        ProductRequest productRequest = new ProductRequest("productName", "description", 20, LocalDateTime.now(), LocalDateTime.now(), "images", "address", "city", "5555", "country", "+38766666666", 1, 1);
+
+        assertThatThrownBy(() -> productService.createProduct(productRequest)).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("Test should return all products posted by a user")
+    void testGetProductsFromUser() {
+        ProductService productService = new ProductService(productRepository, null);
+        LocalDateTime time = LocalDateTime.now();
+        ProductEntity product1 = new ProductEntity("productName", "description", 20, time, time, "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
+        ProductEntity product2 = new ProductEntity("productName", "description", 20, time, time, "images", "address", "city", "5555", "country", "+38766666666", 1, new CategoryEntity());
+        List<ProductEntity> expectedResult = List.of(product1, product2);
+
+        Mockito.when(productRepository.findAllByUserIdAndEndDateIsBefore(eq(1L), isA(LocalDateTime.class), eq(Sort.by(Sort.Direction.DESC, "endDate")))).thenReturn(expectedResult);
+
+        assertThat(productService.getProductsFromUser(1L, "sold")).isEqualTo(expectedResult);
+    }
+
+    @Test
+    @DisplayName("Test should NotFoundException for nonexisting items that user owns")
+    void testGetProductsFromUserAndReturnNotFoundException() {
+        ProductService productService = new ProductService(productRepository, null);
+
+        assertThatThrownBy(() -> productService.getProductsFromUser(1L, "sold")).isInstanceOf(NotFoundException.class);
+    }
+
 }

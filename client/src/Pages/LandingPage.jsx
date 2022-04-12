@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getCategoriesList, getProductsSorted } from "../utilities/productsApi";
-import LandingPageCategories from "../components/LandingPageCategories";
-import HighlightedProduct from "../components/HighlightedProduct";
-import LandingPageItems from "../components/LandingPageItems";
+import LandingPageCategories from "../components/LandingPage/LandingPageCategories";
+import HighlightedProduct from "../components/LandingPage/HighlightedProduct";
+import LandingPageItems from "../components/LandingPage/LandingPageItems";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const LandingPage = () => {

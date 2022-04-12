@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Select from "react-select";
-import { getCategoriesList } from "../../utilities/productsApi";
-import { customStyles } from "../../utilities/selectStyle";
-import { myAccountPath, profilePath } from "../../utilities/paths";
+import { getCategoriesList } from "../../../utilities/productsApi";
+import { customStyles } from "../../../utilities/selectStyle";
+import { myAccountPath, profilePath } from "../../../utilities/paths";
 import { FileUploader } from "react-drag-drop-files";
-import { PHOTO_TYPES } from "../../utilities/constants";
+import { PHOTO_TYPES } from "../../../utilities/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -44,21 +44,15 @@ const StepOne = ({
   }, []);
 
   const onCategoryChange = async (selectedOption) => {
-    try {
-      setSubcategories(
-        allCategoriesList
-          .map((category) => ({
-            value: category.id,
-            label: category.categoryName,
-            supercategoryId: category.supercategoryId,
-          }))
-          .filter(
-            (category) => category.supercategoryId === selectedOption.value
-          )
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    setSubcategories(
+      allCategoriesList
+        .map((category) => ({
+          value: category.id,
+          label: category.categoryName,
+          supercategoryId: category.supercategoryId,
+        }))
+        .filter((category) => category.supercategoryId === selectedOption.value)
+    );
   };
 
   const handleSubcategoryChange = (selectedOption) => {

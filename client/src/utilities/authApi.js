@@ -17,7 +17,7 @@ API.interceptors.response.use(
       removeUserFromSession();
       removeUserFromStorage();
     }
-    return error;
+    return Promise.reject(error);
   }
 );
 

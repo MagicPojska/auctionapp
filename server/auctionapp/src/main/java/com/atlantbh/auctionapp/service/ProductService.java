@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -82,5 +83,20 @@ public class ProductService {
 
         
         return productRepository.save(product);
+    }
+
+    public List<ProductEntity> getProductsFromUser(long userId, String type) {
+        LocalDateTime time = LocalDateTime.now();
+        List<ProductEntity> products;
+        if (type.equals(SortBy.SOLD.getSort())){
+            products = productRepository.findAllByUserIdAndEndDateIsBefore(userId, time, Sort.by(Sort.Direction.DESC, SortBy.END_DATE.getSort()));
+        } else {
+            products = productRepository.findAllByUserIdAndEndDateIsAfter(userId, time, Sort.by(Sort.Direction.DESC, SortBy.START_DATE.getSort()));
+        }
+        if (products.isEmpty()) {
+            logger.error("Products from user with id: " + userId + " not found");
+            throw new NotFoundException("Products from user with id: " + userId + " not found");
+        }
+        return products;
     }
 }

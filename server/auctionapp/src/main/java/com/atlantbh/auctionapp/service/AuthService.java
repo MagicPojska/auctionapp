@@ -2,6 +2,7 @@ package com.atlantbh.auctionapp.service;
 
 import com.atlantbh.auctionapp.domain.model.User;
 import com.atlantbh.auctionapp.exceptions.ConflictException;
+import com.atlantbh.auctionapp.exceptions.UnathorizedException;
 import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.LoginRequest;
@@ -48,12 +49,7 @@ public class AuthService {
                 registerRequest.getFirstName(),
                 registerRequest.getLastName(),
                 registerRequest.getEmail(),
-                passwordEncoder.encode(registerRequest.getPassword()),
-                null,
-                null,
-                null,
-                null,
-                null);
+                passwordEncoder.encode(registerRequest.getPassword()));
 
         userRepository.save(entity);
 
@@ -63,6 +59,11 @@ public class AuthService {
 
     public User login(LoginRequest loginRequest) {
         UserEntity entity = userRepository.findByEmail(loginRequest.getEmail());
+        if(!entity.isActive()) {
+            logger.error("User with email: " + loginRequest.getEmail() + " is deactivated");
+            throw new UnathorizedException("User is deactivated.");
+        }
+
         entity.setPassword(null);
 
         return User.createFromEntity(entity);

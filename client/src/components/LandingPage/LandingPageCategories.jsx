@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { categoriesPath } from "../utilities/paths";
+import { categoriesPath } from "../../utilities/paths";
 
 const LandingPageCategories = ({ categories }) => {
   return (

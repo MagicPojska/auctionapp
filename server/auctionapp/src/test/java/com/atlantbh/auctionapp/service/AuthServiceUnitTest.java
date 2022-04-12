@@ -2,12 +2,10 @@ package com.atlantbh.auctionapp.service;
 
 import com.atlantbh.auctionapp.domain.model.User;
 import com.atlantbh.auctionapp.exceptions.ConflictException;
-import com.atlantbh.auctionapp.model.BidsEntity;
 import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.LoginRequest;
 import com.atlantbh.auctionapp.request.RegisterRequest;
-import com.atlantbh.auctionapp.security.JwtUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +13,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -29,14 +26,6 @@ class AuthServiceUnitTest {
     private UserRepository userRepository;
     @Mock
     private PasswordEncoder passwordEncoder;
-    @Mock
-    private JwtUtil jsonWebToken;
-    @Mock
-    private AuthenticationManager authenticationManager;
-
-
-    public final String AUTHORIZATION = "Authorization";
-    public final String BEARER = "Bearer ";
 
     @Test
     @DisplayName("Test if register service will save user in database")
@@ -69,8 +58,8 @@ class AuthServiceUnitTest {
         AuthService authService = new AuthService(userRepository, null, null, null);
 
         LoginRequest loginRequest = new LoginRequest("test@gmail.com", "password");
-        UserEntity userEntity = new UserEntity("Safet", "Pojskic", "test@gmail.com", "testPassword", null, null, null, null, null);
-        User expectedUserResult = new User(1L, "Safet", "Pojskic", "test@gmail.com", "testPassword", null, null, null, null, null);
+        UserEntity userEntity = new UserEntity("Safet", "Pojskic", "test@gmail.com", "testPassword");
+        User expectedUserResult = new User(1L, "Safet", "Pojskic", "test@gmail.com", "testPassword");
 
         Mockito.when(userRepository.findByEmail(loginRequest.getEmail())).thenReturn(userEntity);
         UserDetails actualResult = authService.login(loginRequest);
