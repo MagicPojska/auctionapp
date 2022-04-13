@@ -71,7 +71,7 @@ public class ProductService {
         Page<ProductEntity> products = productRepository.findAllByCategoryIdInAndStartPriceBetweenAndEndDateIsAfterAndStartDateIsBeforeAndProductNameContainingIgnoreCase(categoryId, lowPrice, highPrice, time, time, searchTerm, paging );
 
         String suggestion = "";
-        if (products.getTotalElements() == 0 && !searchTerm.isEmpty()) {
+        if (products.getNumberOfElements() == 0 && !searchTerm.isEmpty()) {
            List<ProductNameProj> listOfProductNames = productRepository.findAllByEndDateIsAfterAndStartDateIsBefore(time, time);
            Double editDistance = null;
            for (ProductNameProj productNameProj : listOfProductNames) {
