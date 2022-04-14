@@ -55,7 +55,7 @@ const ProductOverviewPage = () => {
 
     try {
       const bidDetails = {
-        price: Math.round(bid * 100) / 100,
+        price: bid,
         userId: user.id,
         productId: product.id,
       };
@@ -134,7 +134,10 @@ const ProductOverviewPage = () => {
                     type="text"
                     value={bid}
                     onChange={(e) => {
-                      if (e.target.value.match("^[0-9.]*$") != null) {
+                      if (
+                        e.target.value.match("^[0-9.]*$") != null &&
+                        e.target.value.match(/^(\d*\.{0,1}\d{0,2}$)/)
+                      ) {
                         setBid(e.target.value);
                       }
                     }}
