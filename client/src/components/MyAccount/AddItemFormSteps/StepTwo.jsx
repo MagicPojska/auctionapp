@@ -52,7 +52,17 @@ const StepTwo = ({
           <input
             type="number"
             className="w-full h-full outline-none px-6"
-            onChange={handleInputData("startPrice")}
+            onChange={(e) => {
+              if (
+                e.target.value.match("^[0-9.]*$") != null &&
+                e.target.value.match(/^(\d*\.{0,1}\d{0,2}$)/)
+              ) {
+                setProductDetails({
+                  ...productDetails,
+                  startPrice: e.target.value,
+                });
+              }
+            }}
             value={productDetails.startPrice}
           />
         </div>
