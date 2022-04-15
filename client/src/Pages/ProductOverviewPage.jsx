@@ -190,7 +190,11 @@ const ProductOverviewPage = () => {
         </div>
       )}
       <div className="mx-40 mt-8 2xl:mx-72">
-        {user.id === product.userId ? <BidsTable /> : <RecomendedProducts />}
+        {user.id === product.userId ? (
+          <BidsTable productId={productId} />
+        ) : (
+          <RecomendedProducts productId={product.id} />
+        )}
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-const RecomendedProducts = () => {
+const RecomendedProducts = ({ productId }) => {
   return <div>RecomendedProducts</div>;
 };
 

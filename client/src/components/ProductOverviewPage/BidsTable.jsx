@@ -1,4 +1,4 @@
-const BidsTable = () => {
+const BidsTable = ({ productId }) => {
   return <div>BidsTable</div>;
 };
 
