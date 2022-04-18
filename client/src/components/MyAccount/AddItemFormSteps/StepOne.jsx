@@ -8,6 +8,7 @@ import { FileUploader } from "react-drag-drop-files";
 import { PHOTO_TYPES } from "../../../utilities/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { GrFormClose } from "react-icons/gr";
 
 const StepOne = ({
   nextStep,
@@ -60,33 +61,46 @@ const StepOne = ({
   };
 
   const handlePhotoChange = (photos) => {
-    if (photos.length >= 3 && photos.length <= 5) {
-      setImages(photos);
-
-      const selectedFiles = [];
-      const targetFileObject = [...photos];
-      targetFileObject.map((file) => {
-        return selectedFiles.push(URL.createObjectURL(file));
-      });
-
-      setImagePreview(selectedFiles);
+    if (images.length < 5 && photos.length + images.length <= 5) {
+      if (photos.length > 0) {
+        setImages([...images, ...photos]);
+      } else {
+        setImages([...images, photos]);
+      }
     } else {
-      toast.error("Wrong number of pictures!", {
+      toast.error("Max number of pictures is 5", {
         position: toast.POSITION.TOP_CENTER,
       });
     }
   };
 
   const validateDataAndNavigateToNextStep = () => {
-    images !== null &&
-    productDetails.categoryId &&
-    productDetails.description &&
-    productDetails.productName
+    images.length < 3
+      ? toast.error("Please add more photos!", {
+          position: toast.POSITION.TOP_CENTER,
+        })
+      : productDetails.categoryId &&
+        productDetails.description &&
+        productDetails.productName
       ? nextStep()
       : toast.error("Please add all the details!", {
           position: toast.POSITION.TOP_CENTER,
         });
   };
+
+  const deleteImage = (name) => {
+    setImages(images.filter((image) => image.name !== name));
+  };
+
+  useEffect(() => {
+    const selectedFiles = [];
+    const targetFileObject = [...images];
+    targetFileObject.map((file) => {
+      return selectedFiles.push(URL.createObjectURL(file));
+    });
+
+    setImagePreview(selectedFiles);
+  }, [images]);
 
   return (
     <div className="border-2 pb-16 font-normal">
@@ -156,16 +170,16 @@ const StepOne = ({
             });
           }}
         >
-          <div className="border-2 border-dashed my-4 h-80 mb-16">
+          <div className="border-2 border-dashed my-4 h-80">
             {imagePreview.length > 0 ? (
               <label className="bg-bgWhite w-full h-full flex flex-col justify-center items-center space-y-3 cursor-pointer">
                 <div className="p-12 grid grid-cols-3 gap-4">
                   {imagePreview.map((url, id) => (
                     <img
                       src={url}
+                      key={id}
                       className="object-cover h-24 w-24"
                       alt="uploaded image"
-                      key={id}
                     />
                   ))}
                 </div>
@@ -186,6 +200,18 @@ const StepOne = ({
             )}
           </div>
         </FileUploader>
+
+        <div className="mb-16 mt-8">
+          {images.length > 0 &&
+            images.map((image, id) => (
+              <div className="flex justify-between" key={id}>
+                <p>{image.name}</p>
+                <button onClick={() => deleteImage(image.name)}>
+                  <GrFormClose className="text-xl" />
+                </button>
+              </div>
+            ))}
+        </div>
 
         <div className="flex space-x-6 text-lg font-bold leading-7">
           <Link

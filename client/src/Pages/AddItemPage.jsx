@@ -15,7 +15,7 @@ import { shopProductPath } from "../utilities/paths";
 const AddItemPage = () => {
   const { user } = useUserContext();
   const [step, setStep] = useState(1);
-  const [images, setImages] = useState(null);
+  const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [productDetails, setProductDetails] = useState({
     productName: "",
