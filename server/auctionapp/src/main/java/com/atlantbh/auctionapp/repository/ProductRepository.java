@@ -21,6 +21,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     List<ProductEntity> findAllByUserIdAndEndDateIsAfter(long userId, LocalDateTime time, Sort sort);
     List<ProductEntity> findAllByUserIdAndEndDateIsBefore(long userId, LocalDateTime time, Sort sort);
     List<ProductNameProj> findAllByEndDateIsAfterAndStartDateIsBefore(LocalDateTime endDate, LocalDateTime time);
+    List<ProductEntity> findTop3ByCategoryId(long categoryId);
 
     @Query(value = "SELECT MAX(start_price), MIN(start_price)" +
             "FROM auction.product", nativeQuery = true)

@@ -131,4 +131,19 @@ public class ProductService {
         }
         return products;
     }
+
+    public List<ProductEntity> getRelatedProducts(long productId) {
+        ProductEntity product = productRepository.findProductById(productId);
+        if (product == null) {
+            logger.error("Product with id: " + productId + " not found");
+            throw new NotFoundException("Product with id: " + productId + " not found");
+        }
+
+        List<ProductEntity> relatedProducts = productRepository.findTop3ByCategoryId(product.getCategory().getId());
+        if (relatedProducts.isEmpty()) {
+            logger.error("Related products from category with id: " + product.getCategory().getId() + " not found");
+            throw new NotFoundException("Related products from category with id: " + product.getCategory().getId() + " not found");
+        }
+        return relatedProducts;
+    }
 }
