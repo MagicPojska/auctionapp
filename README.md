@@ -21,16 +21,16 @@
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
+        <li><a href="#features">Roadmap</a></li>
       </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#deployment">Deployment</a></li>
       </ul>
     </li>
-    <li><a href="#Deployment">Deployment</a></li>
   </ol>
 </details>
 
@@ -42,6 +42,19 @@ You can see the demo [here](https://auction-app-react.herokuapp.com/)
 
 This is a project made on an internship with the guidance of my mentor. In this app you will be able to bid with other people and buy products.
  <br />
+ 
+ ## Features
+
+| 1. month | 2. month | 3. month |
+| --- | --- | --- |
+| ERD, project skeleton | Shop page: All filters | |
+| Navbar,footer and static pages | Switch between list/grid preview | |
+| Deployment | Sorting products | |
+| Landing page | Add new item | |
+| Shop page: Filter by category | User profile page | |
+| Product overview page | 'Did you mean?' search feature | |
+| Bidding process |  |  |
+
  
  ### Root directory layout
 
@@ -140,7 +153,7 @@ Install NPM
 
 
 <!-- Deployment -->
-## Usage
+## Deployment
 
 In this section I will explain how to deploy the app on Heroku.
 
