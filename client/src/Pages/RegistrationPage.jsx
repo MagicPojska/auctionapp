@@ -50,7 +50,7 @@ const RegistrationPage = () => {
     const regPassword = {
       capital: /[A-Z]/,
       digit: /[0-9]/,
-      full: /^[A-Za-z0-9]{7,13}$/,
+      full: /^[A-Za-z0-9]{7,20}$/,
     };
     if (
       !regPassword.capital.test(password) ||
