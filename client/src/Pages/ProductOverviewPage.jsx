@@ -189,7 +189,7 @@ const ProductOverviewPage = () => {
           Product with id:{id} not found
         </div>
       )}
-      <div className="mx-40 mt-8 2xl:mx-72">
+      <div className="mx-40 2xl:mx-72">
         {user.id === product.userId ? <BidsTable /> : <RecomendedProducts />}
       </div>
     </>

@@ -36,3 +36,6 @@ export const addProduct = (product) => API.post("/product/add-item", product);
 
 export const getProductsFromUser = (userId, type) =>
   API.get(`/product/items/user?userId=${userId}&type=${type}`);
+
+export const getRelatedProducts = (productId) =>
+  API.get(`/product/items/related?productId=${productId}`);
