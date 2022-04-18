@@ -20,6 +20,11 @@ const RegistrationPage = () => {
 
   const handleRegistration = async (e) => {
     e.preventDefault();
+
+    if (!validateEmail(user.email) || !validatePassword(user.password)) {
+      return;
+    }
+
     const data = await register(user);
     if (data === null) {
       toast.error("User already exists!", {
@@ -28,6 +33,39 @@ const RegistrationPage = () => {
     } else {
       navigate(homePath);
     }
+  };
+
+  const validateEmail = (email) => {
+    const regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
+    if (!regEmail.test(email)) {
+      toast.error("Invalid email", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const validatePassword = (password) => {
+    const regPassword = {
+      capital: /[A-Z]/,
+      digit: /[0-9]/,
+      full: /^[A-Za-z0-9]{7,13}$/,
+    };
+    if (
+      !regPassword.capital.test(password) ||
+      !regPassword.digit.test(password) ||
+      !regPassword.full.test(password)
+    ) {
+      toast.error(
+        "Password length must be atleast 8 characters, contain one upper case letter and one number",
+        {
+          position: toast.POSITION.TOP_CENTER,
+        }
+      );
+      return false;
+    }
+    return true;
   };
 
   return (
