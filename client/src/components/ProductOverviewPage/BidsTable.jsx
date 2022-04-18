@@ -36,10 +36,12 @@ const BidsTable = () => {
 
   return (
     <div className="mt-32">
-      <h2 className="text-center font-bold text-2xl leading-7 mb-4">Bidders</h2>
+      <h2 className="text-center font-bold text-2xl leading-7 mb-4">
+        {bids.length > 0 ? "Bidders" : "No bids"}
+      </h2>
       <hr className="bg-black mb-36" />
 
-      {bids.length > 0 ? (
+      {bids.length > 0 && (
         <div className="relative border-2">
           <table className="w-full text-base text-left">
             <thead className="bg-bgWhite whitespace-nowrap">
@@ -88,8 +90,6 @@ const BidsTable = () => {
             </tbody>
           </table>
         </div>
-      ) : (
-        "No bids for this product"
       )}
 
       <div className="w-full flex justify-end mt-8">
