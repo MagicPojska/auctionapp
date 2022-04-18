@@ -14,6 +14,8 @@ import com.atlantbh.auctionapp.response.BidResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +37,8 @@ public class BidService {
         this.userRepository = userRepository;
     }
 
-    public List<BidProj> getBidsForProduct(long id){
-        List<BidProj> bids = bidRepository.findAllByProductId(id);
+    public Page<BidProj> getBidsForProduct(long id, Integer pageNumber){
+        Page<BidProj> bids = bidRepository.findAllByProductId(id, PageRequest.of(pageNumber, 5, Sort.by(Sort.Direction.DESC, "bidDate")));
         if(bids.isEmpty()) {
             logger.error("No bids found for product with id: " + id);
             throw new NotFoundException("Bids for product with id:" + id + " do not exist");
