@@ -22,7 +22,7 @@ const AddItemPage = () => {
     description: "",
     startPrice: "",
     startDate: moment().format("YYYY-MM-DD"),
-    endDate: "",
+    endDate: moment().add(7, "days").format("YYYY-MM-DD"),
     images: "",
     address: "",
     email: "",
