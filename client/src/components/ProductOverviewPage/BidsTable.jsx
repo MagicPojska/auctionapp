@@ -16,7 +16,6 @@ const BidsTable = () => {
   const getBids = async (id, page) => {
     try {
       const response = await getBidsForProduct(id, page);
-      console.log(response);
       if (page === 0) {
         setBids(response.data.content);
       } else {
