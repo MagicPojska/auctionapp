@@ -139,7 +139,7 @@ public class ProductService {
             throw new NotFoundException("Product with id: " + productId + " not found");
         }
 
-        List<ProductEntity> relatedProducts = productRepository.findTop3ByCategoryId(product.getCategory().getId());
+        List<ProductEntity> relatedProducts = productRepository.findTop3ByCategoryIdAndIdNotAndEndDateIsAfterAndStartDateIsBefore(product.getCategory().getId(), productId, LocalDateTime.now(), LocalDateTime.now());
         if (relatedProducts.isEmpty()) {
             logger.error("Related products from category with id: " + product.getCategory().getId() + " not found");
             throw new NotFoundException("Related products from category with id: " + product.getCategory().getId() + " not found");
