@@ -148,7 +148,7 @@ public class BidServiceUnitTest {
     @Test
     @DisplayName("Test should return all bids from a user")
     void testGetAllBidsFromUser() {
-        UserEntity userEntity = new UserEntity("Safet", "Pojskic", "email@gmail.com", "pw", new Date(), true, "state", "address", "city", "72000",  "country", "+123123", "image");
+        UserEntity userEntity = new UserEntity("Safet", "Pojskic", "email@gmail.com", "pw", new Date(), true, "state", "address", "city", "72000",  "country", "+123123", "image", null);
         userEntity.setId(1L);
 
         BidsEntity bid1 = new BidsEntity(55, new UserEntity(), new ProductEntity());

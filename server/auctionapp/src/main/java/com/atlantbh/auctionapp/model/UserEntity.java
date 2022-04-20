@@ -60,7 +60,10 @@ public class UserEntity {
 
     private String profileImage;
 
-    public UserEntity(String firstName, String lastName, String email, String password, Date dateOfBirth, boolean isActive, String state, String address, String city, String zipCode, String country, String phone, String profileImage) {
+    @javax.validation.constraints.Size(max = 32)
+    private String resetPasswordToken;
+
+    public UserEntity(String firstName, String lastName, String email, String password, Date dateOfBirth, boolean isActive, String state, String address, String city, String zipCode, String country, String phone, String profileImage, String resetPasswordToken) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -74,6 +77,7 @@ public class UserEntity {
         this.country = country;
         this.phone = phone;
         this.profileImage = profileImage;
+        this.resetPasswordToken = resetPasswordToken;
     }
 
     public UserEntity(String firstName, String lastName, String email, String password) {
