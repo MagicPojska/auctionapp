@@ -1,10 +1,32 @@
-import { useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { forgotPassword } from "../utilities/authApi";
 
 const ForgotPasswordPage = () => {
-  const [email, setEmail] = useState("");
-  const handleForgotPassword = () => {};
+  const [formData, setFormData] = useState({
+    email: "",
+  });
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
+  const handleForgotPassword = async (e) => {
+    try {
+      e.preventDefault();
+      const response = await forgotPassword(formData);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      if (error.response.status === 404) {
+        toast.error("User with that email does not exist!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+    }
+  };
+
   return (
     <div className="mx-[22rem] pt-10 2xl:mx-[28rem]">
       <ToastContainer />
@@ -29,9 +51,11 @@ const ForgotPasswordPage = () => {
             <input
               type="email"
               placeholder="user@domain.com"
-              value={email}
+              value={formData.email}
               className="w-full mt-4 h-16 border-2 bg-gray-50 pl-6 font-light text-base focus:outline-none"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
               required
             />
           </div>

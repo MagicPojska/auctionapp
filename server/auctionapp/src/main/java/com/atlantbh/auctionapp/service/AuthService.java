@@ -125,6 +125,11 @@ public class AuthService {
 
     public String updatePassword(ResetPasswordRequest resetPasswordRequest) {
         UserEntity userEntity = userRepository.findByResetPasswordToken(resetPasswordRequest.getToken());
+        if (userEntity == null) {
+            logger.error("User with token: " + resetPasswordRequest.getToken() + " does not exist.");
+            throw new NotFoundException("User with token: " + resetPasswordRequest.getToken() + " does not exist.");
+        }
+        
         String encodedPassword = passwordEncoder.encode(resetPasswordRequest.getPassword());
         userEntity.setPassword(encodedPassword);
 

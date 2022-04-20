@@ -1,11 +1,41 @@
 import { useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { resetPassword } from "../utilities/authApi";
 
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const handlePasswordReset = () => {};
+  const navigate = useNavigate();
+  const { token } = useParams();
+
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+
+    try {
+      const formData = {
+        token: token,
+        password: password,
+      };
+      await resetPassword(formData);
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+      if (error.response.status === 404) {
+        toast.error("User with token does not exist!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+    }
+  };
   return (
     <div className="mx-[22rem] pt-10 2xl:mx-[28rem]">
       <ToastContainer />
