@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { resetPassword } from "../utilities/authApi";
+import { validatePassword } from "../utilities/helperFunctions";
 
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");
@@ -21,10 +22,15 @@ const ResetPasswordPage = () => {
     }
 
     try {
+      if (!validatePassword(password)) {
+        return;
+      }
+
       const formData = {
         token: token,
         password: password,
       };
+
       await resetPassword(formData);
       navigate("/login");
     } catch (error) {
@@ -41,6 +47,7 @@ const ResetPasswordPage = () => {
       }
     }
   };
+
   return (
     <div className="mx-[22rem] pt-10 2xl:mx-[28rem]">
       <ToastContainer />

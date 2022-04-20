@@ -1,4 +1,5 @@
 import moment from "moment";
+import { toast } from "react-toastify";
 
 export const capitalizeWord = (e) => {
   return e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
@@ -106,4 +107,37 @@ export const getDayMonthYear = (date) => {
     month,
     year,
   };
+};
+
+export const validatePassword = (password) => {
+  const regPassword = {
+    capital: /[A-Z]/,
+    digit: /[0-9]/,
+    full: /^[A-Za-z0-9]{7,20}$/,
+  };
+  if (
+    !regPassword.capital.test(password) ||
+    !regPassword.digit.test(password) ||
+    !regPassword.full.test(password)
+  ) {
+    toast.error(
+      "Password length must be atleast 8 characters, contain one upper case letter and one number",
+      {
+        position: toast.POSITION.TOP_CENTER,
+      }
+    );
+    return false;
+  }
+  return true;
+};
+
+export const validateEmail = (email) => {
+  const regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
+  if (!regEmail.test(email)) {
+    toast.error("Invalid email", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    return false;
+  }
+  return true;
 };
