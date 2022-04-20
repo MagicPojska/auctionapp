@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { forgotPassword } from "../utilities/authApi";
@@ -8,15 +8,13 @@ const ForgotPasswordPage = () => {
     email: "",
   });
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
-
   const handleForgotPassword = async (e) => {
     try {
       e.preventDefault();
       const response = await forgotPassword(formData);
-      console.log(response);
+      toast.success(response.data, {
+        position: toast.POSITION.TOP_CENTER,
+      });
     } catch (error) {
       console.log(error);
       if (error.response.status === 404) {
