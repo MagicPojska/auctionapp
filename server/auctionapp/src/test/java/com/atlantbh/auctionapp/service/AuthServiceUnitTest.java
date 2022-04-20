@@ -32,7 +32,7 @@ class AuthServiceUnitTest {
 
     @BeforeEach
     void setUp() {
-        authService = new AuthService(userRepository, passwordEncoder, null, null);
+        authService = new AuthService(userRepository, passwordEncoder, null, null, null);
     }
 
     @Test
