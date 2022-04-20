@@ -2,15 +2,18 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { forgotPassword } from "../utilities/authApi";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const ForgotPasswordPage = () => {
   const [formData, setFormData] = useState({
     email: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleForgotPassword = async (e) => {
     try {
       e.preventDefault();
+      setLoading(true);
       const response = await forgotPassword(formData);
       toast.success(response.data, {
         position: toast.POSITION.TOP_CENTER,
@@ -22,6 +25,8 @@ const ForgotPasswordPage = () => {
           position: toast.POSITION.TOP_CENTER,
         });
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,14 +62,19 @@ const ForgotPasswordPage = () => {
               required
             />
           </div>
-          <div>
+
+          {loading ? (
+            <div className="w-full flex justify-center my-16">
+              <LoadingSpinner width={"h-16 w-16"} />
+            </div>
+          ) : (
             <button
               className="w-full h-14 my-16 bg-purple text-white"
               type="submit"
             >
               RESET PASSWORD
             </button>
-          </div>
+          )}
         </form>
       </div>
     </div>
