@@ -13,6 +13,7 @@ import FilterPage from "./Pages/FilterPage";
 import NotFoundPage from "./Pages/NotFoundPage";
 import AddItemPage from "./Pages/AddItemPage";
 import ForgotPasswordPage from "./Pages/ForgotPasswordPage";
+import ResetPasswordPage from "./Pages/ResetPasswordPage";
 
 import {
   aboutUsPath,
@@ -24,6 +25,7 @@ import {
   myAccountPath,
   privacyPolicyPath,
   registrationPath,
+  resetPasswordPath,
   sellerPath,
   shopProductPath,
   termsPath,
@@ -42,6 +44,10 @@ const App = () => {
         <Route path={loginPath} element={<LoginPage />} />
         <Route path={registrationPath} element={<RegistrationPage />} />
         <Route path={forgotPasswordPath} element={<ForgotPasswordPage />} />
+        <Route
+          path={`${resetPasswordPath}/:token`}
+          element={<ResetPasswordPage />}
+        />
         <Route path={addItemPath + sellerPath} element={<AddItemPage />} />
         <Route path={`${myAccountPath}/*`} element={<MyAccountPage />} />
         <Route
