@@ -138,7 +138,7 @@ public class AuthService {
             logger.error("User with token: " + resetPasswordRequest.getToken() + " does not exist.");
             throw new NotFoundException("User with token: " + resetPasswordRequest.getToken() + " does not exist.");
         }
-        if(!LocalDateTime.now().isBefore(userEntity.getResetPasswordTokenCreatedAt().plusMinutes(30))) {
+        if (!LocalDateTime.now().isBefore(userEntity.getResetPasswordTokenCreatedAt().plusMinutes(30))) {
             logger.error("Token: " + resetPasswordRequest.getToken() + " is expired.");
             throw new UnathorizedException("Token is expired.");
         }
