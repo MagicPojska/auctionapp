@@ -30,6 +30,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 
 @Service
 public class AuthService {
@@ -120,6 +121,7 @@ public class AuthService {
         String url = allowedURL + "/reset-password/" + token;
         if (userEntity != null) {
             userEntity.setResetPasswordToken(token);
+            userEntity.setResetPasswordTokenCreatedAt(LocalDateTime.now());
             userRepository.save(userEntity);
             sendEmail(email, url);
         } else {
@@ -136,11 +138,17 @@ public class AuthService {
             logger.error("User with token: " + resetPasswordRequest.getToken() + " does not exist.");
             throw new NotFoundException("User with token: " + resetPasswordRequest.getToken() + " does not exist.");
         }
+        if(!LocalDateTime.now().isBefore(userEntity.getResetPasswordTokenCreatedAt().plusMinutes(30))) {
+            logger.error("Token: " + resetPasswordRequest.getToken() + " is expired.");
+            throw new UnathorizedException("Token is expired.");
+        }
+
         
         String encodedPassword = passwordEncoder.encode(resetPasswordRequest.getPassword());
         userEntity.setPassword(encodedPassword);
 
         userEntity.setResetPasswordToken(null);
+        userEntity.setResetPasswordTokenCreatedAt(null);
         userRepository.save(userEntity);
 
         return "User password updated successfully.";

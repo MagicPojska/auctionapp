@@ -74,7 +74,7 @@ public class UserServiceUnitTest {
     @Test
     @DisplayName("Deactivate user and save it to database")
     void testDeactivateUser() {
-        UserEntity userEntity = new UserEntity("Safet", "Pojskic", "email@gmail.com", "pw", new Date(), true, "state", "address", "city", "72000",  "country", "+123123", "image", null);
+        UserEntity userEntity = new UserEntity("Safet", "Pojskic", "email@gmail.com", "pw", new Date(), true, "state", "address", "city", "72000",  "country", "+123123", "image", null, null);
 
         userEntity.setId(1L);
 

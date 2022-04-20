@@ -34,6 +34,11 @@ const ResetPasswordPage = () => {
           position: toast.POSITION.TOP_CENTER,
         });
       }
+      if (error.response.status === 403) {
+        toast.error("Your token is expired!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
     }
   };
   return (
