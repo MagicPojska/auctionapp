@@ -15,14 +15,14 @@ import { shopProductPath } from "../utilities/paths";
 const AddItemPage = () => {
   const { user } = useUserContext();
   const [step, setStep] = useState(1);
-  const [images, setImages] = useState(null);
+  const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [productDetails, setProductDetails] = useState({
     productName: "",
     description: "",
     startPrice: "",
     startDate: moment().format("YYYY-MM-DD"),
-    endDate: "",
+    endDate: moment().add(7, "days").format("YYYY-MM-DD"),
     images: "",
     address: "",
     email: "",
