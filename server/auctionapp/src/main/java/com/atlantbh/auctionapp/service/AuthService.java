@@ -1,6 +1,7 @@
 package com.atlantbh.auctionapp.service;
 
 import com.atlantbh.auctionapp.domain.model.User;
+import com.atlantbh.auctionapp.exceptions.BadRequestException;
 import com.atlantbh.auctionapp.exceptions.ConflictException;
 import com.atlantbh.auctionapp.exceptions.NotFoundException;
 import com.atlantbh.auctionapp.exceptions.UnathorizedException;
@@ -11,6 +12,7 @@ import com.atlantbh.auctionapp.request.RegisterRequest;
 import com.atlantbh.auctionapp.request.ResetPasswordRequest;
 import com.atlantbh.auctionapp.security.JwtUtil;
 import net.bytebuddy.utility.RandomString;
+import com.atlantbh.auctionapp.utilities.PasswordValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +64,11 @@ public class AuthService {
             logger.error("User with email: " + registerRequest.getEmail() + " already exists");
             throw new ConflictException("Email is already in use.");
         }
+        if(!PasswordValidator.isValid(registerRequest.getPassword())) {
+            logger.error("Invalid password");
+            throw new BadRequestException("Invalid password");
+        }
+
         UserEntity entity = new UserEntity(
                 registerRequest.getFirstName(),
                 registerRequest.getLastName(),
