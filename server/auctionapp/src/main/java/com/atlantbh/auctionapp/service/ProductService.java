@@ -9,27 +9,47 @@ import com.atlantbh.auctionapp.projections.PriceRangeProj;
 import com.atlantbh.auctionapp.projections.ProductNameProj;
 import com.atlantbh.auctionapp.repository.CategoryRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
+import com.atlantbh.auctionapp.request.PaymentRequest;
 import com.atlantbh.auctionapp.request.ProductRequest;
 import com.atlantbh.auctionapp.response.ProductResponse;
 import com.atlantbh.auctionapp.utilities.CalculateSimilarity;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private String secretKey;
+
+    @Value("${STRIPE.SECRET_KEY}")
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    @PostConstruct
+    public void init() {
+        Stripe.apiKey = secretKey;
+    }
 
     @Autowired
     public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
@@ -145,5 +165,21 @@ public class ProductService {
             throw new NotFoundException("Related products from category with id: " + product.getCategory().getId() + " not found");
         }
         return relatedProducts;
+    }
+
+    public String payForProduct(PaymentRequest paymentRequest) throws StripeException {
+        Map<String, Object> chargeParams = new HashMap<>();
+
+        ProductEntity product = productRepository.findProductById(paymentRequest.getProductId());
+        chargeParams.put("amount", product.getHighestBid().multiply(BigDecimal.valueOf(100)));
+        chargeParams.put("currency", "usd");
+        chargeParams.put("source", paymentRequest.getId());
+
+        Charge charge = Charge.create(chargeParams);
+        product.setSold(true);
+        product.setBuyerId(paymentRequest.getUserId());
+        productRepository.save(product);
+
+        return charge.getId();
     }
 }

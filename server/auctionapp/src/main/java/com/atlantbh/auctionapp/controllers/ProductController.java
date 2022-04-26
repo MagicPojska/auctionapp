@@ -2,9 +2,11 @@ package com.atlantbh.auctionapp.controllers;
 
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;
+import com.atlantbh.auctionapp.request.PaymentRequest;
 import com.atlantbh.auctionapp.request.ProductRequest;
 import com.atlantbh.auctionapp.response.ProductResponse;
 import com.atlantbh.auctionapp.service.ProductService;
+import com.stripe.exception.StripeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -21,6 +23,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -83,5 +86,11 @@ public class ProductController {
     public ResponseEntity<List<ProductEntity>> getRelatedProducts(@RequestParam long productId){
         List<ProductEntity> products = productService.getRelatedProducts(productId);
         return new ResponseEntity<>(products, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @PostMapping("/payment")
+    public ResponseEntity<String> payForProduct(@RequestBody PaymentRequest paymentRequest) throws StripeException {
+        String payment = productService.payForProduct(paymentRequest);
+        return new ResponseEntity<>(payment, new HttpHeaders(), HttpStatus.OK);
     }
 }
