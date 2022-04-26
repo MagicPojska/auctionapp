@@ -2,6 +2,9 @@ import { BiChevronRight } from "react-icons/bi";
 import StripeCheckout from "react-stripe-checkout";
 import { buyProduct } from "../../utilities/productsApi";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const BuyButton = ({ price, productId, user, images }) => {
   const stripePrice = price * 100;
 
@@ -9,15 +12,18 @@ const BuyButton = ({ price, productId, user, images }) => {
     try {
       token.productId = productId;
       token.userId = user.id;
-      console.log(token);
-      const response = await buyProduct(token);
+      await buyProduct(token);
     } catch (error) {
       console.error(error);
+      if (error.response.status !== 200) {
+        toast.error("Payment failed!");
+      }
     }
   };
 
   return (
     <div className="w-full flex justify-end">
+      <ToastContainer />
       <StripeCheckout
         amount={stripePrice}
         name="Auction App"
