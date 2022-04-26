@@ -182,7 +182,6 @@ public class ProductService {
 
         Charge charge = Charge.create(chargeParams);
         product.setSold(true);
-        product.setBuyerId(paymentRequest.getUserId());
         productRepository.save(product);
 
         return charge.getId();

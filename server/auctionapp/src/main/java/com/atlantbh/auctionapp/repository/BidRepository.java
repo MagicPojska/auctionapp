@@ -24,7 +24,7 @@ public interface BidRepository extends JpaRepository<BidsEntity, Long> {
             "FROM auction.user u " +
             "INNER JOIN auction.bids b ON u.id = b.user_id " +
             "INNER JOIN auction.product p ON p.id = b.product_id " +
-           "WHERE p.id = :product_id " +
+            "WHERE p.id = :product_id " +
             "GROUP BY u.id", nativeQuery = true)
     HighestBidderProj getHighestBidder(@Param("product_id") Long productId);
 }
