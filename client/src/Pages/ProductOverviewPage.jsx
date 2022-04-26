@@ -15,6 +15,7 @@ import { BsChevronRight } from "react-icons/bs";
 import LoadingSpinner from "../components/LoadingSpinner";
 import BidsTable from "../components/ProductOverviewPage/BidsTable";
 import RecomendedProducts from "../components/ProductOverviewPage/RecomendedProducts";
+import BuyButton from "../components/ProductOverviewPage/BuyButton";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
@@ -129,7 +130,14 @@ const ProductOverviewPage = () => {
               </div>
 
               {timeLeft.minutes < 0 ? (
-                <></>
+                user && (
+                  <BuyButton
+                    price={product.highestBid}
+                    productId={product.id}
+                    user={user}
+                    images={images}
+                  />
+                )
               ) : (
                 <div className="flex">
                   <input

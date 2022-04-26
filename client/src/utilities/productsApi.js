@@ -39,3 +39,6 @@ export const getProductsFromUser = (userId, type) =>
 
 export const getRelatedProducts = (productId) =>
   API.get(`/product/items/related?productId=${productId}`);
+
+export const buyProduct = (paymentDetails) =>
+  API.post("/product/payment", paymentDetails);

@@ -10,7 +10,6 @@ const RecomendedProducts = () => {
   useEffect(() => {
     (async () => {
       const response = await getRelatedProducts(id);
-      console.log(response);
       setRelatedProducts(response.data);
     })();
   }, []);
