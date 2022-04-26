@@ -14,10 +14,15 @@ const BuyButton = ({ product, user, images, setProduct }) => {
       token.userId = user.id;
       const response = await buyProduct(token);
       setProduct(response.data);
+      toast.success("Payment successful!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
     } catch (error) {
       console.error(error);
       if (error.response.status !== 200) {
-        toast.error("Payment failed!");
+        toast.error("Payment failed!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       }
     }
   };
