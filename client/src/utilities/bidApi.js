@@ -6,3 +6,6 @@ export const getBidsForUser = (userId) => API.get(`/bids/user?id=${userId}`);
 
 export const getBidsForProduct = (productId, pageNumber) =>
   API.get(`/bids/product?id=${productId}&pageNumber=${pageNumber}`);
+
+export const getHighestBidder = (productId) =>
+  API.get(`/bids/highest-bidder?productId=${productId}`);

@@ -5,6 +5,7 @@ import { getHoursDiff } from "../../utilities/helperFunctions";
 import { categoriesPath, shopProductPath } from "../../utilities/paths";
 import { RiAuctionFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 const BidsTab = () => {
   const { user } = useUserContext();
@@ -78,7 +79,10 @@ const BidsTab = () => {
                       to={shopProductPath + "/" + bid.product.id}
                       className="font-bold px-8 py-3 border-4"
                     >
-                      VIEW
+                      {moment(bid.product.endDate).isBefore(new Date()) &&
+                      bid.product.highestBid === bid.price
+                        ? "PAY"
+                        : "VIEW"}
                     </Link>
                   </td>
                 </tr>

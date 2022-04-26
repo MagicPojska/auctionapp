@@ -4,7 +4,7 @@ import CurrentPageNav from "../components/CurrentPageNav";
 import ImageSelection from "../components/ImageSelection";
 import Notification from "../components/Notification";
 import { useUserContext } from "../contexts/UserContextProvider";
-import { postBid } from "../utilities/bidApi";
+import { getHighestBidder, postBid } from "../utilities/bidApi";
 import { calculateTimeLeft, parseTimeLeft } from "../utilities/helperFunctions";
 import { getProductById } from "../utilities/productsApi";
 import {
@@ -24,6 +24,7 @@ const ProductOverviewPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [notification, setNotification] = useState("");
   const [bid, setBid] = useState("");
+  const [highestBidder, setHighestBidder] = useState("");
   const { id } = useParams();
   const { user, token } = useUserContext();
 
@@ -37,6 +38,9 @@ const ProductOverviewPage = () => {
       setProduct(response.data);
       setImages(response.data.images.split(","));
       setTimeLeft(calculateTimeLeft(response));
+
+      const checkHighestBidder = await getHighestBidder(response.data.id);
+      setHighestBidder(checkHighestBidder.data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -130,13 +134,9 @@ const ProductOverviewPage = () => {
               </div>
 
               {timeLeft.minutes < 0 ? (
-                user && (
-                  <BuyButton
-                    price={product.highestBid}
-                    productId={product.id}
-                    user={user}
-                    images={images}
-                  />
+                user &&
+                user.id === highestBidder.id && (
+                  <BuyButton product={product} user={user} images={images} />
                 )
               ) : (
                 <div className="flex">

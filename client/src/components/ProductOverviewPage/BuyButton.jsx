@@ -5,12 +5,12 @@ import { buyProduct } from "../../utilities/productsApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const BuyButton = ({ price, productId, user, images }) => {
-  const stripePrice = price * 100;
+const BuyButton = ({ product, user, images }) => {
+  const stripePrice = product.highestBid * 100;
 
   const onToken = async (token) => {
     try {
-      token.productId = productId;
+      token.productId = product.id;
       token.userId = user.id;
       await buyProduct(token);
     } catch (error) {
@@ -27,7 +27,7 @@ const BuyButton = ({ price, productId, user, images }) => {
       <StripeCheckout
         amount={stripePrice}
         name="Auction App"
-        description={`Your total is $${price}`}
+        description={`Your total is $${product.highestBid}`}
         pannelLabel="Pay Now"
         image={images[0]}
         token={onToken}
@@ -35,8 +35,13 @@ const BuyButton = ({ price, productId, user, images }) => {
         stripeKey={process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY}
         currency="USD"
       >
-        <button className="flex space-x-4 border-4 border-purple px-8 h-14 justify-center items-center leading-7 text-base font-bold">
-          <p>PAY</p>
+        <button
+          className={`flex space-x-4 border-4 border-purple px-8 h-14 justify-center items-center leading-7 text-base font-bold ${
+            product.sold && "opacity-30"
+          }`}
+          disabled={product.sold && true}
+        >
+          <p>{product.sold ? "BOUGHT" : "PAY"}</p>
           <BiChevronRight className="text-2xl" />
         </button>
       </StripeCheckout>
