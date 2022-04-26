@@ -180,7 +180,7 @@ public class ProductService {
         chargeParams.put("currency", "usd");
         chargeParams.put("source", paymentRequest.getId());
 
-        Charge charge = Charge.create(chargeParams);
+        Charge.create(chargeParams);
         product.setSold(true);
         productRepository.save(product);
 
