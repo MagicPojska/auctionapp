@@ -171,6 +171,11 @@ public class ProductService {
         Map<String, Object> chargeParams = new HashMap<>();
 
         ProductEntity product = productRepository.findProductById(paymentRequest.getProductId());
+        if(product.isSold()){
+            logger.error("Product is already sold");
+            throw new BadRequestException("Product is already sold");
+        }
+
         chargeParams.put("amount", product.getHighestBid().multiply(BigDecimal.valueOf(100)));
         chargeParams.put("currency", "usd");
         chargeParams.put("source", paymentRequest.getId());
