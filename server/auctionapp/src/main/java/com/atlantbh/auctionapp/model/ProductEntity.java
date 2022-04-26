@@ -70,6 +70,8 @@ public class ProductEntity {
     @Column(nullable = false)
     private long userId;
 
+    private boolean sold = false;
+
     @Formula("(SELECT b.price FROM auction.bids b INNER JOIN auction.product p on p.id = b.product_id " +
             "WHERE b.product_id = id ORDER BY b.price DESC LIMIT 1)")
     private BigDecimal highestBid;
