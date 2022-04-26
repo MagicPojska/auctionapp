@@ -5,14 +5,15 @@ import { buyProduct } from "../../utilities/productsApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const BuyButton = ({ product, user, images }) => {
+const BuyButton = ({ product, user, images, setProduct }) => {
   const stripePrice = product.highestBid * 100;
 
   const onToken = async (token) => {
     try {
       token.productId = product.id;
       token.userId = user.id;
-      await buyProduct(token);
+      const response = await buyProduct(token);
+      setProduct(response.data);
     } catch (error) {
       console.error(error);
       if (error.response.status !== 200) {

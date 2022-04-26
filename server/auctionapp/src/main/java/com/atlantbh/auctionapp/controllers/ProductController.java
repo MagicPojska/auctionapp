@@ -89,8 +89,8 @@ public class ProductController {
     }
 
     @PostMapping("/payment")
-    public ResponseEntity<String> payForProduct(@RequestBody PaymentRequest paymentRequest) throws StripeException {
-        String payment = productService.payForProduct(paymentRequest);
-        return new ResponseEntity<>(payment, new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<ProductEntity> payForProduct(@RequestBody PaymentRequest paymentRequest) throws StripeException {
+        ProductEntity product = productService.payForProduct(paymentRequest);
+        return new ResponseEntity<>(product, new HttpHeaders(), HttpStatus.OK);
     }
 }

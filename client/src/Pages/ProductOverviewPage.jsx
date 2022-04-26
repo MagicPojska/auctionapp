@@ -136,7 +136,12 @@ const ProductOverviewPage = () => {
               {timeLeft.minutes < 0 ? (
                 user &&
                 user.id === highestBidder.id && (
-                  <BuyButton product={product} user={user} images={images} />
+                  <BuyButton
+                    product={product}
+                    user={user}
+                    images={images}
+                    setProduct={setProduct}
+                  />
                 )
               ) : (
                 <div className="flex">

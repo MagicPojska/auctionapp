@@ -167,7 +167,7 @@ public class ProductService {
         return relatedProducts;
     }
 
-    public String payForProduct(PaymentRequest paymentRequest) throws StripeException {
+    public ProductEntity payForProduct(PaymentRequest paymentRequest) throws StripeException {
         Map<String, Object> chargeParams = new HashMap<>();
 
         ProductEntity product = productRepository.findProductById(paymentRequest.getProductId());
@@ -184,6 +184,6 @@ public class ProductService {
         product.setSold(true);
         productRepository.save(product);
 
-        return charge.getId();
+        return product;
     }
 }
