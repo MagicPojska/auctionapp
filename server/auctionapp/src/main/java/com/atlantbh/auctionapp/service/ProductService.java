@@ -176,7 +176,7 @@ public class ProductService {
             throw new BadRequestException("Product is already sold");
         }
 
-        chargeParams.put("amount", product.getHighestBid().multiply(BigDecimal.valueOf(100)));
+        chargeParams.put("amount", product.getHighestBid().multiply(BigDecimal.valueOf(100)).intValue());
         chargeParams.put("currency", "usd");
         chargeParams.put("source", paymentRequest.getId());
 

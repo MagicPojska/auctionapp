@@ -6,6 +6,7 @@ import com.atlantbh.auctionapp.model.BidsEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.projections.BidProj;
+import com.atlantbh.auctionapp.projections.HighestBidderProj;
 import com.atlantbh.auctionapp.repository.BidRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
 import com.atlantbh.auctionapp.repository.UserRepository;
@@ -80,5 +81,15 @@ public class BidService {
             throw new NotFoundException("Bids from user with id: " + id + " not found");
         }
         return bids;
+    }
+
+    public HighestBidderProj getHighestBidder(long productId) {
+        HighestBidderProj highestBidder = bidRepository.getHighestBidder(productId);
+        if(highestBidder == null) {
+            logger.error("No highest bidder found for product with id: " + productId);
+            throw new NotFoundException("Highest bidder for product with id: " + productId + " not found");
+        }
+
+        return highestBidder;
     }
 }
