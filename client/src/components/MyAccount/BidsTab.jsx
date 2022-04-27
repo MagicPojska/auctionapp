@@ -78,7 +78,14 @@ const BidsTab = () => {
                   <td className="pl-6 pr-8 py-4 text-right">
                     <Link
                       to={shopProductPath + "/" + bid.product.id}
-                      className="font-bold px-8 py-3 border-4"
+                      className={`font-bold px-8 py-3 ${
+                        moment(bid.product.endDate).isBefore(new Date()) &&
+                        bid.product.highestBid === bid.price
+                          ? bid.product.sold
+                            ? "bg-purple text-white"
+                            : "border-4 border-purple"
+                          : "border-4"
+                      }`}
                     >
                       {moment(bid.product.endDate).isBefore(new Date()) &&
                       bid.product.highestBid === bid.price
