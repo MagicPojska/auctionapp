@@ -16,6 +16,7 @@ const BidsTab = () => {
       try {
         const response = await getBidsForUser(user.id);
         setBids(response.data);
+        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -54,7 +55,7 @@ const BidsTab = () => {
                     <div className="flex flex-col">
                       <span>{bid.product.productName}</span>
                       <span className="text-sm font-normal text-purple">
-                        #{bid.id}
+                        #{bid.product.id}
                       </span>
                     </div>
                   </th>
@@ -81,7 +82,9 @@ const BidsTab = () => {
                     >
                       {moment(bid.product.endDate).isBefore(new Date()) &&
                       bid.product.highestBid === bid.price
-                        ? "PAY"
+                        ? bid.product.sold
+                          ? "BOUGHT"
+                          : "PAY"
                         : "VIEW"}
                     </Link>
                   </td>
