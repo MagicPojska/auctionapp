@@ -43,9 +43,4 @@ public class BidController {
 
         return new ResponseEntity<>(bids, new HttpHeaders(), HttpStatus.OK);
     }
-
-    @GetMapping("/highest-bidder")
-    public ResponseEntity<Object> getHighestBidder(@RequestParam long productId){
-        return ResponseEntity.ok(bidService.getHighestBidder(productId));
-    }
 }
