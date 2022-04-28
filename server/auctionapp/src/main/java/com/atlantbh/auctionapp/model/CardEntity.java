@@ -15,6 +15,7 @@ import java.util.Collections;
 @Setter
 @Getter
 @Entity
+@Table(name = "Card", schema="auction")
 public class CardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
