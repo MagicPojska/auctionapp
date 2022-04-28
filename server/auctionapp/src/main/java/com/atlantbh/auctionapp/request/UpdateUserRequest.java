@@ -33,4 +33,6 @@ public class UpdateUserRequest {
     private String state;
     private String country;
     private String profileImage;
+
+    private UpdateCardRequest card;
 }

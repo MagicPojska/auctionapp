@@ -1,8 +1,11 @@
 package com.atlantbh.auctionapp.service;
 
 import com.atlantbh.auctionapp.domain.model.User;
+import com.atlantbh.auctionapp.model.CardEntity;
 import com.atlantbh.auctionapp.model.UserEntity;
+import com.atlantbh.auctionapp.repository.CardRepository;
 import com.atlantbh.auctionapp.repository.UserRepository;
+import com.atlantbh.auctionapp.request.UpdateCardRequest;
 import com.atlantbh.auctionapp.request.UpdateUserRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,11 +30,14 @@ public class UserServiceUnitTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private CardRepository cardRepository;
+
     UserService userService;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, cardRepository);
     }
 
     @Test
@@ -55,14 +61,14 @@ public class UserServiceUnitTest {
     @Test
     @DisplayName("Update user test should return UserNotFoundException if user is not found by email")
     void testUpdateUserShouldReturnException() {
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest("Safet", "Pojskic", "email@gmail.com", "+123123123", new Date(), "address", "city", "72000", "state", "country", "image");
+        UpdateUserRequest updateUserRequest = new UpdateUserRequest("Safet", "Pojskic", "email@gmail.com", "+123123123", new Date(), "address", "city", "72000", "state", "country", "image", new UpdateCardRequest());
         assertThatThrownBy(() -> userService.updateUser(updateUserRequest)).isInstanceOf(UsernameNotFoundException.class);
     }
 
     @Test
     @DisplayName("Update user successfully")
     void testUpdateUserShouldSaveUser() {
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest("Safet", "Pojskic", "email@gmail.com", "+123123123", new Date(), "address", "city", "72000", "state", "country", "image");
+        UpdateUserRequest updateUserRequest = new UpdateUserRequest("Safet", "Pojskic", "email@gmail.com", "+123123123", new Date(), "address", "city", "72000", "state", "country", "image", new UpdateCardRequest());
         UserEntity userEntity = new UserEntity("Safet", "Pojskic", "email@gmail.com", "testPassword");
 
         Mockito.when(userRepository.findByEmail("email@gmail.com")).thenReturn(userEntity);
