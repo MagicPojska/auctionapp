@@ -2,7 +2,6 @@ package com.atlantbh.auctionapp.repository;
 
 import com.atlantbh.auctionapp.model.BidsEntity;
 import com.atlantbh.auctionapp.projections.BidProj;
-import com.atlantbh.auctionapp.projections.HighestBidderProj;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

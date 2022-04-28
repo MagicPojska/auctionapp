@@ -6,7 +6,6 @@ import com.atlantbh.auctionapp.model.BidsEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.projections.BidProj;
-import com.atlantbh.auctionapp.projections.HighestBidderProj;
 import com.atlantbh.auctionapp.repository.BidRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
 import com.atlantbh.auctionapp.repository.UserRepository;

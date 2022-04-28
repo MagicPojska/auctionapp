@@ -1,6 +1,5 @@
 package com.atlantbh.auctionapp.model;
 
-import com.atlantbh.auctionapp.projections.HighestBidderProj;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
