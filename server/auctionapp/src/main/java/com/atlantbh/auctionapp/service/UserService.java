@@ -71,24 +71,21 @@ public class UserService implements UserDetailsService {
     }
 
     private void updateCard(UserEntity existingUser, UpdateCardRequest card) {
-        if(card != null){
-            CardEntity existingCard = cardRepository.findByUserId(existingUser.getId());
-            if (!card.getCardNumber().matches("^(\\d*)$")) {
-                logger.error("Card number is not valid");
-                throw new BadRequestException("Card number can only contain digits");
-            }
-            if(existingCard == null){
-                existingCard = new CardEntity(card.getCardNumber(), card.getCardHolderName(), card.getExpirationMonth(), card.getExpirationYear(), card.getCvc(), existingUser);
-                cardRepository.save(existingCard);
-            } else {
-                existingCard.setCardNumber(card.getCardNumber());
-                existingCard.setCardHolderName(card.getCardHolderName());
-                existingCard.setExpirationMonth(card.getExpirationMonth());
-                existingCard.setExpirationYear(card.getExpirationYear());
-                existingCard.setCvc(card.getCvc());
-                cardRepository.save(existingCard);
-            }
-
+        CardEntity existingCard = cardRepository.findByUserId(existingUser.getId());
+        if (!card.getCardNumber().matches("^(\\d*)$")) {
+            logger.error("Card number is not valid");
+            throw new BadRequestException("Card number can only contain digits");
+        }
+        if(existingCard == null){
+            existingCard = new CardEntity(card.getCardNumber(), card.getCardHolderName(), card.getExpirationMonth(), card.getExpirationYear(), card.getCvc(), existingUser);
+            cardRepository.save(existingCard);
+        } else {
+            existingCard.setCardNumber(card.getCardNumber());
+            existingCard.setCardHolderName(card.getCardHolderName());
+            existingCard.setExpirationMonth(card.getExpirationMonth());
+            existingCard.setExpirationYear(card.getExpirationYear());
+            existingCard.setCvc(card.getCvc());
+            cardRepository.save(existingCard);
         }
     }
 

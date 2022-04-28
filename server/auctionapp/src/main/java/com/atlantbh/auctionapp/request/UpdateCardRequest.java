@@ -32,5 +32,5 @@ public class UpdateCardRequest {
     @NotNull(message = "Cvc is required")
     @Min(value = 100, message = "Cvc can't must have at least 3 characters")
     @Max(value = 9999, message = "Cvc can't be more than 4 characters")
-    private String cvc;
+    private Integer cvc;
 }

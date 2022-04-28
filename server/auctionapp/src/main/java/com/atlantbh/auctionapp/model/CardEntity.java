@@ -44,13 +44,13 @@ public class CardEntity {
     @Column(nullable = false)
     @Min(100)
     @Max(9999)
-    private String cvc;
+    private Integer cvc;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private UserEntity user;
 
-    public CardEntity(String cardNumber, String cardHolderName, Integer expirationMonth, Integer expirationYear, String cvc, UserEntity user) {
+    public CardEntity(String cardNumber, String cardHolderName, Integer expirationMonth, Integer expirationYear, Integer cvc, UserEntity user) {
         this.cardNumber = cardNumber;
         this.cardHolderName = cardHolderName;
         this.expirationMonth = expirationMonth;
