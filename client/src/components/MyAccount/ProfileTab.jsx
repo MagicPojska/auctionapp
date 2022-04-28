@@ -5,6 +5,7 @@ import { customStyles } from "../../utilities/selectStyle";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { useUserContext } from "../../contexts/UserContextProvider";
 import {
+  generateCardExpiryYears,
   generateDays,
   generateMonths,
   generateYears,
@@ -25,7 +26,8 @@ import LoadingSpinner from "../LoadingSpinner";
 
 const ProfileTab = () => {
   const { user } = useUserContext();
-  const [isOpened, setIsOpened] = useState(false);
+  const [isShippingTabOpened, setIsShippingTabOpened] = useState(false);
+  const [isCardTabOpened, setIsCardTabOpened] = useState(false);
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [files, setFiles] = useState(null);
   const [image, setImage] = useState(null);
@@ -47,6 +49,15 @@ const ProfileTab = () => {
     phone: user.phone === null ? "" : user.phone,
     profileImage: user.profileImage === null ? "" : user.profileImage,
   });
+
+  const [cardDetails, setCardDetails] = useState({
+    cardHolderName: "",
+    cardNumber: "",
+    expirationYear: "",
+    expirationMonth: "",
+    cvc: "",
+  });
+
   const [birthDate, setBirthDate] = useState({
     day: user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("DD"),
     month:
@@ -59,11 +70,15 @@ const ProfileTab = () => {
     setDaysInMonth(generateDays(birthDate.year, birthDate.month));
   }, [birthDate.year, birthDate.month]);
 
-  const toggleTabOpened = () => {
-    setIsOpened(!isOpened);
+  const toggleShippingTabOpened = () => {
+    setIsShippingTabOpened(!isShippingTabOpened);
   };
 
-  const handleInputData = (input) => (e) => {
+  const toggleCardTabOpened = () => {
+    setIsCardTabOpened(!isCardTabOpened);
+  };
+
+  const handleShippingDataInput = (input) => (e) => {
     const { value } = e.target;
 
     setUserDetails((prevState) => ({
@@ -106,9 +121,21 @@ const ProfileTab = () => {
         userInfo.profileImage = imageResponse.data.url;
       }
 
-      userInfo.dateOfBirth = moment(
-        `${birthDate.year}-${birthDate.month}-${birthDate.day}`
-      ).format(DATETIME_FORMAT);
+      if (birthDate.day && birthDate.month && birthDate.year) {
+        userInfo.dateOfBirth = moment(
+          `${birthDate.year}-${birthDate.month}-${birthDate.day}`
+        ).format(DATETIME_FORMAT);
+      }
+
+      if (
+        cardDetails.cardHolderName &&
+        cardDetails.cardNumber &&
+        cardDetails.expirationYear &&
+        cardDetails.expirationMonth &&
+        cardDetails.cvc
+      ) {
+        userInfo.card = cardDetails;
+      }
 
       const responseData = await updateUser(userInfo);
 
@@ -164,7 +191,7 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="John"
-                onChange={handleInputData("firstName")}
+                onChange={handleShippingDataInput("firstName")}
                 value={userDetails.firstName}
               />
             </div>
@@ -175,7 +202,7 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="Doe"
-                onChange={handleInputData("lastName")}
+                onChange={handleShippingDataInput("lastName")}
                 value={userDetails.lastName}
               />
             </div>
@@ -258,7 +285,7 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="+32534231564"
-                onChange={handleInputData("phone")}
+                onChange={handleShippingDataInput("phone")}
                 value={userDetails.phone}
               />
             </div>
@@ -266,20 +293,153 @@ const ProfileTab = () => {
         </div>
       </div>
 
+      {/*Card details form */}
       <div className="w-full border-2 mt-6 font-normal">
         <h2
           className="px-8 py-4 text-lg font-normal leading-7 bg-bgWhite cursor-pointer flex items-center"
-          onClick={toggleTabOpened}
+          onClick={toggleCardTabOpened}
         >
           <span className="mr-4">
-            {isOpened ? <BsChevronUp /> : <BsChevronDown />}
+            {isCardTabOpened ? <BsChevronUp /> : <BsChevronDown />}
+          </span>{" "}
+          Card Information (Optional)
+        </h2>
+
+        <div
+          className={`${
+            !isCardTabOpened && "hidden"
+          } pt-5 pl-5 2xl:pl-20 pr-24 2xl:pr-36 flex`}
+        >
+          <div className="mr-28 min-w-fit w-80">
+            <div className="w-80"></div>
+          </div>
+
+          <div className="flex flex-col w-full">
+            <label className="text-lg leading-7">Name on Card</label>
+            <div className="border-2 h-16 mb-8 mt-4">
+              <input
+                type="text"
+                className="w-full h-full outline-none px-6 bg-bgWhite"
+                placeholder="John Doe"
+                onChange={(e) =>
+                  setCardDetails({
+                    ...cardDetails,
+                    cardHolderName: e.target.value,
+                  })
+                }
+                value={cardDetails.cardHolderName}
+              />
+            </div>
+
+            <label className="text-lg leading-7">Card Number</label>
+            <div className="border-2 h-16 mb-8 mt-4">
+              <input
+                type="text"
+                maxLength={16}
+                className="w-full h-full outline-none px-6 bg-bgWhite"
+                placeholder="XXXX-XXXX-XXXX-XXXX"
+                onChange={(e) => {
+                  if (e.target.value.match("^[0-9]*$") != null) {
+                    setCardDetails({
+                      ...cardDetails,
+                      cardNumber: e.target.value,
+                    });
+                  }
+                }}
+                value={cardDetails.cardNumber}
+              />
+            </div>
+
+            <div className="flex space-x-6 mb-8 mt-4">
+              <div className="flex flex-col flex-1">
+                <label className="text-lg leading-7 font-normal mb-4">
+                  Expiration Date
+                </label>
+                <Select
+                  defaultValue={generateCardExpiryYears().find(
+                    (year) =>
+                      year.value === parseInt(cardDetails.expirationYear)
+                  )}
+                  options={generateCardExpiryYears()}
+                  placeholder="YYYY"
+                  styles={customStyles}
+                  isSearchable={false}
+                  components={{
+                    IndicatorSeparator: () => null,
+                  }}
+                  onChange={(selectedOption) => {
+                    setCardDetails({
+                      ...cardDetails,
+                      expirationYear: selectedOption.value,
+                    });
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-col flex-1 justify-end">
+                <Select
+                  defaultValue={generateMonths().find(
+                    (month) =>
+                      month.value === parseInt(cardDetails.expirationMonth)
+                  )}
+                  options={generateMonths()}
+                  placeholder="MM"
+                  styles={customStyles}
+                  isSearchable={false}
+                  components={{
+                    IndicatorSeparator: () => null,
+                  }}
+                  onChange={(selectedOption) => {
+                    setCardDetails({
+                      ...cardDetails,
+                      expirationMonth: selectedOption.value,
+                    });
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-col flex-1">
+                <label className="text-lg leading-7 font-normal  mb-4">
+                  CVC/CVV
+                </label>
+                <div className="border-2 h-12">
+                  <input
+                    type="text"
+                    maxLength={4}
+                    className="w-full h-full outline-none px-6 bg-bgWhite"
+                    placeholder="***"
+                    onChange={(e) => {
+                      if (e.target.value.match("^[0-9]*$") != null) {
+                        setCardDetails({
+                          ...cardDetails,
+                          cvc: e.target.value,
+                        });
+                      }
+                    }}
+                    value={cardDetails.cvc}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/*Shipping address form */}
+      <div className="w-full border-2 mt-6 font-normal">
+        <h2
+          className="px-8 py-4 text-lg font-normal leading-7 bg-bgWhite cursor-pointer flex items-center"
+          onClick={toggleShippingTabOpened}
+        >
+          <span className="mr-4">
+            {isShippingTabOpened ? <BsChevronUp /> : <BsChevronDown />}
           </span>{" "}
           Shipping Address (Optional)
         </h2>
 
         <div
           className={`${
-            !isOpened && "hidden"
+            !isShippingTabOpened && "hidden"
           } pt-5 pl-5 2xl:pl-20 pr-24 2xl:pr-36 flex`}
         >
           <div className="mr-28 min-w-fit w-80">
@@ -293,7 +453,7 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="123 Main Street"
-                onChange={handleInputData("address")}
+                onChange={handleShippingDataInput("address")}
                 value={userDetails.address}
               />
             </div>
@@ -305,7 +465,7 @@ const ProfileTab = () => {
                   type="text"
                   placeholder="eg. Madrid"
                   className="w-full border-2 h-16 p-6 mt-4 bg-bgWhite outline-none"
-                  onChange={handleInputData("city")}
+                  onChange={handleShippingDataInput("city")}
                   value={userDetails.city}
                 />
               </div>
@@ -316,7 +476,7 @@ const ProfileTab = () => {
                   type="text"
                   placeholder="XXXXXX"
                   className="w-full border-2 h-16 p-6 mt-4 bg-bgWhite outline-none"
-                  onChange={handleInputData("zipCode")}
+                  onChange={handleShippingDataInput("zipCode")}
                   value={userDetails.zipCode}
                 />
               </div>
@@ -328,7 +488,7 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="eg. Asturias"
-                onChange={handleInputData("state")}
+                onChange={handleShippingDataInput("state")}
                 value={userDetails.state}
               />
             </div>

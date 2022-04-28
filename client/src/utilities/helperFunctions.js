@@ -141,3 +141,19 @@ export const validateEmail = (email) => {
   }
   return true;
 };
+
+export const generateCardExpiryYears = () => {
+  const years = [];
+
+  const startYear = new Date().getFullYear();
+  const endYear = new Date().getFullYear() + 20;
+
+  for (let i = startYear; i <= endYear; i++) {
+    years.push({
+      value: i,
+      label: i,
+    });
+  }
+
+  return years;
+};

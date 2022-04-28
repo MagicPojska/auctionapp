@@ -22,6 +22,7 @@ const SellerTab = () => {
         const response = await getProductsFromUser(user.id, tab);
         setProducts(response.data);
       } catch (error) {
+        setProducts([]);
         console.log(error);
       }
     })();
