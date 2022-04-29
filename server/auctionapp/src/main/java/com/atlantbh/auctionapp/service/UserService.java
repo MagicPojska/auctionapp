@@ -70,7 +70,7 @@ public class UserService implements UserDetailsService {
         return userRepository.save(existingUser);
     }
 
-    private void updateCard(UserEntity existingUser, UpdateCardRequest card) {
+    public void updateCard(UserEntity existingUser, UpdateCardRequest card) {
         CardEntity existingCard = cardRepository.findByUserId(existingUser.getId());
         if (!card.getCardNumber().matches("^(\\d*)$")) {
             logger.error("Card number is not valid");

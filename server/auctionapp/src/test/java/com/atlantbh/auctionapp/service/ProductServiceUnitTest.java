@@ -6,6 +6,7 @@ import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;
 import com.atlantbh.auctionapp.repository.CategoryRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
+import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.ProductRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,12 +34,16 @@ class ProductServiceUnitTest {
     private ProductRepository productRepository;
     @Mock
     private CategoryRepository categoryRepository;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private UserService userService;
 
     ProductService productService;
 
     @BeforeEach
     void setUp() {
-        productService = new ProductService(productRepository, categoryRepository);
+        productService = new ProductService(productRepository, categoryRepository, userRepository, userService);
     }
 
     @Test

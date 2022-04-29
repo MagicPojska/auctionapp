@@ -4,11 +4,13 @@ import com.atlantbh.auctionapp.exceptions.BadRequestException;
 import com.atlantbh.auctionapp.exceptions.NotFoundException;
 import com.atlantbh.auctionapp.model.CategoryEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
+import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.model.enums.SortBy;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;
 import com.atlantbh.auctionapp.projections.ProductNameProj;
 import com.atlantbh.auctionapp.repository.CategoryRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
+import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.PaymentRequest;
 import com.atlantbh.auctionapp.request.ProductRequest;
 import com.atlantbh.auctionapp.response.ProductResponse;
@@ -24,6 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -39,6 +42,8 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
     private String secretKey;
 
     @Value("${STRIPE.SECRET_KEY}")
@@ -52,9 +57,11 @@ public class ProductService {
     }
 
     @Autowired
-    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, UserRepository userRepository, UserService userService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     Logger logger = LoggerFactory.getLogger(ProductService.class);
@@ -133,6 +140,14 @@ public class ProductService {
             logger.error("End date must be after start date");
             throw new BadRequestException("End date must be after start date");
         }
+
+        UserEntity user = userRepository.findById(productRequest.getUserId()).orElseThrow(() -> new NotFoundException("User with id: " + productRequest.getUserId() + " does not exist"));
+        if(user == null){
+            logger.error("User with id: " + productRequest.getUserId() + " not found");
+            throw new UsernameNotFoundException("Could not find User with id = " + productRequest.getUserId());
+        }
+        
+        userService.updateCard(user, productRequest.getCard());
 
         return productRepository.save(product);
     }
