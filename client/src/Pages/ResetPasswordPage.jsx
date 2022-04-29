@@ -36,12 +36,12 @@ const ResetPasswordPage = () => {
     } catch (error) {
       console.log(error);
       if (error.response.status === 404) {
-        toast.error("User with token does not exist!", {
+        toast.error("Password reset is not requested for this account!", {
           position: toast.POSITION.TOP_CENTER,
         });
       }
       if (error.response.status === 403) {
-        toast.error("Your token is expired!", {
+        toast.error("Password reset is not requested for this account!", {
           position: toast.POSITION.TOP_CENTER,
         });
       }
