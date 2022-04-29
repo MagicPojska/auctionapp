@@ -130,7 +130,7 @@ const StepThree = ({
           ) : (
             <div className="flex-1 flex space-x-6">
               <button
-                className="flex-1 bg-purple py-3 text-white"
+                className="flex-1 outline outline-4 outline-purple outline-offset-[-4px] py-3 text-black"
                 onClick={prevStep}
               >
                 Back
