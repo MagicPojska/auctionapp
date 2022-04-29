@@ -25,6 +25,7 @@ import java.util.List;
 @Service
 public class BidService {
 
+    public final int PAGE_SIZE = 5;
     private final BidRepository bidRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
@@ -38,7 +39,7 @@ public class BidService {
     }
 
     public Page<BidProj> getBidsForProduct(long id, Integer pageNumber){
-        Page<BidProj> bids = bidRepository.findAllByProductId(id, PageRequest.of(pageNumber, 5, Sort.by(Sort.Direction.DESC, "bidDate")));
+        Page<BidProj> bids = bidRepository.findAllByProductId(id, PageRequest.of(pageNumber, PAGE_SIZE, Sort.by(Sort.Direction.DESC, "bidDate")));
         if(bids.isEmpty()) {
             logger.error("No bids found for product with id: " + id);
             throw new NotFoundException("Bids for product with id:" + id + " do not exist");
