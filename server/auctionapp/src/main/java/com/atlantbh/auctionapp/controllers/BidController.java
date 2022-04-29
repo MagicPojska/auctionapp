@@ -6,6 +6,7 @@ import com.atlantbh.auctionapp.request.BidRequest;
 import com.atlantbh.auctionapp.response.BidResponse;
 import com.atlantbh.auctionapp.service.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,8 @@ public class BidController {
     }
 
     @GetMapping("/product")
-    public ResponseEntity<List<BidProj>> getBidsForProduct(@RequestParam long id){
-        return ResponseEntity.ok(bidService.getBidsForProduct(id));
+    public ResponseEntity<Page<BidProj>> getBidsForProduct(@RequestParam long id, @RequestParam(defaultValue = "0") Integer pageNumber){
+        return ResponseEntity.ok(bidService.getBidsForProduct(id, pageNumber));
     }
 
     @PostMapping("/add")

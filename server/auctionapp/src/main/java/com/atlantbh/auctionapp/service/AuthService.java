@@ -35,7 +35,8 @@ public class AuthService {
     public final String BEARER = "Bearer ";
 
     @Autowired
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jsonWebToken, AuthenticationManager authenticationManager) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jsonWebToken,
+            AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jsonWebToken = jsonWebToken;
@@ -47,7 +48,7 @@ public class AuthService {
             logger.error("User with email: " + registerRequest.getEmail() + " already exists");
             throw new ConflictException("Email is already in use.");
         }
-        if(!PasswordValidator.isValid(registerRequest.getPassword())) {
+        if (!PasswordValidator.isValid(registerRequest.getPassword())) {
             logger.error("Invalid password");
             throw new BadRequestException("Invalid password");
         }
@@ -66,7 +67,7 @@ public class AuthService {
 
     public User login(LoginRequest loginRequest) {
         UserEntity entity = userRepository.findByEmail(loginRequest.getEmail());
-        if(!entity.isActive()) {
+        if (!entity.isActive()) {
             logger.error("User with email: " + loginRequest.getEmail() + " is deactivated");
             throw new UnathorizedException("User is deactivated.");
         }
@@ -76,7 +77,7 @@ public class AuthService {
         return User.createFromEntity(entity);
     }
 
-    public void logout(HttpServletRequest request){
+    public void logout(HttpServletRequest request) {
         final String requestTokenHeader = request.getHeader(AUTHORIZATION);
         String token = null;
 

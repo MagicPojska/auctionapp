@@ -2,6 +2,8 @@ package com.atlantbh.auctionapp.repository;
 
 import com.atlantbh.auctionapp.model.BidsEntity;
 import com.atlantbh.auctionapp.projections.BidProj;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface BidRepository extends JpaRepository<BidsEntity, Long> {
-    List<BidProj> findAllByProductId(long productId);
+    Page<BidProj> findAllByProductId(long productId, Pageable paging);
     List<BidsEntity> findAllByUserId(long userId, Sort sort);
 
     @Query(value = "SELECT MAX(price) FROM auction.bids b " +

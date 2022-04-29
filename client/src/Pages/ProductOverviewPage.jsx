@@ -13,6 +13,8 @@ import {
 } from "../utilities/constants";
 import { BsChevronRight } from "react-icons/bs";
 import LoadingSpinner from "../components/LoadingSpinner";
+import BidsTable from "../components/ProductOverviewPage/BidsTable";
+import RecomendedProducts from "../components/ProductOverviewPage/RecomendedProducts";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
@@ -187,6 +189,13 @@ const ProductOverviewPage = () => {
           Product with id:{id} not found
         </div>
       )}
+      <div className="mx-40 2xl:mx-72">
+        {user && user.id === product.userId ? (
+          <BidsTable />
+        ) : (
+          <RecomendedProducts />
+        )}
+      </div>
     </>
   );
 };

@@ -95,3 +95,15 @@ export const getHoursDiff = (date) => {
 
   return diff;
 };
+
+export const getDayMonthYear = (date) => {
+  const day = moment(date).format("DD");
+  const month = moment(date).format("MMMM");
+  const year = moment(date).format("YYYY");
+
+  return {
+    day,
+    month,
+    year,
+  };
+};

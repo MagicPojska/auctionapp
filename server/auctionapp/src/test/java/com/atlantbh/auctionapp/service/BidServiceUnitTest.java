@@ -47,7 +47,7 @@ public class BidServiceUnitTest {
     @Test
     @DisplayName("Return NotFoundException when bids for product are not found")
     void expectNotFoundExceptionForNonExistingBidsForProductId() {
-        assertThatThrownBy(() -> bidService.getBidsForProduct(1L)).isInstanceOf(NotFoundException.class);
+        assertThatThrownBy(() -> bidService.getBidsForProduct(1L, 0)).isInstanceOf(NotFoundException.class);
     }
 
     @Test

@@ -78,4 +78,10 @@ public class ProductController {
 
         return new ResponseEntity<>(products, new HttpHeaders(), HttpStatus.OK);
     }
+
+    @GetMapping("/items/related")
+    public ResponseEntity<List<ProductEntity>> getRelatedProducts(@RequestParam long productId){
+        List<ProductEntity> products = productService.getRelatedProducts(productId);
+        return new ResponseEntity<>(products, new HttpHeaders(), HttpStatus.OK);
+    }
 }
