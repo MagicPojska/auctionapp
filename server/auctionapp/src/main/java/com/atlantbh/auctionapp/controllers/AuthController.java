@@ -60,8 +60,8 @@ public class AuthController {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<String> processForgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest) throws MessagingException, UnsupportedEncodingException {
-        String message = authService.updateResetPasswordToken(forgotPasswordRequest.getEmail());
-        return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.OK);
+        authService.updateResetPasswordToken(forgotPasswordRequest.getEmail());
+        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
 
     @PostMapping("/reset-password")

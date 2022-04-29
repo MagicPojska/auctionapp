@@ -115,7 +115,7 @@ public class AuthService {
         }
     }
 
-    public String updateResetPasswordToken(String email) throws MessagingException, UnsupportedEncodingException {
+    public void updateResetPasswordToken(String email) throws MessagingException, UnsupportedEncodingException {
         UserEntity userEntity = userRepository.findByEmail(email);
         String token = RandomString.make(30);
         String url = allowedURL + "/reset-password/" + token;
@@ -127,9 +127,7 @@ public class AuthService {
         } else {
             logger.error("User with email: " + email + " does not exist.");
             throw new NotFoundException("User with email: " + email + " does not exist.");
-        }
-
-        return "Please check your email for the reset password link.";
+        };
     }
 
     public String updatePassword(ResetPasswordRequest resetPasswordRequest) {

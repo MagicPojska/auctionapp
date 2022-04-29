@@ -12,8 +12,8 @@ const ForgotPasswordPage = () => {
     try {
       e.preventDefault();
       setLoading(true);
-      const response = await forgotPassword({ email: email });
-      toast.success(response.data, {
+      await forgotPassword({ email: email });
+      toast.success("Please check your email for the reset password link.", {
         position: toast.POSITION.TOP_CENTER,
       });
     } catch (error) {
