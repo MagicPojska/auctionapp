@@ -142,11 +142,6 @@ public class ProductService {
         }
 
         UserEntity user = userRepository.findById(productRequest.getUserId()).orElseThrow(() -> new NotFoundException("User with id: " + productRequest.getUserId() + " does not exist"));
-        if(user == null){
-            logger.error("User with id: " + productRequest.getUserId() + " not found");
-            throw new UsernameNotFoundException("Could not find User with id = " + productRequest.getUserId());
-        }
-
         userService.updateCard(user, productRequest.getCard());
 
         return productRepository.save(product);
