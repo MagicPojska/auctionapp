@@ -146,7 +146,7 @@ public class ProductService {
             logger.error("User with id: " + productRequest.getUserId() + " not found");
             throw new UsernameNotFoundException("Could not find User with id = " + productRequest.getUserId());
         }
-        
+
         userService.updateCard(user, productRequest.getCard());
 
         return productRepository.save(product);
