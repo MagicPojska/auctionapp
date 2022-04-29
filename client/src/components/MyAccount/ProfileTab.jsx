@@ -23,6 +23,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingSpinner from "../LoadingSpinner";
+import { getUserCard } from "../../utilities/cardApi";
 
 const ProfileTab = () => {
   const { user } = useUserContext();
@@ -69,6 +70,29 @@ const ProfileTab = () => {
   useEffect(() => {
     setDaysInMonth(generateDays(birthDate.year, birthDate.month));
   }, [birthDate.year, birthDate.month]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await getUserCard(user.id);
+      setCardDetails({
+        cardHolderName:
+          response.data.cardHolderName === null
+            ? ""
+            : response.data.cardHolderName,
+        cardNumber:
+          response.data.cardNumber === null ? "" : response.data.cardNumber,
+        expirationYear:
+          response.data.expirationYear === null
+            ? ""
+            : response.data.expirationYear,
+        expirationMonth:
+          response.data.expirationMonth === null
+            ? ""
+            : response.data.expirationMonth,
+        cvc: response.data.cvc === null ? "" : response.data.cvc,
+      });
+    })();
+  }, []);
 
   const toggleShippingTabOpened = () => {
     setIsShippingTabOpened(!isShippingTabOpened);
@@ -404,7 +428,7 @@ const ProfileTab = () => {
                 </label>
                 <div className="border-2 h-12">
                   <input
-                    type="text"
+                    type="password"
                     maxLength={4}
                     className="w-full h-full outline-none px-6 bg-bgWhite"
                     placeholder="***"
