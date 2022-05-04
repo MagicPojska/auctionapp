@@ -34,6 +34,4 @@ public class UpdateCardRequest {
     @Max(value = 9999, message = "Cvc can't be more than 4 characters")
     private Integer cvc;
 
-    @NotBlank(message = "Stripe Card ID can't be blank")
-    private String stripeCardId;
 }

@@ -17,7 +17,6 @@ const PaymentModal = ({ setShowModal, product }) => {
     expirationYear: "",
     expirationMonth: "",
     cvc: "",
-    stripeCardId: "",
   });
   const { user } = useUserContext();
 
@@ -40,8 +39,6 @@ const PaymentModal = ({ setShowModal, product }) => {
             ? ""
             : response.data.expirationMonth,
         cvc: response.data.cvc === null ? "" : response.data.cvc,
-        stripeCardId:
-          response.data.stripeCardId === null ? "" : response.data.stripeCardId,
       });
     })();
   }, []);
