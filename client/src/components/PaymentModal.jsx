@@ -47,17 +47,29 @@ const PaymentModal = ({ setShowModal, product }) => {
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative w-auto my-6 mx-auto max-w-3xl">
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-            <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-              <h3 className="text-3xl font-semibold">{product.productName}</h3>
+            <div className="flex justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+              <div className="w-full flex flex-col items-center space-y-2">
+                <img
+                  src={product.images.split(",")[0]}
+                  alt="highlighed image"
+                  className="w-32 h-32 rounded-full object-cover"
+                />
+                <h3 className="text-2xl font-semibold">
+                  {product.productName}
+                </h3>
+                <p className="text-textTetriary font-normal">
+                  Your total is ${product.highestBid}
+                </p>
+              </div>
               <button
-                className="p-1 ml-auto bg-transparent border-0 text-black  float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                className="p-1 ml-auto bg-transparent border-0 text-black   absolute top-4 right-4 text-3xl leading-none font-semibold outline-none focus:outline-none"
                 onClick={() => setShowModal(false)}
               >
                 <GrFormClose />
               </button>
             </div>
 
-            <div className="relative p-6 flex-auto">
+            <div className="relative p-6 flex-auto font-normal">
               <div className="flex flex-col w-full">
                 <label className="text-lg leading-7">Name on Card</label>
                 <div className="border-2 h-16 mb-8 mt-4">
@@ -94,7 +106,7 @@ const PaymentModal = ({ setShowModal, product }) => {
                   />
                 </div>
 
-                <div className="flex space-x-6 mb-8 mt-4">
+                <div className="flex space-x-6 mb-4">
                   <div className="flex flex-col flex-1">
                     <label className="text-lg leading-7 font-normal mb-4">
                       Expiration Date
@@ -181,7 +193,7 @@ const PaymentModal = ({ setShowModal, product }) => {
                 type="button"
                 onClick={() => setShowModal(false)}
               >
-                Pay
+                Pay ${product.highestBid}
               </button>
             </div>
           </div>
