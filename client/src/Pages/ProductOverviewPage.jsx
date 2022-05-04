@@ -15,7 +15,8 @@ import { BsChevronRight } from "react-icons/bs";
 import LoadingSpinner from "../components/LoadingSpinner";
 import BidsTable from "../components/ProductOverviewPage/BidsTable";
 import RecomendedProducts from "../components/ProductOverviewPage/RecomendedProducts";
-import BuyButton from "../components/ProductOverviewPage/BuyButton";
+import { BiChevronRight } from "react-icons/bi";
+import PaymentModal from "../components/PaymentModal";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
@@ -24,8 +25,9 @@ const ProductOverviewPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [notification, setNotification] = useState("");
   const [bid, setBid] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const { id } = useParams();
-  const { user, token } = useUserContext();
+  const { user } = useUserContext();
 
   useEffect(() => {
     getProductInfo();
@@ -62,7 +64,7 @@ const ProductOverviewPage = () => {
         userId: user.id,
         productId: product.id,
       };
-      const res = await postBid(bidDetails, token);
+      const res = await postBid(bidDetails);
 
       setProduct({
         ...product,
@@ -132,12 +134,18 @@ const ProductOverviewPage = () => {
               {timeLeft.minutes < 0 ? (
                 user &&
                 user.id === product.highestBidder && (
-                  <BuyButton
-                    product={product}
-                    user={user}
-                    images={images}
-                    setProduct={setProduct}
-                  />
+                  <div className="w-full flex justify-end">
+                    <button
+                      className={`flex space-x-4 border-4 border-purple px-8 h-14 justify-center items-center leading-7 text-base font-bold ${
+                        product.sold && "opacity-30"
+                      }`}
+                      onClick={() => setShowModal(true)}
+                      disabled={product.sold && true}
+                    >
+                      <p>{product.sold ? "BOUGHT" : "PAY"}</p>
+                      <BiChevronRight className="text-2xl" />
+                    </button>
+                  </div>
                 )
               ) : (
                 <div className="flex">
@@ -205,6 +213,10 @@ const ProductOverviewPage = () => {
           <RecomendedProducts />
         )}
       </div>
+
+      {showModal && (
+        <PaymentModal setShowModal={setShowModal} product={product} />
+      )}
     </>
   );
 };
