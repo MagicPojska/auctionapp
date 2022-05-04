@@ -33,11 +33,14 @@ public class UserServiceUnitTest {
     @Mock
     private CardRepository cardRepository;
 
+    @Mock
+    private StripeService stripeService;
+
     UserService userService;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository, cardRepository);
+        userService = new UserService(userRepository, cardRepository, stripeService);
     }
 
     @Test

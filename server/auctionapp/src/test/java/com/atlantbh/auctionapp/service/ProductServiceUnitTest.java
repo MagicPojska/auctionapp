@@ -5,6 +5,7 @@ import com.atlantbh.auctionapp.model.CategoryEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;
+import com.atlantbh.auctionapp.repository.BidRepository;
 import com.atlantbh.auctionapp.repository.CategoryRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
 import com.atlantbh.auctionapp.repository.UserRepository;
@@ -39,13 +40,17 @@ class ProductServiceUnitTest {
     @Mock
     private UserRepository userRepository;
     @Mock
+    private BidRepository bidRepository;
+    @Mock
+    private StripeService stripeService;
+    @Mock
     private UserService userService;
 
     ProductService productService;
 
     @BeforeEach
     void setUp() {
-        productService = new ProductService(productRepository, categoryRepository, userRepository, userService);
+        productService = new ProductService(productRepository, categoryRepository, userRepository, userService, bidRepository, stripeService);
     }
 
     @Test
@@ -93,7 +98,7 @@ class ProductServiceUnitTest {
     @Test
     @DisplayName("Test should save product to a database")
     void createProduct() {
-        UpdateCardRequest updateCardRequest = new UpdateCardRequest("Holder Name", "4111111111111111", 2025, 123, 123);
+        UpdateCardRequest updateCardRequest = new UpdateCardRequest("Holder Name", "4111111111111111", 2025, 123, 123, "dfshgdfjkghdkfj");
         ProductRequest productRequest = new ProductRequest("productName", "description", 20, LocalDateTime.now(), LocalDateTime.now().plusDays(10), "images", "address", "city", "5555", "country", "+38766666666", 1, 1, updateCardRequest);
 
         Mockito.when(categoryRepository.findById(1L)).thenReturn(Optional.of(new CategoryEntity()));
@@ -107,7 +112,7 @@ class ProductServiceUnitTest {
     @Test
     @DisplayName("Test should return NotFoundException for nonexisting category")
     void testCreateProduct() {
-        UpdateCardRequest updateCardRequest = new UpdateCardRequest("Holder Name", "4111111111111111", 2025, 123, 123);
+        UpdateCardRequest updateCardRequest = new UpdateCardRequest("Holder Name", "4111111111111111", 2025, 123, 123, "ihdkfjhdsfh");
         ProductRequest productRequest = new ProductRequest("productName", "description", 20, LocalDateTime.now(), LocalDateTime.now(), "images", "address", "city", "5555", "country", "+38766666666", 1, 1, updateCardRequest);
 
         assertThatThrownBy(() -> productService.createProduct(productRequest)).isInstanceOf(NotFoundException.class);

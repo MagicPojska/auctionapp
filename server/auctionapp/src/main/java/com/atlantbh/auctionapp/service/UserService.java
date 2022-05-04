@@ -8,6 +8,8 @@ import com.atlantbh.auctionapp.repository.CardRepository;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.UpdateCardRequest;
 import com.atlantbh.auctionapp.request.UpdateUserRequest;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +25,14 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final CardRepository cardRepository;
+    private final StripeService stripeService;
     Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
-    public UserService(UserRepository userRepository, CardRepository cardRepository) {
+    public UserService(UserRepository userRepository, CardRepository cardRepository, StripeService stripeService) {
         this.userRepository = userRepository;
         this.cardRepository = cardRepository;
+        this.stripeService = stripeService;
     }
 
     @Override
@@ -67,10 +71,15 @@ public class UserService implements UserDetailsService {
             updateCard(existingUser, updateUserRequest.getCard());
         }
 
+        try {
+            stripeService.updateCustomer(existingUser);
+        } catch (StripeException ignore) {
+        }
+
         return userRepository.save(existingUser);
     }
 
-    public void updateCard(UserEntity existingUser, UpdateCardRequest card) {
+    public CardEntity updateCard(UserEntity existingUser, UpdateCardRequest card) {
         CardEntity existingCard = cardRepository.findByUserId(existingUser.getId());
         if (!card.getCardNumber().matches("^(\\d*)$")) {
             logger.error("Card number is not valid");
@@ -78,6 +87,13 @@ public class UserService implements UserDetailsService {
         }
         if(existingCard == null){
             existingCard = new CardEntity(card.getCardNumber(), card.getCardHolderName(), card.getExpirationMonth(), card.getExpirationYear(), card.getCvc(), existingUser);
+            String stripeCardId;
+            try {
+                stripeCardId = stripeService.saveCard(existingCard, existingUser, true);
+            } catch (StripeException e) {
+                throw new BadRequestException(e.getStripeError().getMessage());
+            }
+            existingCard.setStripeCardId(stripeCardId);
             cardRepository.save(existingCard);
         } else {
             existingCard.setCardNumber(card.getCardNumber());
@@ -85,8 +101,16 @@ public class UserService implements UserDetailsService {
             existingCard.setExpirationMonth(card.getExpirationMonth());
             existingCard.setExpirationYear(card.getExpirationYear());
             existingCard.setCvc(card.getCvc());
+            try {
+                stripeService.updateCard(existingCard, existingUser);
+            } catch (StripeException e) {
+                throw new BadRequestException(e.getStripeError().getMessage());
+            }
+
             cardRepository.save(existingCard);
         }
+
+        return existingCard;
     }
 
     public void deactivateUser(Long userId) {

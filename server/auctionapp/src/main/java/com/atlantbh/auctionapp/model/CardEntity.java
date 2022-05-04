@@ -46,6 +46,9 @@ public class CardEntity {
     @Max(9999)
     private Integer cvc;
 
+    @Column(nullable = false)
+    private String stripeCardId;
+
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private UserEntity user;

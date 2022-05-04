@@ -2,17 +2,20 @@ package com.atlantbh.auctionapp.service;
 
 import com.atlantbh.auctionapp.exceptions.BadRequestException;
 import com.atlantbh.auctionapp.exceptions.NotFoundException;
+import com.atlantbh.auctionapp.model.CardEntity;
 import com.atlantbh.auctionapp.model.CategoryEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.model.enums.SortBy;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;
 import com.atlantbh.auctionapp.projections.ProductNameProj;
+import com.atlantbh.auctionapp.repository.BidRepository;
 import com.atlantbh.auctionapp.repository.CategoryRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.PaymentRequest;
 import com.atlantbh.auctionapp.request.ProductRequest;
+import com.atlantbh.auctionapp.request.UpdateCardRequest;
 import com.atlantbh.auctionapp.response.ProductResponse;
 import com.atlantbh.auctionapp.utilities.CalculateSimilarity;
 import com.stripe.Stripe;
@@ -43,7 +46,9 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final BidRepository bidRepository;
     private final UserService userService;
+    private final StripeService stripeService;
     private String secretKey;
 
     @Value("${STRIPE.SECRET_KEY}")
@@ -57,11 +62,13 @@ public class ProductService {
     }
 
     @Autowired
-    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, UserRepository userRepository, UserService userService) {
+    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, UserRepository userRepository, UserService userService, BidRepository bidRepository, StripeService stripeService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
         this.userService = userService;
+        this.bidRepository = bidRepository;
+        this.stripeService = stripeService;
     }
 
     Logger logger = LoggerFactory.getLogger(ProductService.class);
@@ -178,22 +185,48 @@ public class ProductService {
     }
 
     public ProductEntity payForProduct(PaymentRequest paymentRequest) throws StripeException {
-        Map<String, Object> chargeParams = new HashMap<>();
-
         ProductEntity product = productRepository.findProductById(paymentRequest.getProductId());
+        UserEntity user = userRepository.findById(paymentRequest.getUserId()).orElseThrow(() -> new NotFoundException("User with id: " + paymentRequest.getUserId() + " does not exist"));
         if(product.isSold()){
             logger.error("Product is already sold");
             throw new BadRequestException("Product is already sold");
         }
+        if(product.getEndDate().isAfter(LocalDateTime.now())){
+            logger.error("Auction hasn't ended for this product");
+            throw new BadRequestException("Auction hasn't ended for this product");
+        }
 
-        chargeParams.put("amount", product.getHighestBid().multiply(BigDecimal.valueOf(100)).intValue());
-        chargeParams.put("currency", "usd");
-        chargeParams.put("source", paymentRequest.getId());
+        UpdateCardRequest cardRequest = paymentRequest.getCard();
+        Double highestBid = bidRepository.getMaxBidFromProduct(paymentRequest.getProductId());
+        if(highestBid == null){
+            logger.error("No bids for this product");
+            throw new BadRequestException("No bids for this product");
+        }
 
-        Charge.create(chargeParams);
-        product.setSold(true);
-        productRepository.save(product);
+        if (cardRequest != null) {
+            String description = user.getFirstName() + " " + user.getLastName() + " (" + user.getId() + ") "
+                    + "paid for " + product.getProductName() + " (" + product.getId() + ")";
+
+            CardEntity card = userService.updateCard(user, cardRequest);
+            Integer amount = (int) (highestBid * 100);
+
+            UserEntity seller = userRepository.findById(product.getUserId()).orElseThrow(() -> new NotFoundException("User with id: " + product.getUserId() + " does not exist"));
+            try {
+                stripeService.pay(
+                        amount,
+                        user.getStripeCustomerId(),
+                        card.getStripeCardId(),
+                        description,
+                        seller.getStripeCustomerId());
+            } catch (StripeException e) {
+                throw new BadRequestException(e.getStripeError().getMessage());
+            }
+
+        }
 
         return product;
     }
+
+
+
 }
