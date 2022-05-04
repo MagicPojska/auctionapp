@@ -8,6 +8,7 @@ import {
 } from "../utilities/helperFunctions";
 import { customStyles } from "../utilities/selectStyle";
 import { GrFormClose } from "react-icons/gr";
+import { buyProduct } from "../utilities/productsApi";
 
 const PaymentModal = ({ setShowModal, product }) => {
   const [cardDetails, setCardDetails] = useState({
@@ -16,6 +17,7 @@ const PaymentModal = ({ setShowModal, product }) => {
     expirationYear: "",
     expirationMonth: "",
     cvc: "",
+    stripeCardId: "",
   });
   const { user } = useUserContext();
 
@@ -38,9 +40,24 @@ const PaymentModal = ({ setShowModal, product }) => {
             ? ""
             : response.data.expirationMonth,
         cvc: response.data.cvc === null ? "" : response.data.cvc,
+        stripeCardId:
+          response.data.stripeCardId === null ? "" : response.data.stripeCardId,
       });
     })();
   }, []);
+
+  const payForProduct = async (e) => {
+    try {
+      const paymentDetails = {
+        productId: product.id,
+        userId: user.id,
+        card: cardDetails,
+      };
+      const response = await buyProduct(paymentDetails);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -191,7 +208,7 @@ const PaymentModal = ({ setShowModal, product }) => {
               <button
                 className="bg-purple text-white active:bg-purple font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={() => setShowModal(false)}
+                onClick={payForProduct}
               >
                 Pay ${product.highestBid}
               </button>

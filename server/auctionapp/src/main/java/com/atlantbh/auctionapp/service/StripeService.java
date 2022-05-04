@@ -2,9 +2,6 @@ package com.atlantbh.auctionapp.service;
 
 import com.atlantbh.auctionapp.model.CardEntity;
 import com.atlantbh.auctionapp.model.UserEntity;
-import com.atlantbh.auctionapp.repository.BidRepository;
-import com.atlantbh.auctionapp.repository.CategoryRepository;
-import com.atlantbh.auctionapp.repository.ProductRepository;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
@@ -42,8 +39,7 @@ public class StripeService {
         this.userRepository = userRepository;
     }
 
-    public String pay(Integer amount, String stripeCustomerId, String stripeCardId, String description, String stripeSellerId) throws StripeException {
-        Stripe.apiKey = stripeApiKey;
+    public void pay(Integer amount, String stripeCustomerId, String stripeCardId, String description, String stripeSellerId) throws StripeException {
 
         Map<String, Object> params = new HashMap<>();
         params.put("amount", amount);
@@ -56,12 +52,10 @@ public class StripeService {
         transferDataParams.put("destination", stripeSellerId);
         params.put("transfer_data", transferDataParams);
 
-        Charge charge = Charge.create(params);
-        return charge.getId();
+        Charge.create(params);
     }
 
     public String saveCustomer(UserEntity user) throws StripeException {
-        Stripe.apiKey = stripeApiKey;
 
         Map<String, Object> params = new HashMap<>();
         params.put("name", user.getFirstName() + " " + user.getLastName());
@@ -69,11 +63,11 @@ public class StripeService {
         params.put("description", user.getId());
 
         Customer customer = Customer.create(params);
+
         return customer.getId();
     }
 
     public String updateCustomer(UserEntity user) throws StripeException {
-        Stripe.apiKey = stripeApiKey;
 
         Customer customer = Customer.retrieve(user.getStripeCustomerId());
 
@@ -86,7 +80,6 @@ public class StripeService {
     }
 
     public String updateCard(CardEntity newCard, UserEntity user) throws StripeException {
-        Stripe.apiKey = stripeApiKey;
 
         Map<String, Object> retrieveParams = new HashMap<>();
         List<String> expandList = new ArrayList<>();
@@ -106,7 +99,6 @@ public class StripeService {
     }
 
     public String saveCard(CardEntity newCard, UserEntity user, Boolean newDefault) throws StripeException {
-        Stripe.apiKey = stripeApiKey;
 
         String stripeCustomerId = user.getStripeCustomerId();
 

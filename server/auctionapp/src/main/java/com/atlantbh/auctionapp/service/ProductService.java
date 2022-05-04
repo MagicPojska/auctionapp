@@ -184,7 +184,7 @@ public class ProductService {
         return relatedProducts;
     }
 
-    public ProductEntity payForProduct(PaymentRequest paymentRequest) throws StripeException {
+    public ProductEntity payForProduct(PaymentRequest paymentRequest) {
         ProductEntity product = productRepository.findProductById(paymentRequest.getProductId());
         UserEntity user = userRepository.findById(paymentRequest.getUserId()).orElseThrow(() -> new NotFoundException("User with id: " + paymentRequest.getUserId() + " does not exist"));
         if(product.isSold()){
@@ -219,8 +219,12 @@ public class ProductService {
                         description,
                         seller.getStripeCustomerId());
             } catch (StripeException e) {
+                logger.error(e.getMessage());
                 throw new BadRequestException(e.getStripeError().getMessage());
             }
+
+            product.setSold(true);
+            productRepository.save(product);
 
         }
 
