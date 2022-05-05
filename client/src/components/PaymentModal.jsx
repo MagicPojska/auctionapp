@@ -9,8 +9,11 @@ import {
 import { customStyles } from "../utilities/selectStyle";
 import { GrFormClose } from "react-icons/gr";
 import { buyProduct } from "../utilities/productsApi";
+import LoadingSpinner from "./LoadingSpinner";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const PaymentModal = ({ setShowModal, product }) => {
+const PaymentModal = ({ setShowModal, product, setProduct }) => {
   const [cardDetails, setCardDetails] = useState({
     cardHolderName: "",
     cardNumber: "",
@@ -18,6 +21,7 @@ const PaymentModal = ({ setShowModal, product }) => {
     expirationMonth: "",
     cvc: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const { user } = useUserContext();
 
   useEffect(() => {
@@ -45,14 +49,22 @@ const PaymentModal = ({ setShowModal, product }) => {
 
   const payForProduct = async (e) => {
     try {
+      setIsLoading(true);
       const paymentDetails = {
         productId: product.id,
         userId: user.id,
         card: cardDetails,
       };
       const response = await buyProduct(paymentDetails);
+      setProduct(response.data);
+      toast.success("Payment successfull", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      setShowModal(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -202,13 +214,17 @@ const PaymentModal = ({ setShowModal, product }) => {
               >
                 Close
               </button>
-              <button
-                className="bg-purple text-white active:bg-purple font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                type="button"
-                onClick={payForProduct}
-              >
-                Pay ${product.highestBid}
-              </button>
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <button
+                  className="bg-purple text-white active:bg-purple font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  type="button"
+                  onClick={payForProduct}
+                >
+                  Pay ${product.highestBid}
+                </button>
+              )}
             </div>
           </div>
         </div>

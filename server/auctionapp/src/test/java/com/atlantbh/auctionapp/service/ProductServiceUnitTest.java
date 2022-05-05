@@ -98,7 +98,7 @@ class ProductServiceUnitTest {
     @Test
     @DisplayName("Test should save product to a database")
     void createProduct() {
-        UpdateCardRequest updateCardRequest = new UpdateCardRequest("Holder Name", "4111111111111111", 2025, 123, 123, "dfshgdfjkghdkfj");
+        UpdateCardRequest updateCardRequest = new UpdateCardRequest("Holder Name", "4111111111111111", 2025, 123, 123);
         ProductRequest productRequest = new ProductRequest("productName", "description", 20, LocalDateTime.now(), LocalDateTime.now().plusDays(10), "images", "address", "city", "5555", "country", "+38766666666", 1, 1, updateCardRequest);
 
         Mockito.when(categoryRepository.findById(1L)).thenReturn(Optional.of(new CategoryEntity()));
@@ -112,7 +112,7 @@ class ProductServiceUnitTest {
     @Test
     @DisplayName("Test should return NotFoundException for nonexisting category")
     void testCreateProduct() {
-        UpdateCardRequest updateCardRequest = new UpdateCardRequest("Holder Name", "4111111111111111", 2025, 123, 123, "ihdkfjhdsfh");
+        UpdateCardRequest updateCardRequest = new UpdateCardRequest("Holder Name", "4111111111111111", 2025, 123, 123);
         ProductRequest productRequest = new ProductRequest("productName", "description", 20, LocalDateTime.now(), LocalDateTime.now(), "images", "address", "city", "5555", "country", "+38766666666", 1, 1, updateCardRequest);
 
         assertThatThrownBy(() -> productService.createProduct(productRequest)).isInstanceOf(NotFoundException.class);

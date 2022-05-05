@@ -39,7 +39,7 @@ public class StripeService {
         this.userRepository = userRepository;
     }
 
-    public void pay(Integer amount, String stripeCustomerId, String stripeCardId, String description, String stripeSellerId) throws StripeException {
+    public void pay(Integer amount, String stripeCustomerId, String stripeCardId, String description) throws StripeException {
 
         Map<String, Object> params = new HashMap<>();
         params.put("amount", amount);
@@ -47,10 +47,6 @@ public class StripeService {
         params.put("customer", stripeCustomerId);
         params.put("source", stripeCardId);
         params.put("description", description);
-
-        Map<String, Object> transferDataParams = new HashMap<>();
-        transferDataParams.put("destination", stripeSellerId);
-        params.put("transfer_data", transferDataParams);
 
         Charge.create(params);
     }

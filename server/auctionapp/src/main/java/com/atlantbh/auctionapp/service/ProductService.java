@@ -204,20 +204,20 @@ public class ProductService {
         }
 
         if (cardRequest != null) {
-            String description = user.getFirstName() + " " + user.getLastName() + " (" + user.getId() + ") "
-                    + "paid for " + product.getProductName() + " (" + product.getId() + ")";
+            UserEntity seller = userRepository.findById(product.getUserId()).orElseThrow(() -> new NotFoundException("User with id: " + product.getUserId() + " does not exist"));
+            String description = user.getFirstName() + " " + user.getLastName() + " (user id: " + user.getId() + ") "
+                    + "paid for " + product.getProductName() + " (product id: " + product.getId() + ") from " + seller.getFirstName() + " " + seller.getLastName() + " (user id: " + seller.getId() + ")";
+
 
             CardEntity card = userService.updateCard(user, cardRequest);
             Integer amount = (int) (highestBid * 100);
 
-            UserEntity seller = userRepository.findById(product.getUserId()).orElseThrow(() -> new NotFoundException("User with id: " + product.getUserId() + " does not exist"));
             try {
                 stripeService.pay(
                         amount,
                         user.getStripeCustomerId(),
                         card.getStripeCardId(),
-                        description,
-                        seller.getStripeCustomerId());
+                        description);
             } catch (StripeException e) {
                 logger.error(e.getMessage());
                 throw new BadRequestException(e.getStripeError().getMessage());

@@ -17,6 +17,7 @@ import BidsTable from "../components/ProductOverviewPage/BidsTable";
 import RecomendedProducts from "../components/ProductOverviewPage/RecomendedProducts";
 import { BiChevronRight } from "react-icons/bi";
 import PaymentModal from "../components/PaymentModal";
+import { ToastContainer } from "react-toastify";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
@@ -83,6 +84,7 @@ const ProductOverviewPage = () => {
 
   return (
     <>
+      <ToastContainer />
       {isLoading ? (
         <div className="flex justify-center my-44 text-2xl font-bold">
           <LoadingSpinner />
@@ -215,7 +217,11 @@ const ProductOverviewPage = () => {
       </div>
 
       {showModal && (
-        <PaymentModal setShowModal={setShowModal} product={product} />
+        <PaymentModal
+          setShowModal={setShowModal}
+          product={product}
+          setProduct={setProduct}
+        />
       )}
     </>
   );
