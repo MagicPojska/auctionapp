@@ -62,6 +62,9 @@ const PaymentModal = ({ setShowModal, product, setProduct }) => {
       });
       setShowModal(false);
     } catch (error) {
+      toast.error("Payment failed", {
+        position: toast.POSITION.TOP_CENTER,
+      });
       console.log(error);
     } finally {
       setIsLoading(false);
