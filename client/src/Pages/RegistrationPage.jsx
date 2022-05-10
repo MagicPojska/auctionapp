@@ -39,6 +39,39 @@ const RegistrationPage = () => {
     }
   };
 
+  const validateEmail = (email) => {
+    const regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
+    if (!regEmail.test(email)) {
+      toast.error("Invalid email", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const validatePassword = (password) => {
+    const regPassword = {
+      capital: /[A-Z]/,
+      digit: /[0-9]/,
+      full: /^[A-Za-z0-9]{7,20}$/,
+    };
+    if (
+      !regPassword.capital.test(password) ||
+      !regPassword.digit.test(password) ||
+      !regPassword.full.test(password)
+    ) {
+      toast.error(
+        "Password length must be atleast 8 characters, contain one upper case letter and one number",
+        {
+          position: toast.POSITION.TOP_CENTER,
+        }
+      );
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div className="mx-[22rem] 2xl:mx-[28rem] pt-10">
       <ToastContainer />

@@ -5,17 +5,15 @@ import { forgotPassword } from "../utilities/authApi";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const ForgotPasswordPage = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-  });
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleForgotPassword = async (e) => {
     try {
       e.preventDefault();
       setLoading(true);
-      const response = await forgotPassword(formData);
-      toast.success(response.data, {
+      await forgotPassword({ email: email });
+      toast.success("Please check your email for the reset password link.", {
         position: toast.POSITION.TOP_CENTER,
       });
     } catch (error) {
@@ -54,11 +52,9 @@ const ForgotPasswordPage = () => {
             <input
               type="email"
               placeholder="user@domain.com"
-              value={formData.email}
+              value={email}
               className="w-full mt-4 h-16 border-2 bg-gray-50 pl-6 font-light text-base focus:outline-none"
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
