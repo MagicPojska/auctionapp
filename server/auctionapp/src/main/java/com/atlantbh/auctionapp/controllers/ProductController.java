@@ -48,7 +48,7 @@ public class ProductController {
                                                                       @RequestParam(defaultValue = "9") Integer pageSize,
                                                                       @RequestParam(required = false) ArrayList<Long> categoryId,
                                                                       @RequestParam(defaultValue = "0") double lowPrice,
-                                                                      @RequestParam(defaultValue = "9999999") double highPrice,
+                                                                      @RequestParam(defaultValue = "99999999999") double highPrice,
                                                                       @RequestParam(defaultValue = "") String searchTerm,
                                                                       @RequestParam(defaultValue = "productName") String sort,
                                                                       Sort sortBy){

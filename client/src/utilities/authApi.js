@@ -35,3 +35,7 @@ export { API };
 export const signIn = (formData) => API.post("/auth/login", formData);
 export const signUp = (formData) => API.post("/auth/register", formData);
 export const logoutUser = () => API.get("/auth/logout");
+export const forgotPassword = (email) =>
+  API.post("/auth/forgot-password", email);
+export const resetPassword = (formData) =>
+  API.post("/auth/reset-password", formData);

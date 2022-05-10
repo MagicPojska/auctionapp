@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -60,7 +60,12 @@ public class UserEntity {
 
     private String profileImage;
 
-    public UserEntity(String firstName, String lastName, String email, String password, Date dateOfBirth, boolean isActive, String state, String address, String city, String zipCode, String country, String phone, String profileImage) {
+    @javax.validation.constraints.Size(max = 32)
+    private String resetPasswordToken;
+
+    private LocalDateTime resetPasswordTokenCreatedAt;
+
+    public UserEntity(String firstName, String lastName, String email, String password, Date dateOfBirth, boolean isActive, String state, String address, String city, String zipCode, String country, String phone, String profileImage, String resetPasswordToken, LocalDateTime resetPasswordTokenCreatedAt) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -74,6 +79,8 @@ public class UserEntity {
         this.country = country;
         this.phone = phone;
         this.profileImage = profileImage;
+        this.resetPasswordToken = resetPasswordToken;
+        this.resetPasswordTokenCreatedAt = resetPasswordTokenCreatedAt;
     }
 
     public UserEntity(String firstName, String lastName, String email, String password) {

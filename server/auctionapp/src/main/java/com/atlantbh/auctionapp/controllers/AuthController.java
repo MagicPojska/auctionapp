@@ -1,18 +1,24 @@
 package com.atlantbh.auctionapp.controllers;
 
 import com.atlantbh.auctionapp.domain.model.User;
+import com.atlantbh.auctionapp.request.ForgotPasswordRequest;
 import com.atlantbh.auctionapp.request.LoginRequest;
 import com.atlantbh.auctionapp.request.RegisterRequest;
+import com.atlantbh.auctionapp.request.ResetPasswordRequest;
 import com.atlantbh.auctionapp.response.LoginResponse;
 import com.atlantbh.auctionapp.security.JwtUtil;
 import com.atlantbh.auctionapp.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping("/auth")
@@ -31,7 +37,6 @@ public class AuthController {
     public ResponseEntity<LoginResponse> register(@RequestBody @Valid RegisterRequest registerRequest) {
         User user = authService.register(registerRequest);
         return ResponseEntity.ok(new LoginResponse(user, jwtUtil.generateToken(user)));
-
     }
 
     @PostMapping("/login")
@@ -49,5 +54,18 @@ public class AuthController {
     @GetMapping("/logout")
     public void logout(HttpServletRequest request) {
         authService.logout(request);
+    }
+
+
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> processForgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest) throws MessagingException, UnsupportedEncodingException {
+        authService.updateResetPasswordToken(forgotPasswordRequest.getEmail());
+        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> processResetPassword(@RequestBody @Valid ResetPasswordRequest resetPasswordRequest) {
+        return new ResponseEntity<>(authService.updatePassword(resetPasswordRequest), new HttpHeaders(), HttpStatus.OK);
     }
 }

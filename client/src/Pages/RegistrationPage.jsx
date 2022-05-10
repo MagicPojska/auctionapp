@@ -5,7 +5,11 @@ import { homePath, loginPath } from "../utilities/paths";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { capitalizeWord } from "../utilities/helperFunctions";
+import {
+  capitalizeWord,
+  validateEmail,
+  validatePassword,
+} from "../utilities/helperFunctions";
 
 const RegistrationPage = () => {
   const { register } = useUserContext();

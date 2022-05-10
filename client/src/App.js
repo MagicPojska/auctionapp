@@ -11,22 +11,26 @@ import MyAccountPage from "./Pages/MyAccountPage";
 import LandingPage from "./Pages/LandingPage";
 import FilterPage from "./Pages/FilterPage";
 import NotFoundPage from "./Pages/NotFoundPage";
+import AddItemPage from "./Pages/AddItemPage";
+import ForgotPasswordPage from "./Pages/ForgotPasswordPage";
+import ResetPasswordPage from "./Pages/ResetPasswordPage";
 
 import {
   aboutUsPath,
   addItemPath,
   categoriesPath,
+  forgotPasswordPath,
   homePath,
   loginPath,
   myAccountPath,
   privacyPolicyPath,
   registrationPath,
+  resetPasswordPath,
   sellerPath,
   shopProductPath,
   termsPath,
 } from "./utilities/paths";
 import ScrollToTop from "./components/ScrollToTop";
-import AddItemPage from "./Pages/AddItemPage";
 
 const App = () => {
   return (
@@ -39,6 +43,11 @@ const App = () => {
         <Route path={`${categoriesPath}/:id/:query`} element={<FilterPage />} />
         <Route path={loginPath} element={<LoginPage />} />
         <Route path={registrationPath} element={<RegistrationPage />} />
+        <Route path={forgotPasswordPath} element={<ForgotPasswordPage />} />
+        <Route
+          path={`${resetPasswordPath}/:token`}
+          element={<ResetPasswordPage />}
+        />
         <Route path={addItemPath + sellerPath} element={<AddItemPage />} />
         <Route path={`${myAccountPath}/*`} element={<MyAccountPage />} />
         <Route
