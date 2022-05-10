@@ -5,7 +5,7 @@ import { getDayMonthYear } from "../../utilities/helperFunctions";
 
 const BidsTable = () => {
   const { id } = useParams();
-  const [bids, setBids] = useState("");
+  const [bids, setBids] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [hasMore, setHasMore] = useState(false);
 
