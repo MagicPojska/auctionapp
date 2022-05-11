@@ -1,6 +1,7 @@
 package com.atlantbh.auctionapp.service;
 
 import com.atlantbh.auctionapp.model.NotificationEntity;
+import com.atlantbh.auctionapp.model.ProductEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class EmitterService {
         emitters.add(emitter);
     }
 
-    public void pushNotification(Integer numberOfNotifications, Long userId) {
+    public void pushNotification(Integer numberOfNotifications, Long userId, Double maxBid, ProductEntity product) {
         List<SseEmitter> deadEmitters = new ArrayList<>();
 
         emitters.forEach(emitter -> {
@@ -29,6 +30,11 @@ public class EmitterService {
                         .event()
                         .name(userId.toString())
                         .data(numberOfNotifications));
+
+                emitter.send(SseEmitter
+                        .event()
+                        .name(product.getId() + " " + product.getProductName())
+                        .data(maxBid));
 
             } catch (IOException e) {
                 deadEmitters.add(emitter);
