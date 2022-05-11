@@ -41,7 +41,7 @@ public class BidServiceUnitTest {
 
     @BeforeEach
     void setUp() {
-        bidService = new BidService(bidRepository, productRepository, userRepository);
+        bidService = new BidService(bidRepository, productRepository, userRepository, null, null);
     }
 
     @Test
