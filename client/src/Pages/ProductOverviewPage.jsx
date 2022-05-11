@@ -34,6 +34,24 @@ const ProductOverviewPage = () => {
     getProductInfo();
   }, []);
 
+  useEffect(() => {
+    if (user) {
+      const eventSource = new EventSource(
+        "http://localhost:8080/notifications/subscribe"
+      );
+
+      eventSource.addEventListener(
+        product.id + " " + product.productName,
+        handleServerEvent,
+        false
+      );
+    }
+  }, [product]);
+
+  const handleServerEvent = (e) => {
+    setProduct({ ...product, highestBid: e.data });
+  };
+
   const getProductInfo = async () => {
     try {
       const response = await getProductById(id);
