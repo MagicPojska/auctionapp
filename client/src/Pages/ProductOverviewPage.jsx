@@ -49,7 +49,7 @@ const ProductOverviewPage = () => {
   }, [product]);
 
   const handleServerEvent = (e) => {
-    setProduct({ ...product, highestBid: e.data });
+    setProduct(JSON.parse(e.data));
   };
 
   const getProductInfo = async () => {

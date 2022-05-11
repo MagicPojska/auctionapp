@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +32,11 @@ public class EmitterService {
                         .name(userId.toString())
                         .data(numberOfNotifications));
 
+                product.setHighestBid(BigDecimal.valueOf(maxBid));;
                 emitter.send(SseEmitter
                         .event()
                         .name(product.getId() + " " + product.getProductName())
-                        .data(maxBid));
+                        .data(product));
 
             } catch (IOException e) {
                 deadEmitters.add(emitter);
