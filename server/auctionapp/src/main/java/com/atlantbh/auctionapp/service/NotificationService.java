@@ -41,6 +41,12 @@ public class NotificationService {
 
     public List<NotificationEntity> clearNotifications(long userId) {
         List<NotificationEntity> notifications = notificationRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "date"));
+
+        if (notifications.isEmpty()) {
+            logger.error("Notifications not found for user with id: " + userId);
+            throw new NotFoundException("Notifications not found for user with id: " + userId);
+        }
+
         for(NotificationEntity notification : notifications) {
             notification.setChecked(true);
         }
