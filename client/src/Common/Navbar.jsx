@@ -23,9 +23,11 @@ import {
 } from "../utilities/auth";
 import { useUserContext } from "../contexts/UserContextProvider";
 import { GrFormClose } from "react-icons/gr";
+import { IoMdNotificationsOutline } from "react-icons/io";
 
 const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isNotificationOpened, setIsNotificationOpened] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { logout, user, setUser, setToken } = useUserContext();
@@ -60,9 +62,51 @@ const Navbar = () => {
 
         {user ? (
           <div className="text-[14px] leading-[17px] flex space-x-10">
-            <p>
-              Hi, {user.firstName} {user.lastName}
-            </p>
+            <button>
+              <Link to={myAccountPath + profilePath} className="font-bold">
+                Hi, {user.firstName} {user.lastName}
+              </Link>
+            </button>
+
+            <div className="relative group">
+              <button
+                className="py-4 relative border-2 border-transparent text-white rounded-full hover:text-gray-400 focus:outline-none focus:text-gray-500 transition duration-150 ease-in-out"
+                onClick={() => setIsNotificationOpened(!isNotificationOpened)}
+              >
+                <IoMdNotificationsOutline className="fill-white text-xl" />
+                <span className="absolute inset-0 object-right-top -mr-6 mt-2">
+                  <div className="inline-flex items-center px-1 py-0.25 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-red-500 text-white">
+                    6
+                  </div>
+                </span>
+              </button>
+
+              <div
+                className={`absolute z-10 ${
+                  isNotificationOpened ? "block" : "hidden"
+                } -left-8`}
+              >
+                <div className="py-8 w-80 flex bg-white border-2">
+                  <div className="grid grid-cols-1 gap-6 text-black px-6 max-h-96 overflow-auto">
+                    <div>
+                      You lost your highest bid place! Your bid of $50 isn't the
+                      highest bid anymore.
+                    </div>
+
+                    <div>
+                      You lost your highest bid place! Your bid of $50 isn't the
+                      highest bid anymore.
+                    </div>
+
+                    <div>
+                      You lost your highest bid place! Your bid of $50 isn't the
+                      highest bid anymore.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <button
               onClick={handleLogout}
               className="text-[14px] leading-[17px] font-bold hover:text-gray-400"
