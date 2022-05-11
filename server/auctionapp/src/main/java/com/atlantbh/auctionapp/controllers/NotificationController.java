@@ -7,6 +7,7 @@ import com.atlantbh.auctionapp.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +44,9 @@ public class NotificationController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<NotificationEntity>> getNotifications(@RequestParam long userId) {
-        List<NotificationEntity> notifications = notificationService.getNotifications(userId);
+    public ResponseEntity<Page<NotificationEntity>> getNotifications(@RequestParam long userId,
+                                                                     @RequestParam(defaultValue = "0") Integer pageNumber) {
+        Page<NotificationEntity> notifications = notificationService.getNotifications(userId, pageNumber);
         return new ResponseEntity<>(notifications, new HttpHeaders(), HttpStatus.OK);
     }
 
@@ -61,8 +63,8 @@ public class NotificationController {
     }
 
     @GetMapping("/clear-notification")
-    public ResponseEntity clearNotification(@RequestParam long userId, @RequestParam long notificationId) {
-        notificationService.clearNotification(userId, notificationId);
+    public ResponseEntity clearNotification(@RequestParam long notificationId) {
+        notificationService.clearNotification(notificationId);
         return new ResponseEntity<>( new HttpHeaders(), HttpStatus.OK);
     }
 

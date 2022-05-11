@@ -6,6 +6,9 @@ import com.atlantbh.auctionapp.repository.NotificationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +26,9 @@ public class NotificationService {
     }
 
 
-    public List<NotificationEntity> getNotifications(Long userId) {
-        List<NotificationEntity> notifications = notificationRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "date"));
+    public Page<NotificationEntity> getNotifications(Long userId, Integer page) {
+        Pageable paging = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "date"));
+        Page<NotificationEntity> notifications = notificationRepository.findByUserId(userId, paging);
         if(notifications.isEmpty()) {
             logger.error("Notifications not found for user with id: " + userId);
             throw new NotFoundException("Notifications not found for user with id: " + userId);
@@ -38,7 +42,7 @@ public class NotificationService {
 
 
     public List<NotificationEntity> clearNotifications(long userId) {
-        List<NotificationEntity> notifications = notificationRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "date"));
+        List<NotificationEntity> notifications = notificationRepository.findAllByUserId(userId, Sort.by(Sort.Direction.DESC, "date"));
 
         if (notifications.isEmpty()) {
             logger.error("Notifications not found for user with id: " + userId);
@@ -53,7 +57,7 @@ public class NotificationService {
         return notifications;
     }
 
-    public void clearNotification(long userId, long notificationId) {
+    public void clearNotification(long notificationId) {
         NotificationEntity notification = notificationRepository.findById(notificationId).orElseThrow(() -> new NotFoundException("Notification not found with id: " + notificationId));
         notification.setChecked(true);
         notificationRepository.save(notification);

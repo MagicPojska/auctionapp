@@ -32,12 +32,15 @@ import {
   getAllNotifications,
 } from "../utilities/notificationApi";
 import moment from "moment";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isNotificationOpened, setIsNotificationOpened] = useState(false);
   const [numberOfNotifications, setNumberOfNotifications] = useState(0);
   const [notifications, setNotifications] = useState([]);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
   const { logout, user, setUser, setToken } = useUserContext();
@@ -91,10 +94,17 @@ const Navbar = () => {
     await logout();
   };
 
-  const getNotifications = async () => {
+  const getNotifications = async (pageNumber) => {
     try {
-      const response = await getAllNotifications();
-      setNotifications(response.data);
+      const response = await getAllNotifications(pageNumber);
+      console.log(response);
+      if (pageNumber === 0) {
+        setNotifications(response.data.content);
+      } else {
+        setNotifications([...notifications, ...response.data.content]);
+      }
+      setHasMore(!response.data.last);
+      setPageNumber(pageNumber);
     } catch (error) {
       console.log(error);
     }
@@ -117,6 +127,10 @@ const Navbar = () => {
     }
   };
 
+  const getNextNotifications = () => {
+    getNotifications(pageNumber + 1);
+  };
+
   return (
     <header>
       <div className="bg-blackPrimary text-white h-10 flex items-center justify-between 2xl:px-72 lg:pl-44 lg:pr-40 md:px-24 sm:px-10 px-4 text-sm">
@@ -137,7 +151,7 @@ const Navbar = () => {
                 className="py-4 relative border-2 border-transparent text-white rounded-full hover:text-gray-400 focus:outline-none focus:text-gray-500 transition duration-150 ease-in-out"
                 onClick={() => {
                   setIsNotificationOpened(!isNotificationOpened);
-                  getNotifications();
+                  getNotifications(0);
                 }}
               >
                 <IoMdNotificationsOutline className="fill-white text-xl" />
@@ -171,37 +185,44 @@ const Navbar = () => {
                     </button>
                   </div>
                   <div className="grid grid-cols-1 text-black max-h-96 overflow-auto">
-                    {notifications.map((notification) => (
-                      <div
-                        key={notification.id}
-                        className={`${
-                          !notification.checked && "bg-red-100"
-                        } flex items-center border-t-2 border-b-2`}
-                      >
-                        <Link
-                          to={shopProductPath + "/" + notification.product.id}
-                          className="flex flex-col"
+                    <InfiniteScroll
+                      dataLength={notifications.length}
+                      next={getNextNotifications}
+                      hasMore={hasMore}
+                      height={380}
+                    >
+                      {notifications.map((notification) => (
+                        <div
+                          key={notification.id}
+                          className={`${
+                            !notification.checked && "bg-red-100"
+                          } flex items-center border-t-2 border-b-2`}
                         >
-                          <p className="px-6 pt-4 pb-1">
-                            You have been outbid on product:{" "}
-                            {notification.product.productName}
-                          </p>
-                          <span className="px-6 pb-2 font-thin text-xs text-textTetriary">
-                            {moment(notification.date).fromNow()}
-                          </span>
-                        </Link>
-                        {!notification.checked && (
-                          <button
-                            className="mr-6 hover:text-xl"
-                            onClick={() => {
-                              checkNotification(notification.id);
-                            }}
+                          <Link
+                            to={shopProductPath + "/" + notification.product.id}
+                            className="flex flex-col"
                           >
-                            <AiOutlineCheck />
-                          </button>
-                        )}
-                      </div>
-                    ))}
+                            <p className="px-6 pt-4 pb-1">
+                              You have been outbid on product:{" "}
+                              {notification.product.productName}
+                            </p>
+                            <span className="px-6 pb-2 font-thin text-xs text-textTetriary">
+                              {moment(notification.date).fromNow()}
+                            </span>
+                          </Link>
+                          {!notification.checked && (
+                            <button
+                              className="mr-6 hover:text-xl"
+                              onClick={() => {
+                                checkNotification(notification.id);
+                              }}
+                            >
+                              <AiOutlineCheck />
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </InfiniteScroll>
                   </div>
                 </div>
               </div>
