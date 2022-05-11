@@ -15,11 +15,13 @@ import java.util.List;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final EmitterService emitterService;
     Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
-    public NotificationService(NotificationRepository notificationRepository) {
+    public NotificationService(NotificationRepository notificationRepository, EmitterService emitterService) {
         this.notificationRepository = notificationRepository;
+        this.emitterService = emitterService;
     }
 
 
@@ -34,5 +36,25 @@ public class NotificationService {
 
     public Integer getNumberOfNotifications(long userId) {
         return notificationRepository.countByUserIdAndCheckedFalse(userId);
+    }
+
+
+    public List<NotificationEntity> clearNotifications(long userId) {
+        List<NotificationEntity> notifications = notificationRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "date"));
+        for(NotificationEntity notification : notifications) {
+            notification.setChecked(true);
+        }
+        notificationRepository.saveAll(notifications);
+
+        emitterService.pushNotification(notificationRepository.countByUserIdAndCheckedFalse(userId), userId);
+        return notifications;
+    }
+
+    public void clearNotification(long userId, long notificationId) {
+        NotificationEntity notification = notificationRepository.findById(notificationId).orElseThrow(() -> new NotFoundException("Notification not found with id: " + notificationId));
+        notification.setChecked(true);
+        notificationRepository.save(notification);
+
+        emitterService.pushNotification(notificationRepository.countByUserIdAndCheckedFalse(userId), userId);
     }
 }

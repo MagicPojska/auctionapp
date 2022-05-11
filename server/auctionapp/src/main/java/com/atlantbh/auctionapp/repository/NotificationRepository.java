@@ -9,4 +9,5 @@ import java.util.List;
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {
     List<NotificationEntity> findByUserId(Long userId, Sort sort);
     Integer countByUserIdAndCheckedFalse(Long userId);
+
 }

@@ -54,4 +54,16 @@ public class NotificationController {
         return new ResponseEntity<>(numberOfNotifications, new HttpHeaders(), HttpStatus.OK);
     }
 
+    @GetMapping("/clear-notifications")
+    public ResponseEntity<List<NotificationEntity>> clearNotifications(@RequestParam long userId) {
+        List<NotificationEntity> notifications = notificationService.clearNotifications(userId);
+        return new ResponseEntity<>(notifications, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @GetMapping("/clear-notification")
+    public ResponseEntity clearNotification(@RequestParam long userId, @RequestParam long notificationId) {
+        notificationService.clearNotification(userId, notificationId);
+        return new ResponseEntity<>( new HttpHeaders(), HttpStatus.OK);
+    }
+
 }
