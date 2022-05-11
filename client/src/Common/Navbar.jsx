@@ -155,11 +155,13 @@ const Navbar = () => {
                 }}
               >
                 <IoMdNotificationsOutline className="fill-white text-xl" />
-                <span className="absolute inset-0 object-right-top -mr-6 mt-2">
-                  <div className="inline-flex items-center px-1 py-0.25 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-red-500 text-white">
-                    {numberOfNotifications}
-                  </div>
-                </span>
+                {numberOfNotifications > 0 && (
+                  <span className="absolute inset-0 object-right-top -mr-6 mt-2">
+                    <div className="inline-flex items-center px-1 py-0.25 border-2 border-white rounded-full text-xs font-semibold leading-4 bg-red-500 text-white">
+                      {numberOfNotifications}
+                    </div>
+                  </span>
+                )}
               </button>
 
               <div
