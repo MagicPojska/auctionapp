@@ -97,7 +97,6 @@ const Navbar = () => {
   const getNotifications = async (pageNumber) => {
     try {
       const response = await getAllNotifications(pageNumber);
-      console.log(response);
       if (pageNumber === 0) {
         setNotifications(response.data.content);
       } else {
