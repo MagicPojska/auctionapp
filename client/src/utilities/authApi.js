@@ -13,7 +13,7 @@ const API = axios.create({
 API.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response.status === 401) {
+    if (error?.response?.status === 401) {
       removeUserFromSession();
       removeUserFromStorage();
     }

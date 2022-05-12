@@ -14,7 +14,6 @@ import java.util.List;
 @Service
 public class EmitterService {
     List<SseEmitter> emitters = new ArrayList<>();
-    Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public void addEmitter(SseEmitter emitter) {
         emitter.onCompletion(() -> emitters.remove(emitter));
