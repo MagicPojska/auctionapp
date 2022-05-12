@@ -208,7 +208,9 @@ const Navbar = () => {
                           >
                             <p className="px-6 pt-4 pb-1">
                               {notification.type === "success"
-                                ? "Congratulations! You outbid the competition, your bid of $" +
+                                ? "Congratulations! You outbid the competition on product " +
+                                  notification.product.productName +
+                                  ", your bid of $" +
                                   notification.product.highestBid +
                                   " is the highest bid."
                                 : "You have been outbid on product: " +
