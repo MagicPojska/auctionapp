@@ -23,8 +23,11 @@ public class EmitterService {
 
     public void pushNotification(Integer numberOfNotifications, Long userId, Double maxBid, ProductEntity product) {
         List<SseEmitter> deadEmitters = new ArrayList<>();
-        product.setHighestBid(BigDecimal.valueOf(maxBid));
-        product.setNumberOfBids(product.getNumberOfBids() + 1);
+        if(maxBid != null && product != null) {
+            product.setHighestBid(BigDecimal.valueOf(maxBid));
+            product.setNumberOfBids(product.getNumberOfBids() + 1);
+        }
+
         emitters.forEach(emitter -> {
             try {
                 emitter.send(SseEmitter
@@ -32,10 +35,12 @@ public class EmitterService {
                         .name(userId.toString())
                         .data(numberOfNotifications));
 
-                emitter.send(SseEmitter
-                        .event()
-                        .name(product.getId() + " " + product.getProductName())
-                        .data(product));
+                if(maxBid != null && product != null) {
+                    emitter.send(SseEmitter
+                            .event()
+                            .name(product.getId() + " " + product.getProductName())
+                            .data(product));
+                }
 
             } catch (IOException e) {
                 deadEmitters.add(emitter);
