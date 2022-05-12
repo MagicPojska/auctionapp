@@ -196,7 +196,10 @@ const Navbar = () => {
                         <div
                           key={notification.id}
                           className={`${
-                            !notification.checked && "bg-red-100"
+                            !notification.checked &&
+                            (notification.type === "warning"
+                              ? "bg-red-100"
+                              : "bg-lightGreen")
                           } flex items-center border-t-2 border-b-2`}
                         >
                           <Link
@@ -204,8 +207,12 @@ const Navbar = () => {
                             className="flex flex-col"
                           >
                             <p className="px-6 pt-4 pb-1">
-                              You have been outbid on product:{" "}
-                              {notification.product.productName}
+                              {notification.type === "success"
+                                ? "Congratulations! You outbid the competition, your bid of $" +
+                                  notification.product.highestBid +
+                                  " is the highest bid."
+                                : "You have been outbid on product: " +
+                                  notification.product.productName}
                             </p>
                             <span className="px-6 pb-2 font-thin text-xs text-textTetriary">
                               {moment(notification.date).fromNow()}
