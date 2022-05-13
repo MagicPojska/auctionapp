@@ -81,15 +81,6 @@ const ProfileTab = () => {
             : response.data.cardHolderName,
         cardNumber:
           response.data.cardNumber === null ? "" : response.data.cardNumber,
-        expirationYear:
-          response.data.expirationYear === null
-            ? ""
-            : response.data.expirationYear,
-        expirationMonth:
-          response.data.expirationMonth === null
-            ? ""
-            : response.data.expirationMonth,
-        cvc: response.data.cvc === null ? "" : response.data.cvc,
       });
     })();
   }, []);
