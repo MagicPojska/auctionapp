@@ -37,7 +37,7 @@ const ProductOverviewPage = () => {
   useEffect(() => {
     if (user) {
       const eventSource = new EventSource(
-        "http://localhost:8080/notifications/subscribe"
+        `${process.env.REACT_APP_API_URL}/notifications/subscribe`
       );
 
       eventSource.addEventListener(
