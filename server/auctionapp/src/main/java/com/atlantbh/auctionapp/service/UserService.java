@@ -1,5 +1,6 @@
 package com.atlantbh.auctionapp.service;
 
+import com.atlantbh.auctionapp.domain.model.Card;
 import com.atlantbh.auctionapp.domain.model.User;
 import com.atlantbh.auctionapp.exceptions.BadRequestException;
 import com.atlantbh.auctionapp.model.CardEntity;
@@ -8,7 +9,6 @@ import com.atlantbh.auctionapp.repository.CardRepository;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.UpdateCardRequest;
 import com.atlantbh.auctionapp.request.UpdateUserRequest;
-import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,27 +86,26 @@ public class UserService implements UserDetailsService {
             throw new BadRequestException("Card number can only contain digits");
         }
         if(existingCard == null){
-            existingCard = new CardEntity(card.getCardNumber(), card.getCardHolderName(), card.getExpirationMonth(), card.getExpirationYear(), card.getCvc(), existingUser);
+            existingCard = new CardEntity(card.getCardNumber(), card.getCardHolderName(), existingUser);
+            Card updateCard = new Card(card.getCardNumber(), card.getCardHolderName(), card.getExpirationMonth(), card.getExpirationYear(), card.getCvc(), existingUser);
             String stripeCardId;
             try {
-                stripeCardId = stripeService.saveCard(existingCard, existingUser, true);
+                stripeCardId = stripeService.saveCard(updateCard, existingUser, true);
             } catch (StripeException e) {
                 throw new BadRequestException(e.getStripeError().getMessage());
             }
             existingCard.setStripeCardId(stripeCardId);
             cardRepository.save(existingCard);
         } else {
-            existingCard.setCardNumber(card.getCardNumber());
-            existingCard.setCardHolderName(card.getCardHolderName());
-            existingCard.setExpirationMonth(card.getExpirationMonth());
-            existingCard.setExpirationYear(card.getExpirationYear());
-            existingCard.setCvc(card.getCvc());
+            Card updateCard = new Card(existingCard.getCardNumber(), existingCard.getCardHolderName(), card.getExpirationMonth(), card.getExpirationYear(), card.getCvc(), existingCard.getStripeCardId(), existingUser);
             try {
-                stripeService.updateCard(existingCard, existingUser);
+                stripeService.updateCard(updateCard, existingUser);
             } catch (StripeException e) {
                 throw new BadRequestException(e.getStripeError().getMessage());
             }
 
+            existingCard.setCardNumber(card.getCardNumber());
+            existingCard.setCardHolderName(card.getCardHolderName());
             cardRepository.save(existingCard);
         }
 

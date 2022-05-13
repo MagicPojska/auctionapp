@@ -225,7 +225,6 @@ public class ProductService {
 
             product.setSold(true);
             productRepository.save(product);
-
         }
 
         return product;
