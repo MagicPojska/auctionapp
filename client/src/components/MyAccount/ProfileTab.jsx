@@ -149,17 +149,17 @@ const ProfileTab = () => {
         cardDetails.expirationMonth &&
         cardDetails.cvc
       ) {
-        userInfo.card = cardDetails;
-      }
+        if (
+          cardDetails.expirationYear === moment().year() &&
+          cardDetails.expirationMonth <= moment().month() + 1
+        ) {
+          toast.error("Please enter an unexpired card", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          return;
+        }
 
-      if (
-        cardDetails.expirationYear === moment().year() &&
-        cardDetails.expirationMonth <= moment().month() + 1
-      ) {
-        toast.error("Please enter an unexpired card", {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        return;
+        userInfo.card = cardDetails;
       }
 
       const responseData = await updateUser(userInfo);
@@ -382,10 +382,6 @@ const ProfileTab = () => {
                   Expiration Date
                 </label>
                 <Select
-                  defaultValue={generateCardExpiryYears().find(
-                    (year) =>
-                      year.value === parseInt(cardDetails.expirationYear)
-                  )}
                   options={generateCardExpiryYears()}
                   placeholder="YYYY"
                   styles={customStyles}
@@ -404,10 +400,6 @@ const ProfileTab = () => {
 
               <div className="flex flex-col flex-1 justify-end">
                 <Select
-                  defaultValue={generateMonths().find(
-                    (month) =>
-                      month.value === parseInt(cardDetails.expirationMonth)
-                  )}
                   options={generateMonths()}
                   placeholder="MM"
                   styles={customStyles}
