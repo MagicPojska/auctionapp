@@ -152,6 +152,16 @@ const ProfileTab = () => {
         userInfo.card = cardDetails;
       }
 
+      if (
+        cardDetails.expirationYear === moment().year() &&
+        cardDetails.expirationMonth <= moment().month() + 1
+      ) {
+        toast.error("Please enter an unexpired card", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return;
+      }
+
       const responseData = await updateUser(userInfo);
 
       if (getUserFromStorage() !== null) {
@@ -163,13 +173,14 @@ const ProfileTab = () => {
       toast.success("Your info has been saved", {
         position: toast.POSITION.TOP_CENTER,
       });
-      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       toast.error("Something went wrong!", {
         position: toast.POSITION.TOP_CENTER,
       });
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
