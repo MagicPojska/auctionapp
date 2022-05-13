@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Service
@@ -39,7 +40,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         UserEntity userRes = userRepository.findByEmail(email);
-        if(userRes == null){
+        if (userRes == null){
             logger.error("User with email: " + email + " not found");
             throw new UsernameNotFoundException("Could not findUser with email = " + email);
         }
@@ -48,11 +49,11 @@ public class UserService implements UserDetailsService {
 
     public UserEntity updateUser(UpdateUserRequest updateUserRequest) {
         UserEntity existingUser = userRepository.findByEmail(updateUserRequest.getEmail());
-        if(existingUser == null){
+        if (existingUser == null){
             logger.error("User with email: " + updateUserRequest.getEmail() + " not found");
             throw new UsernameNotFoundException("Could not findUser with email = " + updateUserRequest.getEmail());
         }
-        if(updateUserRequest.getDateOfBirth().after(new Date())){
+        if (updateUserRequest.getDateOfBirth().after(new Date())){
             logger.error("Date of birth can not be in the future");
             throw new IllegalArgumentException("Date of birth can not be in the future");
         }
@@ -85,7 +86,16 @@ public class UserService implements UserDetailsService {
             logger.error("Card number is not valid");
             throw new BadRequestException("Card number can only contain digits");
         }
-        if(existingCard == null){
+        if (card.getExpirationYear() < LocalDateTime.now().getYear()){
+            logger.error("Card is expired");
+            throw new BadRequestException("Card is expired");
+        }
+        if (card.getExpirationYear() == LocalDateTime.now().getYear() && card.getExpirationMonth() < LocalDateTime.now().getMonthValue()){
+            logger.error("Card is expired");
+            throw new BadRequestException("Card is expired");
+        }
+
+        if (existingCard == null){
             existingCard = new CardEntity(card.getCardNumber(), card.getCardHolderName(), existingUser);
             Card updateCard = new Card(card.getCardNumber(), card.getCardHolderName(), card.getExpirationMonth(), card.getExpirationYear(), card.getCvc(), existingUser);
             String stripeCardId;
@@ -114,7 +124,7 @@ public class UserService implements UserDetailsService {
 
     public void deactivateUser(Long userId) {
         UserEntity existingUser = userRepository.findById(userId).orElse(null);
-        if(existingUser == null){
+        if (existingUser == null){
             logger.error("User with id: " + userId + " not found");
             throw new UsernameNotFoundException("Could not findUser with id = " + userId);
         }

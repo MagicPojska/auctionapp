@@ -187,18 +187,28 @@ public class ProductService {
     public ProductEntity payForProduct(PaymentRequest paymentRequest) {
         ProductEntity product = productRepository.findProductById(paymentRequest.getProductId());
         UserEntity user = userRepository.findById(paymentRequest.getUserId()).orElseThrow(() -> new NotFoundException("User with id: " + paymentRequest.getUserId() + " does not exist"));
-        if(product.isSold()){
+        if (product.isSold()){
             logger.error("Product is already sold");
             throw new BadRequestException("Product is already sold");
         }
-        if(product.getEndDate().isAfter(LocalDateTime.now())){
+        if (product.getEndDate().isAfter(LocalDateTime.now())){
             logger.error("Auction hasn't ended for this product");
             throw new BadRequestException("Auction hasn't ended for this product");
         }
+        if (paymentRequest.getCard().getExpirationYear() < LocalDateTime.now().getYear() ){
+            logger.error("Card is expired");
+            throw new BadRequestException("Card is expired");
+        }
+        if (paymentRequest.getCard().getExpirationYear() == LocalDateTime.now().getYear() && paymentRequest.getCard().getExpirationMonth() < LocalDateTime.now().getMonthValue()){
+            logger.error("Card is expired");
+            throw new BadRequestException("Card is expired");
+
+        }
+
 
         UpdateCardRequest cardRequest = paymentRequest.getCard();
         Double highestBid = bidRepository.getMaxBidFromProduct(paymentRequest.getProductId());
-        if(highestBid == null){
+        if (highestBid == null){
             logger.error("No bids for this product");
             throw new BadRequestException("No bids for this product");
         }
@@ -229,7 +239,5 @@ public class ProductService {
 
         return product;
     }
-
-
 
 }
