@@ -130,14 +130,13 @@ const AddItemPage = () => {
             position: toast.POSITION.TOP_CENTER,
           });
           return;
-        } else {
-          toast.error("Please all card details", {
-            position: toast.POSITION.TOP_CENTER,
-          });
-          return;
         }
-
         formData.card = cardDetails;
+      } else {
+        toast.error("Please all card details", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return;
       }
 
       const res = await addProduct(formData);
@@ -148,6 +147,8 @@ const AddItemPage = () => {
         position: toast.POSITION.TOP_CENTER,
       });
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
