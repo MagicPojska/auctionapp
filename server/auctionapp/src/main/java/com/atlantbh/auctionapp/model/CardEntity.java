@@ -32,33 +32,15 @@ public class CardEntity {
     private String cardHolderName;
 
     @Column(nullable = false)
-    @Min(1)
-    @Max(12)
-    private Integer expirationMonth;
-
-    @Column(nullable = false)
-    @Min(2000)
-    @Max(9999)
-    private Integer expirationYear;
-
-    @Column(nullable = false)
-    @Min(100)
-    @Max(9999)
-    private Integer cvc;
-
-    @Column(nullable = false)
     private String stripeCardId;
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private UserEntity user;
 
-    public CardEntity(String cardNumber, String cardHolderName, Integer expirationMonth, Integer expirationYear, Integer cvc, UserEntity user) {
+    public CardEntity(String cardNumber, String cardHolderName, UserEntity user) {
         this.cardNumber = cardNumber;
         this.cardHolderName = cardHolderName;
-        this.expirationMonth = expirationMonth;
-        this.expirationYear = expirationYear;
-        this.cvc = cvc;
         this.user = user;
     }
 

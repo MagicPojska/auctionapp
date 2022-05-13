@@ -34,6 +34,14 @@ const AddItemPage = () => {
     categoryId: "",
   });
 
+  const [cardDetails, setCardDetails] = useState({
+    cardHolderName: "",
+    cardNumber: "",
+    expirationYear: "",
+    expirationMonth: "",
+    cvc: "",
+  });
+
   const navigate = useNavigate();
 
   const nextStep = () => {
@@ -82,13 +90,54 @@ const AddItemPage = () => {
         imageUrls.push(response.data.url);
       }
 
-      const formData = productDetails;
-      formData.images = imageUrls.join();
-      formData.startDate = moment(productDetails.startDate).format(
-        DATETIME_FORMAT
-      );
-      formData.endDate = moment(productDetails.endDate).format(DATETIME_FORMAT);
-      formData.userId = user.id;
+      let formData;
+      if (
+        productDetails.address &&
+        productDetails.city &&
+        productDetails.zipCode &&
+        productDetails.country &&
+        productDetails.phone &&
+        productDetails.email
+      ) {
+        formData = productDetails;
+        formData.images = imageUrls.join();
+        formData.startDate = moment(productDetails.startDate).format(
+          DATETIME_FORMAT
+        );
+        formData.endDate = moment(productDetails.endDate).format(
+          DATETIME_FORMAT
+        );
+        formData.userId = user.id;
+      } else {
+        toast.error("Please fill in all the required fields", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return;
+      }
+
+      if (
+        cardDetails.cardHolderName &&
+        cardDetails.cardNumber &&
+        cardDetails.expirationYear &&
+        cardDetails.expirationMonth &&
+        cardDetails.cvc
+      ) {
+        if (
+          cardDetails.expirationYear === moment().year() &&
+          cardDetails.expirationMonth <= moment().month() + 1
+        ) {
+          toast.error("Please enter an unexpired card", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          return;
+        }
+        formData.card = cardDetails;
+      } else {
+        toast.error("Please all card details", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return;
+      }
 
       const res = await addProduct(formData);
       navigate(`${shopProductPath}/${res.data.id}`);
@@ -98,6 +147,8 @@ const AddItemPage = () => {
         position: toast.POSITION.TOP_CENTER,
       });
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -131,6 +182,8 @@ const AddItemPage = () => {
             handleInputData={handleInputData}
             productDetails={productDetails}
             setProductDetails={setProductDetails}
+            cardDetails={cardDetails}
+            setCardDetails={setCardDetails}
             handlePostItem={handlePostItem}
             isLoading={isLoading}
           />

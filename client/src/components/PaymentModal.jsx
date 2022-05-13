@@ -34,15 +34,6 @@ const PaymentModal = ({ setShowModal, product, setProduct }) => {
             : response.data.cardHolderName,
         cardNumber:
           response.data.cardNumber === null ? "" : response.data.cardNumber,
-        expirationYear:
-          response.data.expirationYear === null
-            ? ""
-            : response.data.expirationYear,
-        expirationMonth:
-          response.data.expirationMonth === null
-            ? ""
-            : response.data.expirationMonth,
-        cvc: response.data.cvc === null ? "" : response.data.cvc,
       });
     })();
   }, []);
@@ -50,20 +41,33 @@ const PaymentModal = ({ setShowModal, product, setProduct }) => {
   const payForProduct = async (e) => {
     try {
       setIsLoading(true);
-      const paymentDetails = {
-        productId: product.id,
-        userId: user.id,
-        card: cardDetails,
-      };
-      const response = await buyProduct(paymentDetails);
-      setProduct(response.data);
-      toast.success("Payment successfull", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-      setShowModal(false);
+
+      if (
+        cardDetails.cardHolderName &&
+        cardDetails.cardNumber &&
+        cardDetails.expirationYear &&
+        cardDetails.expirationMonth &&
+        cardDetails.cvc
+      ) {
+        const paymentDetails = {
+          productId: product.id,
+          userId: user.id,
+          card: cardDetails,
+        };
+        const response = await buyProduct(paymentDetails);
+        setProduct(response.data);
+        toast.success("Payment successfull", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setShowModal(false);
+      } else {
+        toast.error("Please fill in all the fields");
+        setIsLoading(false);
+        return;
+      }
     } catch (error) {
       toast.error("Payment failed", {
-        position: toast.POSITION.TOP_CENTER,
+        position: toast.POSITION.TOP_RIGHT,
       });
       console.log(error);
     } finally {
@@ -141,10 +145,6 @@ const PaymentModal = ({ setShowModal, product, setProduct }) => {
                       Expiration Date
                     </label>
                     <Select
-                      defaultValue={generateCardExpiryYears().find(
-                        (year) =>
-                          year.value === parseInt(cardDetails.expirationYear)
-                      )}
                       options={generateCardExpiryYears()}
                       placeholder="YYYY"
                       styles={customStyles}
@@ -163,10 +163,6 @@ const PaymentModal = ({ setShowModal, product, setProduct }) => {
 
                   <div className="flex flex-col flex-1 justify-end">
                     <Select
-                      defaultValue={generateMonths().find(
-                        (month) =>
-                          month.value === parseInt(cardDetails.expirationMonth)
-                      )}
                       options={generateMonths()}
                       placeholder="MM"
                       styles={customStyles}

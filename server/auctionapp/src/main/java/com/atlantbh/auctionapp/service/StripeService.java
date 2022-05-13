@@ -75,7 +75,7 @@ public class StripeService {
         return updatedCustomer.getId();
     }
 
-    public String updateCard(CardEntity newCard, UserEntity user) throws StripeException {
+    public String updateCard(com.atlantbh.auctionapp.domain.model.Card newCard, UserEntity user) throws StripeException {
 
         Map<String, Object> retrieveParams = new HashMap<>();
         List<String> expandList = new ArrayList<>();
@@ -94,7 +94,7 @@ public class StripeService {
         return updatedCard.getId();
     }
 
-    public String saveCard(CardEntity newCard, UserEntity user, Boolean newDefault) throws StripeException {
+    public String saveCard(com.atlantbh.auctionapp.domain.model.Card newCard, UserEntity user, Boolean newDefault) throws StripeException {
 
         String stripeCustomerId = user.getStripeCustomerId();
 
@@ -126,7 +126,7 @@ public class StripeService {
         return cardId;
     }
 
-    private Token generateCardToken(CardEntity newCard, UserEntity user) throws StripeException {
+    private Token generateCardToken(com.atlantbh.auctionapp.domain.model.Card newCard, UserEntity user) throws StripeException {
         Map<String, Object> params = new HashMap<>();
 
         Map<String, Object> card = new HashMap<>();
