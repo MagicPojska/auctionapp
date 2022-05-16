@@ -24,6 +24,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingSpinner from "../LoadingSpinner";
 import { getUserCard } from "../../utilities/cardApi";
+import ShowChevron from "../ShowChevron";
 
 const ProfileTab = () => {
   const { user } = useUserContext();
@@ -325,10 +326,8 @@ const ProfileTab = () => {
           className="px-8 py-4 text-lg font-normal leading-7 bg-bgWhite cursor-pointer flex items-center"
           onClick={toggleCardTabOpened}
         >
-          <span className="mr-4">
-            {isCardTabOpened ? <BsChevronUp /> : <BsChevronDown />}
-          </span>{" "}
-          Card Information (Optional)
+          <ShowChevron isChevronOpened={isCardTabOpened} /> Card Information
+          (Optional)
         </h2>
 
         <div
@@ -449,10 +448,8 @@ const ProfileTab = () => {
           className="px-8 py-4 text-lg font-normal leading-7 bg-bgWhite cursor-pointer flex items-center"
           onClick={toggleShippingTabOpened}
         >
-          <span className="mr-4">
-            {isShippingTabOpened ? <BsChevronUp /> : <BsChevronDown />}
-          </span>{" "}
-          Shipping Address (Optional)
+          <ShowChevron isChevronOpened={isShippingTabOpened} /> Shipping Address
+          (Optional)
         </h2>
 
         <div
