@@ -142,7 +142,7 @@ const ProductOverviewPage = () => {
                         product.sold && "opacity-30"
                       }`}
                       onClick={() => setShowModal(true)}
-                      disabled={product.sold && true}
+                      disabled={product.sold}
                     >
                       <p>{product.sold ? "BOUGHT" : "PAY"}</p>
                       <BiChevronRight className="text-2xl" />
