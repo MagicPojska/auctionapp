@@ -1,12 +1,14 @@
 package com.atlantbh.auctionapp.controllers;
 
 import com.atlantbh.auctionapp.model.NotificationEntity;
+import com.atlantbh.auctionapp.security.JwtUtil;
 import com.atlantbh.auctionapp.service.EmitterService;
 import com.atlantbh.auctionapp.service.NotificationService;
 import com.atlantbh.auctionapp.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,7 @@ import java.util.List;
 public class NotificationController {
     private final NotificationService notificationService;
     private final EmitterService emitterService;
+    private static long connectionExpiration;
     Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
@@ -32,11 +35,16 @@ public class NotificationController {
         this.emitterService = emitterService;
     }
 
+    @Value("${app.jwtExpiration}")
+    public void setJwtExpiration(int connectionExpiration) {
+        NotificationController.connectionExpiration = connectionExpiration;
+    }
+
     @GetMapping("/subscribe")
     public SseEmitter subsribe() {
         logger.info("subscribing...");
 
-        SseEmitter sseEmitter = new SseEmitter(24 * 60 * 60 * 1000L);
+        SseEmitter sseEmitter = new SseEmitter(connectionExpiration);
         emitterService.addEmitter(sseEmitter);
 
         logger.info("subscribed");
