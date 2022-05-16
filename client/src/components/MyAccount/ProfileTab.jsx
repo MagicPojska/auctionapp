@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import { countryList } from "../../utilities/countryList";
 import { customStyles } from "../../utilities/selectStyle";
-import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { useUserContext } from "../../contexts/UserContextProvider";
 import {
   generateCardExpiryYears,

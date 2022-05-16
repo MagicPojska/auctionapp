@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { myAccountPath, profilePath } from "../../../utilities/paths";
 import Select from "react-select";
 import { customStyles } from "../../../utilities/selectStyle";
@@ -46,7 +46,7 @@ const StepThree = ({
         cardNumber: !!data.cardNumber ? data.cardNumber : "",
       });
     })();
-  }, [user]);
+  }, []);
 
   const handleCountryChange = (selectedOption) => {
     setProductDetails({ ...productDetails, country: selectedOption.value });
