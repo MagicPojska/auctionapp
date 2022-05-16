@@ -50,7 +50,7 @@ const StepThree = ({
           response.data.cardNumber === null ? "" : response.data.cardNumber,
       });
     })();
-  }, []);
+  }, [user]);
 
   const handleCountryChange = (selectedOption) => {
     setProductDetails({ ...productDetails, country: selectedOption.value });
