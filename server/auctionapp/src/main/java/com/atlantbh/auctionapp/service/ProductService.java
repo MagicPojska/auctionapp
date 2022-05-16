@@ -51,7 +51,7 @@ public class ProductService {
     private final StripeService stripeService;
     private String secretKey;
 
-    @Value("${STRIPE.SECRET_KEY}")
+    @Value("${stripe.secret_key}")
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
     }
