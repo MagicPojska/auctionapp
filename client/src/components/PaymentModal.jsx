@@ -19,6 +19,7 @@ import {
 } from "../utilities/auth";
 
 const PaymentModal = ({ setShowModal, product, setProduct }) => {
+  const { user, card } = useUserContext();
   const [cardDetails, setCardDetails] = useState({
     cardHolderName: !!card?.cardHolderName ? card.cardHolderName : "",
     cardNumber: !!card?.cardNumber ? card.cardNumber : "",
@@ -27,7 +28,6 @@ const PaymentModal = ({ setShowModal, product, setProduct }) => {
     cvc: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { user, card } = useUserContext();
 
   const payForProduct = async (e) => {
     try {
