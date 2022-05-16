@@ -24,13 +24,21 @@ export const UserContextProvider = ({ children }) => {
       if (rememberMe) {
         setUserInStorage(response.data.user, response.data.token);
 
-        const card = await getUserCard(response.data.user.id);
-        setCardInStorage(card.data);
+        try {
+          const card = await getUserCard(response.data.user.id);
+          setCardInStorage(card.data);
+        } catch (error) {
+          console.log(error);
+        }
       } else {
         setUserInSession(response.data.user, response.data.token);
 
-        const card = await getUserCard(response.data.user.id);
-        setCardInSession(card.data);
+        try {
+          const card = await getUserCard(response.data.user.id);
+          setCardInSession(card.data);
+        } catch (error) {
+          console.log(error);
+        }
       }
 
       return response;
