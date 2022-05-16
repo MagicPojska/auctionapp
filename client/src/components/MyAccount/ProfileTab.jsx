@@ -53,8 +53,8 @@ const ProfileTab = () => {
   });
 
   const [cardDetails, setCardDetails] = useState({
-    cardHolderName: !!card.cardHolderName ? card.cardHolderName : "",
-    cardNumber: !!card.cardNumber ? card.cardNumber : "",
+    cardHolderName: !!card?.cardHolderName ? card.cardHolderName : "",
+    cardNumber: !!card?.cardNumber ? card.cardNumber : "",
     expirationYear: "",
     expirationMonth: "",
     cvc: "",
@@ -154,14 +154,14 @@ const ProfileTab = () => {
         setCardInStorage({
           cardHolderName: cardDetails.cardHolderName,
           cardNumber: cardDetails.cardNumber,
-          userId: card.id,
+          userId: user.id,
         });
       } else if (getUserFromSession() !== null) {
         updateUserInSession(responseData.data);
         setCardInSession({
           cardHolderName: cardDetails.cardHolderName,
           cardNumber: cardDetails.cardNumber,
-          userId: card.userId,
+          userId: user.id,
         });
       }
 

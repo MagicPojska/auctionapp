@@ -20,8 +20,8 @@ import {
 
 const PaymentModal = ({ setShowModal, product, setProduct }) => {
   const [cardDetails, setCardDetails] = useState({
-    cardHolderName: !!card.cardHolderName ? card.cardHolderName : "",
-    cardNumber: !!card.cardNumber ? card.cardNumber : "",
+    cardHolderName: !!card?.cardHolderName ? card.cardHolderName : "",
+    cardNumber: !!card?.cardNumber ? card.cardNumber : "",
     expirationYear: "",
     expirationMonth: "",
     cvc: "",
@@ -52,13 +52,13 @@ const PaymentModal = ({ setShowModal, product, setProduct }) => {
           setCardInStorage({
             cardHolderName: cardDetails.cardHolderName,
             cardNumber: cardDetails.cardNumber,
-            userId: card.id,
+            userId: user.id,
           });
         } else if (getUserFromSession() !== null) {
           setCardInSession({
             cardHolderName: cardDetails.cardHolderName,
             cardNumber: cardDetails.cardNumber,
-            userId: card.userId,
+            userId: user.id,
           });
         }
 
