@@ -26,14 +26,10 @@ const PaymentModal = ({ setShowModal, product, setProduct }) => {
 
   useEffect(() => {
     (async () => {
-      const response = await getUserCard(user.id);
+      const { data } = await getUserCard(user.id);
       setCardDetails({
-        cardHolderName:
-          response.data.cardHolderName === null
-            ? ""
-            : response.data.cardHolderName,
-        cardNumber:
-          response.data.cardNumber === null ? "" : response.data.cardNumber,
+        cardHolderName: !!data.cardHolderName ? data.cardHolderName : "",
+        cardNumber: !!data.cardNumber ? data.cardNumber : "",
       });
     })();
   }, []);

@@ -39,17 +39,16 @@ const ProfileTab = () => {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    dateOfBirth:
-      user.dateOfBirth === null
-        ? ""
-        : moment(user.dateOfBirth).format("YYYY-MM-DD"),
-    address: user.address === null ? "" : user.address,
-    city: user.city === null ? "" : user.city,
-    zipCode: user.zipCode === null ? "" : user.zipCode,
-    country: user.country === null ? "" : user.country,
-    state: user.state === null ? "" : user.state,
-    phone: user.phone === null ? "" : user.phone,
-    profileImage: user.profileImage === null ? "" : user.profileImage,
+    dateOfBirth: !!user.dateOfBirth
+      ? moment(user.dateOfBirth).format("YYYY-MM-DD")
+      : "",
+    address: !!user.address ? user.address : "",
+    city: !!user.city ? user.city : "",
+    zipCode: !!user.zipCode ? user.zipCode : "",
+    country: !!user.country ? user.country : "",
+    state: !!user.state ? user.state : "",
+    phone: !!user.phone ? user.phone : "",
+    profileImage: !!user.profileImage ? user.profileImage : "",
   });
 
   const [cardDetails, setCardDetails] = useState({
@@ -61,11 +60,9 @@ const ProfileTab = () => {
   });
 
   const [birthDate, setBirthDate] = useState({
-    day: user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("DD"),
-    month:
-      user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("MM"),
-    year:
-      user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("YYYY"),
+    day: !!user.dateOfBirth ? moment(user.dateOfBirth).format("DD") : "",
+    month: !!user.dateOfBirth ? moment(user.dateOfBirth).format("MM") : "",
+    year: !!user.dateOfBirth ? moment(user.dateOfBirth).format("YYYY") : "",
   });
 
   useEffect(() => {
@@ -74,14 +71,10 @@ const ProfileTab = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getUserCard(user.id);
+      const { data } = await getUserCard(user.id);
       setCardDetails({
-        cardHolderName:
-          response.data.cardHolderName === null
-            ? ""
-            : response.data.cardHolderName,
-        cardNumber:
-          response.data.cardNumber === null ? "" : response.data.cardNumber,
+        cardHolderName: !!data.cardHolderName ? data.cardHolderName : "",
+        cardNumber: !!data.cardNumber ? data.cardNumber : "",
       });
     })();
   }, []);

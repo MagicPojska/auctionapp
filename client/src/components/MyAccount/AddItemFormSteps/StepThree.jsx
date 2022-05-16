@@ -29,12 +29,12 @@ const StepThree = ({
   useEffect(() => {
     setProductDetails({
       ...productDetails,
-      address: user.address === null ? "" : user.address,
+      address: !!user.address ? user.address : "",
       email: user.email,
-      phone: user.phone === null ? "" : user.phone,
-      city: user.city === null ? "" : user.city,
-      country: user.country === null ? "" : user.country,
-      zipCode: user.zipCode === null ? "" : user.zipCode,
+      phone: !!user.phone ? user.phone : "",
+      city: !!user.city ? user.city : "",
+      country: !!user.country ? user.country : "",
+      zipCode: !!user.zipCode ? user.zipCode : "",
     });
   }, [user]);
 
