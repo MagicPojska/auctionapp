@@ -24,10 +24,9 @@ import {
 } from "../utilities/auth";
 import { useUserContext } from "../contexts/UserContextProvider";
 import { GrFormClose } from "react-icons/gr";
-
 import { countNotifications } from "../utilities/notificationApi";
-
 import NotificationBadge from "../components/NotificationBadge";
+import { EventSourcePolyfill } from "event-source-polyfill";
 
 const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -66,8 +65,18 @@ const Navbar = () => {
 
   useEffect(() => {
     if (user) {
-      const eventSource = new EventSource(
-        `${process.env.REACT_APP_API_URL}/notifications/subscribe`
+      const token =
+        getTokenFromStorage() !== null
+          ? getTokenFromStorage()
+          : getTokenFromSession();
+
+      const eventSource = new EventSourcePolyfill(
+        `${process.env.REACT_APP_API_URL}/notifications/subscribe`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       );
 
       eventSource.addEventListener(user.id, handleServerEvent, false);

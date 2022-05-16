@@ -18,6 +18,8 @@ import RecomendedProducts from "../components/ProductOverviewPage/RecomendedProd
 import { BiChevronRight } from "react-icons/bi";
 import PaymentModal from "../components/PaymentModal";
 import { ToastContainer } from "react-toastify";
+import { getTokenFromSession, getTokenFromStorage } from "../utilities/auth";
+import { EventSourcePolyfill } from "event-source-polyfill";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
@@ -35,8 +37,18 @@ const ProductOverviewPage = () => {
   }, []);
 
   useEffect(() => {
-    const eventSource = new EventSource(
-      `${process.env.REACT_APP_API_URL}/notifications/subscribe`
+    const token =
+      getTokenFromStorage() !== null
+        ? getTokenFromStorage()
+        : getTokenFromSession();
+
+    const eventSource = new EventSourcePolyfill(
+      `${process.env.REACT_APP_API_URL}/notifications/subscribe`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
     );
 
     eventSource.addEventListener(

@@ -48,7 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/categories",
             "/product/items/**",
             "/product/item/**",
-            "/notifications/subscribe"
     };
 
     public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtFilter filter) {
