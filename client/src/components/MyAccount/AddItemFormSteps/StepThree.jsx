@@ -42,8 +42,8 @@ const StepThree = ({
     (async () => {
       const { data } = await getUserCard(user.id);
       setCardDetails({
-        cardHolderName: data.cardHolderName === null ? "" : data.cardHolderName,
-        cardNumber: data.cardNumber === null ? "" : data.cardNumber,
+        cardHolderName: !!data.cardHolderName ? data.cardHolderName : "",
+        cardNumber: !!data.cardNumber ? data.cardNumber : "",
       });
     })();
   }, [user]);
