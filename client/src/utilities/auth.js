@@ -3,6 +3,15 @@ const setUserInStorage = (user, token) => {
   localStorage.setItem("user", JSON.stringify(user));
 };
 
+const setCardInStorage = (card) => {
+  localStorage.setItem("card", JSON.stringify(card));
+};
+
+const getCardFromStorage = () => {
+  const card = localStorage.getItem("card");
+  return JSON.parse(card);
+};
+
 const updateUserInStorage = (user) => {
   localStorage.setItem("user", JSON.stringify(user));
 };
@@ -10,6 +19,7 @@ const updateUserInStorage = (user) => {
 const removeUserFromStorage = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
+  localStorage.removeItem("card");
 };
 
 const getUserFromStorage = () => {
@@ -26,6 +36,15 @@ const setUserInSession = (user, token) => {
   sessionStorage.setItem("user", JSON.stringify(user));
 };
 
+const setCardInSession = (card) => {
+  sessionStorage.setItem("card", JSON.stringify(card));
+};
+
+const getCardFromSession = () => {
+  const card = sessionStorage.getItem("card");
+  return JSON.parse(card);
+};
+
 const updateUserInSession = (user) => {
   sessionStorage.setItem("user", JSON.stringify(user));
 };
@@ -33,6 +52,7 @@ const updateUserInSession = (user) => {
 const removeUserFromSession = () => {
   sessionStorage.removeItem("token");
   sessionStorage.removeItem("user");
+  sessionStorage.removeItem("card");
 };
 
 const getUserFromSession = () => {
@@ -51,12 +71,16 @@ const getUserId = () => {
 
 export {
   setUserInStorage,
+  setCardInStorage,
+  getCardFromStorage,
   updateUserInStorage,
   removeUserFromStorage,
   getUserFromStorage,
   getUserId,
   getTokenFromStorage,
   setUserInSession,
+  setCardInSession,
+  getCardFromSession,
   updateUserInSession,
   removeUserFromSession,
   getUserFromSession,

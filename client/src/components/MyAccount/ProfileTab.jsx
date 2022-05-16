@@ -16,6 +16,8 @@ import { updateUser } from "../../utilities/userApi";
 import {
   getUserFromSession,
   getUserFromStorage,
+  setCardInSession,
+  setCardInStorage,
   updateUserInSession,
   updateUserInStorage,
 } from "../../utilities/auth";
@@ -26,7 +28,7 @@ import { getUserCard } from "../../utilities/cardApi";
 import ShowChevron from "../ShowChevron";
 
 const ProfileTab = () => {
-  const { user } = useUserContext();
+  const { user, card } = useUserContext();
   const [isShippingTabOpened, setIsShippingTabOpened] = useState(false);
   const [isCardTabOpened, setIsCardTabOpened] = useState(false);
   const [daysInMonth, setDaysInMonth] = useState([]);
@@ -51,8 +53,8 @@ const ProfileTab = () => {
   });
 
   const [cardDetails, setCardDetails] = useState({
-    cardHolderName: "",
-    cardNumber: "",
+    cardHolderName: !!card.cardHolderName ? card.cardHolderName : "",
+    cardNumber: !!card.cardNumber ? card.cardNumber : "",
     expirationYear: "",
     expirationMonth: "",
     cvc: "",
@@ -67,16 +69,6 @@ const ProfileTab = () => {
   useEffect(() => {
     setDaysInMonth(generateDays(birthDate.year, birthDate.month));
   }, [birthDate.year, birthDate.month]);
-
-  useEffect(() => {
-    (async () => {
-      const { data } = await getUserCard(user.id);
-      setCardDetails({
-        cardHolderName: !!data.cardHolderName ? data.cardHolderName : "",
-        cardNumber: !!data.cardNumber ? data.cardNumber : "",
-      });
-    })();
-  }, []);
 
   const toggleShippingTabOpened = () => {
     setIsShippingTabOpened(!isShippingTabOpened);
@@ -159,8 +151,18 @@ const ProfileTab = () => {
 
       if (getUserFromStorage() !== null) {
         updateUserInStorage(responseData.data);
+        setCardInStorage({
+          cardHolderName: cardDetails.cardHolderName,
+          cardNumber: cardDetails.cardNumber,
+          userId: card.id,
+        });
       } else if (getUserFromSession() !== null) {
         updateUserInSession(responseData.data);
+        setCardInSession({
+          cardHolderName: cardDetails.cardHolderName,
+          cardNumber: cardDetails.cardNumber,
+          userId: card.userId,
+        });
       }
 
       toast.success("Your info has been saved", {

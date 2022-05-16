@@ -11,9 +11,15 @@ import { DATETIME_FORMAT } from "../utilities/constants";
 import { uploadImage } from "../utilities/imageApi";
 import { useUserContext } from "../contexts/UserContextProvider";
 import { shopProductPath } from "../utilities/paths";
+import {
+  getUserFromSession,
+  getUserFromStorage,
+  setCardInSession,
+  setCardInStorage,
+} from "../utilities/auth";
 
 const AddItemPage = () => {
-  const { user } = useUserContext();
+  const { user, card } = useUserContext();
   const [step, setStep] = useState(1);
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,8 +41,8 @@ const AddItemPage = () => {
   });
 
   const [cardDetails, setCardDetails] = useState({
-    cardHolderName: "",
-    cardNumber: "",
+    cardHolderName: !!card.cardHolderName ? card.cardHolderName : "",
+    cardNumber: !!card.cardNumber ? card.cardNumber : "",
     expirationYear: "",
     expirationMonth: "",
     cvc: "",
@@ -140,6 +146,21 @@ const AddItemPage = () => {
       }
 
       const res = await addProduct(formData);
+
+      if (getUserFromStorage() !== null) {
+        setCardInStorage({
+          cardHolderName: cardDetails.cardHolderName,
+          cardNumber: cardDetails.cardNumber,
+          userId: card.id,
+        });
+      } else if (getUserFromSession() !== null) {
+        setCardInSession({
+          cardHolderName: cardDetails.cardHolderName,
+          cardNumber: cardDetails.cardNumber,
+          userId: card.userId,
+        });
+      }
+
       navigate(`${shopProductPath}/${res.data.id}`);
     } catch (error) {
       setIsLoading(false);

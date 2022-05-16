@@ -12,7 +12,6 @@ import {
   generateCardExpiryYears,
   generateMonths,
 } from "../../../utilities/helperFunctions";
-import { getUserCard } from "../../../utilities/cardApi";
 
 const StepThree = ({
   prevStep,
@@ -37,16 +36,6 @@ const StepThree = ({
       zipCode: !!user.zipCode ? user.zipCode : "",
     });
   }, [user]);
-
-  useEffect(() => {
-    (async () => {
-      const { data } = await getUserCard(user.id);
-      setCardDetails({
-        cardHolderName: !!data.cardHolderName ? data.cardHolderName : "",
-        cardNumber: !!data.cardNumber ? data.cardNumber : "",
-      });
-    })();
-  }, []);
 
   const handleCountryChange = (selectedOption) => {
     setProductDetails({ ...productDetails, country: selectedOption.value });
