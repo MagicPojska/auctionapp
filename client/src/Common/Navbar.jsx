@@ -32,7 +32,6 @@ import NotificationBadge from "../components/NotificationBadge";
 const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [numberOfNotifications, setNumberOfNotifications] = useState(0);
-
   const location = useLocation();
   const navigate = useNavigate();
   const { logout, user, setUser, setToken, setCard } = useUserContext();

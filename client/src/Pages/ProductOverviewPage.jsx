@@ -35,17 +35,19 @@ const ProductOverviewPage = () => {
   }, []);
 
   useEffect(() => {
-    if (user) {
-      const eventSource = new EventSource(
-        `${process.env.REACT_APP_API_URL}/notifications/subscribe`
-      );
+    const eventSource = new EventSource(
+      `${process.env.REACT_APP_API_URL}/notifications/subscribe`
+    );
 
-      eventSource.addEventListener(
-        product.id + " " + product.productName,
-        handleServerEvent,
-        false
-      );
-    }
+    eventSource.addEventListener(
+      product.id + " " + product.productName,
+      handleServerEvent,
+      false
+    );
+
+    return () => {
+      eventSource.close();
+    };
   }, [product]);
 
   const handleServerEvent = (e) => {

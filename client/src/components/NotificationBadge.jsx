@@ -101,7 +101,7 @@ const NotificationBadge = ({
             <InfiniteScroll
               dataLength={notifications.length}
               next={getNextNotifications}
-              hasMoreNotifications={hasMoreNotifications}
+              hasMore={hasMoreNotifications}
               height={380}
             >
               {notifications.map((notification) => (
