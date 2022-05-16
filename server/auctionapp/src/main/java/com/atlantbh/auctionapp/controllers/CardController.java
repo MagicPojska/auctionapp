@@ -1,6 +1,7 @@
 package com.atlantbh.auctionapp.controllers;
 
 import com.atlantbh.auctionapp.model.CardEntity;
+import com.atlantbh.auctionapp.response.CardResponse;
 import com.atlantbh.auctionapp.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +24,7 @@ public class CardController {
     }
 
     @GetMapping
-    public ResponseEntity<CardEntity> getCard(@RequestParam long userId) {
-        return new ResponseEntity<>(cardService.getCard(userId), new HttpHeaders(), HttpStatus.OK) ;
+    public ResponseEntity<CardResponse> getCard(@RequestParam long userId) {
+        return new ResponseEntity<>(new CardResponse(cardService.getCard(userId)), new HttpHeaders(), HttpStatus.OK) ;
     }
 }

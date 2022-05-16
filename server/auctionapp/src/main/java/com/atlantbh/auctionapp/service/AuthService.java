@@ -132,7 +132,6 @@ public class AuthService {
             logger.error("User with email: " + email + " does not exist.");
             throw new NotFoundException("User with email: " + email + " does not exist.");
         }
-        ;
     }
 
     public String updatePassword(ResetPasswordRequest resetPasswordRequest) {

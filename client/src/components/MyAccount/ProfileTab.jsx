@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import { countryList } from "../../utilities/countryList";
 import { customStyles } from "../../utilities/selectStyle";
-import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { useUserContext } from "../../contexts/UserContextProvider";
 import {
   generateCardExpiryYears,
@@ -17,6 +16,8 @@ import { updateUser } from "../../utilities/userApi";
 import {
   getUserFromSession,
   getUserFromStorage,
+  setCardInSession,
+  setCardInStorage,
   updateUserInSession,
   updateUserInStorage,
 } from "../../utilities/auth";
@@ -24,9 +25,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingSpinner from "../LoadingSpinner";
 import { getUserCard } from "../../utilities/cardApi";
+import ShowChevron from "../ShowChevron";
 
 const ProfileTab = () => {
-  const { user } = useUserContext();
+  const { user, card } = useUserContext();
   const [isShippingTabOpened, setIsShippingTabOpened] = useState(false);
   const [isCardTabOpened, setIsCardTabOpened] = useState(false);
   const [daysInMonth, setDaysInMonth] = useState([]);
@@ -38,52 +40,35 @@ const ProfileTab = () => {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    dateOfBirth:
-      user.dateOfBirth === null
-        ? ""
-        : moment(user.dateOfBirth).format("YYYY-MM-DD"),
-    address: user.address === null ? "" : user.address,
-    city: user.city === null ? "" : user.city,
-    zipCode: user.zipCode === null ? "" : user.zipCode,
-    country: user.country === null ? "" : user.country,
-    state: user.state === null ? "" : user.state,
-    phone: user.phone === null ? "" : user.phone,
-    profileImage: user.profileImage === null ? "" : user.profileImage,
+    dateOfBirth: !!user.dateOfBirth
+      ? moment(user.dateOfBirth).format("YYYY-MM-DD")
+      : "",
+    address: !!user.address ? user.address : "",
+    city: !!user.city ? user.city : "",
+    zipCode: !!user.zipCode ? user.zipCode : "",
+    country: !!user.country ? user.country : "",
+    state: !!user.state ? user.state : "",
+    phone: !!user.phone ? user.phone : "",
+    profileImage: !!user.profileImage ? user.profileImage : "",
   });
 
   const [cardDetails, setCardDetails] = useState({
-    cardHolderName: "",
-    cardNumber: "",
+    cardHolderName: !!card?.cardHolderName ? card.cardHolderName : "",
+    cardNumber: !!card?.cardNumber ? card.cardNumber : "",
     expirationYear: "",
     expirationMonth: "",
     cvc: "",
   });
 
   const [birthDate, setBirthDate] = useState({
-    day: user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("DD"),
-    month:
-      user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("MM"),
-    year:
-      user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("YYYY"),
+    day: !!user.dateOfBirth ? moment(user.dateOfBirth).format("DD") : "",
+    month: !!user.dateOfBirth ? moment(user.dateOfBirth).format("MM") : "",
+    year: !!user.dateOfBirth ? moment(user.dateOfBirth).format("YYYY") : "",
   });
 
   useEffect(() => {
     setDaysInMonth(generateDays(birthDate.year, birthDate.month));
   }, [birthDate.year, birthDate.month]);
-
-  useEffect(() => {
-    (async () => {
-      const response = await getUserCard(user.id);
-      setCardDetails({
-        cardHolderName:
-          response.data.cardHolderName === null
-            ? ""
-            : response.data.cardHolderName,
-        cardNumber:
-          response.data.cardNumber === null ? "" : response.data.cardNumber,
-      });
-    })();
-  }, []);
 
   const toggleShippingTabOpened = () => {
     setIsShippingTabOpened(!isShippingTabOpened);
@@ -166,8 +151,18 @@ const ProfileTab = () => {
 
       if (getUserFromStorage() !== null) {
         updateUserInStorage(responseData.data);
+        setCardInStorage({
+          cardHolderName: cardDetails.cardHolderName,
+          cardNumber: cardDetails.cardNumber,
+          userId: user.id,
+        });
       } else if (getUserFromSession() !== null) {
         updateUserInSession(responseData.data);
+        setCardInSession({
+          cardHolderName: cardDetails.cardHolderName,
+          cardNumber: cardDetails.cardNumber,
+          userId: user.id,
+        });
       }
 
       toast.success("Your info has been saved", {
@@ -325,10 +320,8 @@ const ProfileTab = () => {
           className="px-8 py-4 text-lg font-normal leading-7 bg-bgWhite cursor-pointer flex items-center"
           onClick={toggleCardTabOpened}
         >
-          <span className="mr-4">
-            {isCardTabOpened ? <BsChevronUp /> : <BsChevronDown />}
-          </span>{" "}
-          Card Information (Optional)
+          <ShowChevron isChevronOpened={isCardTabOpened} /> Card Information
+          (Optional)
         </h2>
 
         <div
@@ -449,10 +442,8 @@ const ProfileTab = () => {
           className="px-8 py-4 text-lg font-normal leading-7 bg-bgWhite cursor-pointer flex items-center"
           onClick={toggleShippingTabOpened}
         >
-          <span className="mr-4">
-            {isShippingTabOpened ? <BsChevronUp /> : <BsChevronDown />}
-          </span>{" "}
-          Shipping Address (Optional)
+          <ShowChevron isChevronOpened={isShippingTabOpened} /> Shipping Address
+          (Optional)
         </h2>
 
         <div

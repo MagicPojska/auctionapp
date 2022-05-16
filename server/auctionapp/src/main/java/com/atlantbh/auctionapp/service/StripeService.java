@@ -24,7 +24,7 @@ public class StripeService {
     private String stripeApiKey;
     private final UserRepository userRepository;
 
-    @Value("${STRIPE.SECRET_KEY}")
+    @Value("${stripe.secret_key}")
     public void setSecretKey(String secretKey) {
         this.stripeApiKey = secretKey;
     }

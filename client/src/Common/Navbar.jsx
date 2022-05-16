@@ -17,6 +17,7 @@ import {
 } from "../utilities/paths";
 import SocialMedia from "../components/SocialMedia";
 import {
+  getCardFromStorage,
   getTokenFromSession,
   getTokenFromStorage,
   getUserFromSession,
@@ -43,7 +44,7 @@ const Navbar = () => {
   const [hasMore, setHasMore] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout, user, setUser, setToken } = useUserContext();
+  const { logout, user, setUser, setToken, setCard } = useUserContext();
 
   useEffect(() => {
     (async () => {
@@ -57,14 +58,14 @@ const Navbar = () => {
   }, [user]);
 
   useEffect(() => {
-    if (!user) {
-      if (getUserFromStorage() !== null) {
-        setUser(getUserFromStorage());
-        setToken(getTokenFromStorage());
-      } else if (getUserFromSession() !== null) {
-        setUser(getUserFromSession());
-        setToken(getTokenFromSession());
-      }
+    if (getUserFromStorage() !== null) {
+      setUser(getUserFromStorage());
+      setToken(getTokenFromStorage());
+      setCard(getCardFromStorage());
+    } else if (getUserFromSession() !== null) {
+      setUser(getUserFromSession());
+      setToken(getTokenFromSession());
+      setCard(getTokenFromSession());
     }
     if (!location.pathname.includes(shopPath)) {
       setSearchTerm("");

@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Select from "react-select";
 import { useUserContext } from "../contexts/UserContextProvider";
-import { getUserCard } from "../utilities/cardApi";
 import {
   generateCardExpiryYears,
   generateMonths,
@@ -12,31 +11,23 @@ import { buyProduct } from "../utilities/productsApi";
 import LoadingSpinner from "./LoadingSpinner";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  getUserFromSession,
+  getUserFromStorage,
+  setCardInSession,
+  setCardInStorage,
+} from "../utilities/auth";
 
 const PaymentModal = ({ setShowModal, product, setProduct }) => {
+  const { user, card } = useUserContext();
   const [cardDetails, setCardDetails] = useState({
-    cardHolderName: "",
-    cardNumber: "",
+    cardHolderName: !!card?.cardHolderName ? card.cardHolderName : "",
+    cardNumber: !!card?.cardNumber ? card.cardNumber : "",
     expirationYear: "",
     expirationMonth: "",
     cvc: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useUserContext();
-
-  useEffect(() => {
-    (async () => {
-      const response = await getUserCard(user.id);
-      setCardDetails({
-        cardHolderName:
-          response.data.cardHolderName === null
-            ? ""
-            : response.data.cardHolderName,
-        cardNumber:
-          response.data.cardNumber === null ? "" : response.data.cardNumber,
-      });
-    })();
-  }, []);
 
   const payForProduct = async (e) => {
     try {
@@ -56,6 +47,21 @@ const PaymentModal = ({ setShowModal, product, setProduct }) => {
         };
         const response = await buyProduct(paymentDetails);
         setProduct(response.data);
+
+        if (getUserFromStorage() !== null) {
+          setCardInStorage({
+            cardHolderName: cardDetails.cardHolderName,
+            cardNumber: cardDetails.cardNumber,
+            userId: user.id,
+          });
+        } else if (getUserFromSession() !== null) {
+          setCardInSession({
+            cardHolderName: cardDetails.cardHolderName,
+            cardNumber: cardDetails.cardNumber,
+            userId: user.id,
+          });
+        }
+
         toast.success("Payment successfull", {
           position: toast.POSITION.TOP_RIGHT,
         });

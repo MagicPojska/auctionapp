@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { myAccountPath, profilePath } from "../../../utilities/paths";
 import Select from "react-select";
 import { customStyles } from "../../../utilities/selectStyle";
@@ -12,7 +12,6 @@ import {
   generateCardExpiryYears,
   generateMonths,
 } from "../../../utilities/helperFunctions";
-import { getUserCard } from "../../../utilities/cardApi";
 
 const StepThree = ({
   prevStep,
@@ -29,28 +28,14 @@ const StepThree = ({
   useEffect(() => {
     setProductDetails({
       ...productDetails,
-      address: user.address === null ? "" : user.address,
+      address: !!user.address ? user.address : "",
       email: user.email,
-      phone: user.phone === null ? "" : user.phone,
-      city: user.city === null ? "" : user.city,
-      country: user.country === null ? "" : user.country,
-      zipCode: user.zipCode === null ? "" : user.zipCode,
+      phone: !!user.phone ? user.phone : "",
+      city: !!user.city ? user.city : "",
+      country: !!user.country ? user.country : "",
+      zipCode: !!user.zipCode ? user.zipCode : "",
     });
   }, [user]);
-
-  useEffect(() => {
-    (async () => {
-      const response = await getUserCard(user.id);
-      setCardDetails({
-        cardHolderName:
-          response.data.cardHolderName === null
-            ? ""
-            : response.data.cardHolderName,
-        cardNumber:
-          response.data.cardNumber === null ? "" : response.data.cardNumber,
-      });
-    })();
-  }, []);
 
   const handleCountryChange = (selectedOption) => {
     setProductDetails({ ...productDetails, country: selectedOption.value });

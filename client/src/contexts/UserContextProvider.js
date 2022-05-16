@@ -2,16 +2,20 @@ import { createContext, useContext, useState } from "react";
 import {
   removeUserFromSession,
   removeUserFromStorage,
+  setCardInSession,
+  setCardInStorage,
   setUserInSession,
   setUserInStorage,
 } from "../utilities/auth";
 import { logoutUser, signIn, signUp } from "../utilities/authApi";
 import { toast } from "react-toastify";
+import { getUserCard } from "../utilities/cardApi";
 
 const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState("");
+  const [card, setCard] = useState("");
   const [token, setToken] = useState("");
 
   const login = async (user, rememberMe) => {
@@ -19,9 +23,24 @@ export const UserContextProvider = ({ children }) => {
       const response = await signIn(user);
       if (rememberMe) {
         setUserInStorage(response.data.user, response.data.token);
+
+        try {
+          const card = await getUserCard(response.data.user.id);
+          setCardInStorage(card.data);
+        } catch (error) {
+          console.log(error);
+        }
       } else {
         setUserInSession(response.data.user, response.data.token);
+
+        try {
+          const card = await getUserCard(response.data.user.id);
+          setCardInSession(card.data);
+        } catch (error) {
+          console.log(error);
+        }
       }
+
       return response;
     } catch (error) {
       if (error.response.status === 403) {
@@ -64,7 +83,17 @@ export const UserContextProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, token, setToken, login, register, logout }}
+      value={{
+        user,
+        setUser,
+        card,
+        setCard,
+        token,
+        setToken,
+        login,
+        register,
+        logout,
+      }}
     >
       {children}
     </UserContext.Provider>

@@ -5,13 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";
 
-const StepTwo = ({
-  nextStep,
-  prevStep,
-  setProductDetails,
-  productDetails,
-  handleInputData,
-}) => {
+const StepTwo = ({ nextStep, prevStep, setProductDetails, productDetails }) => {
   const changeStartDate = (e) => {
     const startDateInput = moment(e.target.value).format("YYYY-MM-DD");
 
