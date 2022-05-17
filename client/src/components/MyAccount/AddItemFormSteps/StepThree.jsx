@@ -125,6 +125,34 @@ const StepThree = ({
         <label className="text-lg leading-7">Payment details</label>
         <hr className="mb-8 mt-4" />
 
+        <div className="flex items-center space-x-4 w-full mb-6">
+          <p className="text-textTetriary text-sm flex-1">
+            We accept the following credit cards
+          </p>
+          <div className="flex justify-between flex-1">
+            <img
+              className="w-10 h-6 object-contain"
+              src="/images/visa.png"
+              alt="visa"
+            />
+            <img
+              className="w-10 h-6 object-contain"
+              src="/images/mastercard.png"
+              alt="mastercard"
+            />
+            <img
+              className="w-10 h-6 object-contain"
+              src="/images/americanexpress.jpg"
+              alt="american express"
+            />
+            <img
+              className="w-10 h-6 object-contain"
+              src="/images/maestro.png"
+              alt="maestro"
+            />
+          </div>
+        </div>
+
         <div className="flex flex-col w-full mb-8">
           <label className="text-lg leading-7">Name on Card</label>
           <div className="border-2 h-16 mb-8 mt-4">
