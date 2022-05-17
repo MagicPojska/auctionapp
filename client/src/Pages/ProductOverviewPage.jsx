@@ -53,8 +53,6 @@ const ProductOverviewPage = () => {
   }, [product]);
 
   const handleServerEvent = (e) => {
-    console.log(e.data);
-    console.log(product);
     setProduct(JSON.parse(e.data));
   };
 
