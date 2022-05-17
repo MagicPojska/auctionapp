@@ -64,13 +64,14 @@ const Navbar = () => {
   }, [location]);
 
   useEffect(() => {
+    let eventSource;
     if (user) {
       const token =
         getTokenFromStorage() !== null
           ? getTokenFromStorage()
           : getTokenFromSession();
 
-      const eventSource = new EventSourcePolyfill(
+      eventSource = new EventSourcePolyfill(
         `${process.env.REACT_APP_API_URL}/notifications/subscribe`,
         {
           headers: {
@@ -81,6 +82,10 @@ const Navbar = () => {
 
       eventSource.addEventListener(user.id, handleServerEvent, false);
     }
+
+    return () => {
+      eventSource.close();
+    };
   }, [user]);
 
   const handleServerEvent = (e) => {
