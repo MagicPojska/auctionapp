@@ -53,6 +53,8 @@ const ProductOverviewPage = () => {
   }, [product]);
 
   const handleServerEvent = (e) => {
+    console.log(e.data);
+    console.log(product);
     setProduct(JSON.parse(e.data));
   };
 
@@ -87,13 +89,8 @@ const ProductOverviewPage = () => {
         userId: user.id,
         productId: product.id,
       };
-      const res = await postBid(bidDetails);
+      await postBid(bidDetails);
 
-      setProduct({
-        ...product,
-        highestBid: res.data.bid,
-        numberOfBids: res.data.numberOfBids,
-      });
       setNotification({
         ...notification,
         type: NOTIFICATION_SUCCESS,
