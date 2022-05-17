@@ -77,8 +77,9 @@ public class BidService {
             throw new BadRequestException("Price can't be lower than highest bid of $" + maxBid);
         }
 
-        UserEntity highestBidder = userRepository.getById(bidRepository.getHighestBidderFromProduct(product.getId()));
-        if (highestBidder != null) {
+
+        if ( product.getHighestBid() != null ) {
+            UserEntity highestBidder = userRepository.getById(bidRepository.getHighestBidderFromProduct(product.getId()));
             NotificationEntity notification = new NotificationEntity("warning", product, highestBidder);
             notificationRepository.save(notification);
             emitterService.pushNotification(notificationRepository.countByUserIdAndCheckedFalse(highestBidder.getId()), highestBidder.getId());

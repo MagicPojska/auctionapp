@@ -47,16 +47,14 @@ const Navbar = () => {
   }, [user]);
 
   useEffect(() => {
-    if (!user) {
-      if (getUserFromStorage() !== null) {
-        setUser(getUserFromStorage());
-        setToken(getTokenFromStorage());
-        setCard(getCardFromStorage());
-      } else if (getUserFromSession() !== null) {
-        setUser(getUserFromSession());
-        setToken(getTokenFromSession());
-        setCard(getTokenFromSession());
-      }
+    if (getUserFromStorage() !== null) {
+      setUser(getUserFromStorage());
+      setToken(getTokenFromStorage());
+      setCard(getCardFromStorage());
+    } else if (getUserFromSession() !== null) {
+      setUser(getUserFromSession());
+      setToken(getTokenFromSession());
+      setCard(getTokenFromSession());
     }
     if (!location.pathname.includes(shopPath)) {
       setSearchTerm("");
