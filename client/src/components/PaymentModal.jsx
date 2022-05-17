@@ -17,8 +17,15 @@ import {
   setCardInSession,
   setCardInStorage,
 } from "../utilities/auth";
+import { NOTIFICATION_SUCCESS } from "../utilities/constants";
 
-const PaymentModal = ({ setShowModal, product, setProduct }) => {
+const PaymentModal = ({
+  setShowModal,
+  product,
+  setProduct,
+  setNotification,
+  notification,
+}) => {
   const { user, card } = useUserContext();
   const [cardDetails, setCardDetails] = useState({
     cardHolderName: !!card?.cardHolderName ? card.cardHolderName : "",
@@ -64,6 +71,11 @@ const PaymentModal = ({ setShowModal, product, setProduct }) => {
 
         toast.success("Payment successfull", {
           position: toast.POSITION.TOP_RIGHT,
+        });
+        setNotification({
+          ...notification,
+          type: NOTIFICATION_SUCCESS,
+          message: "Congrats! You are the winner!",
         });
         setShowModal(false);
       } else {

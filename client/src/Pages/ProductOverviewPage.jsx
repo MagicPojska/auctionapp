@@ -62,6 +62,20 @@ const ProductOverviewPage = () => {
       setProduct(response.data);
       setImages(response.data.images.split(","));
       setTimeLeft(calculateTimeLeft(response));
+
+      if (response.data.highestBidder === user.id && response.data.sold) {
+        setNotification({
+          ...notification,
+          type: NOTIFICATION_SUCCESS,
+          message: "Congrats! You are the winner!",
+        });
+      } else if (response.data.highestBidder === user.id) {
+        setNotification({
+          ...notification,
+          type: NOTIFICATION_SUCCESS,
+          message: "Congrats! You are currently the highest bider!",
+        });
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -92,7 +106,7 @@ const ProductOverviewPage = () => {
       setNotification({
         ...notification,
         type: NOTIFICATION_SUCCESS,
-        message: "Congrats! You are the highest bider!",
+        message: "Congrats! You are currently the highest bider!",
       });
     } catch (error) {
       console.error(error);
@@ -238,6 +252,8 @@ const ProductOverviewPage = () => {
           setShowModal={setShowModal}
           product={product}
           setProduct={setProduct}
+          setNotification={setNotification}
+          notification={notification}
         />
       )}
     </>
