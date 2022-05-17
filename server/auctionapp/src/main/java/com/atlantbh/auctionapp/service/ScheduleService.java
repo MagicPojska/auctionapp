@@ -42,7 +42,7 @@ public class ScheduleService {
                 UserEntity user = userRepository.getById(product.getHighestBidder());
                 notificationRepository.save(new NotificationEntity("success", product, user));
 
-                emitterService.pushNotification(notificationRepository.countByUserIdAndCheckedFalse(product.getHighestBidder()), user.getId(), null, null);
+                emitterService.pushNotification(notificationRepository.countByUserIdAndCheckedFalse(product.getHighestBidder()), user.getId());
             }
         }
     }

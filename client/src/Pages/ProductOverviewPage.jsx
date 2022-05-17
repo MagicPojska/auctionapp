@@ -37,18 +37,8 @@ const ProductOverviewPage = () => {
   }, []);
 
   useEffect(() => {
-    const token =
-      getTokenFromStorage() !== null
-        ? getTokenFromStorage()
-        : getTokenFromSession();
-
     const eventSource = new EventSourcePolyfill(
-      `${process.env.REACT_APP_API_URL}/notifications/subscribe`,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
+      `${process.env.REACT_APP_API_URL}/notifications/subscribe/product`
     );
 
     eventSource.addEventListener(

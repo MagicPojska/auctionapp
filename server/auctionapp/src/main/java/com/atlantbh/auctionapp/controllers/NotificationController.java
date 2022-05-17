@@ -51,6 +51,17 @@ public class NotificationController {
         return sseEmitter;
     }
 
+    @GetMapping("/subscribe/product")
+    public SseEmitter subsribeProduct() {
+        logger.info("subscribing...");
+
+        SseEmitter sseEmitter = new SseEmitter(connectionExpiration);
+        emitterService.addEmitter(sseEmitter);
+
+        logger.info("subscribed");
+        return sseEmitter;
+    }
+
     @GetMapping()
     public ResponseEntity<Page<NotificationEntity>> getNotifications(@RequestParam long userId,
                                                                      @RequestParam(defaultValue = "0") Integer pageNumber) {

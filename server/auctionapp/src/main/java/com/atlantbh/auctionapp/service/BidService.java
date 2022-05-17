@@ -81,7 +81,8 @@ public class BidService {
         if (highestBidder != null) {
             NotificationEntity notification = new NotificationEntity("warning", product, highestBidder);
             notificationRepository.save(notification);
-            emitterService.pushNotification(notificationRepository.countByUserIdAndCheckedFalse(highestBidder.getId()), highestBidder.getId(), bidRequest.getPrice(), product);
+            emitterService.pushNotification(notificationRepository.countByUserIdAndCheckedFalse(highestBidder.getId()), highestBidder.getId());
+            emitterService.pushProductInfo(bidRequest.getPrice(), product);
         }
 
         bidRepository.save(new BidsEntity(bidRequest.getPrice(), user, product));

@@ -84,7 +84,9 @@ const Navbar = () => {
     }
 
     return () => {
-      eventSource.close();
+      if (user) {
+        eventSource.close();
+      }
     };
   }, [user]);
 
