@@ -41,6 +41,7 @@ public class AuthService {
     private final JavaMailSender mailSender;
 
     private static String allowedURL;
+
     @Value("${app.cors.allowed-domain}")
     public void setAllowedURL(String allowedURL) {
         AuthService.allowedURL = allowedURL;
@@ -52,7 +53,8 @@ public class AuthService {
     public final String BEARER = "Bearer ";
 
     @Autowired
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jsonWebToken, AuthenticationManager authenticationManager, JavaMailSender mailSender) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jsonWebToken,
+            AuthenticationManager authenticationManager, JavaMailSender mailSender) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jsonWebToken = jsonWebToken;
@@ -129,7 +131,7 @@ public class AuthService {
         } else {
             logger.error("User with email: " + email + " does not exist.");
             throw new NotFoundException("User with email: " + email + " does not exist.");
-        };
+        }
     }
 
     public String updatePassword(ResetPasswordRequest resetPasswordRequest) {
@@ -143,7 +145,6 @@ public class AuthService {
             throw new UnathorizedException("Token is expired.");
         }
 
-        
         String encodedPassword = passwordEncoder.encode(resetPasswordRequest.getPassword());
         userEntity.setPassword(encodedPassword);
 

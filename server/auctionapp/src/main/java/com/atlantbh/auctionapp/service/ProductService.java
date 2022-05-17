@@ -2,39 +2,73 @@ package com.atlantbh.auctionapp.service;
 
 import com.atlantbh.auctionapp.exceptions.BadRequestException;
 import com.atlantbh.auctionapp.exceptions.NotFoundException;
+import com.atlantbh.auctionapp.model.CardEntity;
 import com.atlantbh.auctionapp.model.CategoryEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
+import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.model.enums.SortBy;
 import com.atlantbh.auctionapp.projections.PriceRangeProj;
 import com.atlantbh.auctionapp.projections.ProductNameProj;
+import com.atlantbh.auctionapp.repository.BidRepository;
 import com.atlantbh.auctionapp.repository.CategoryRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
+import com.atlantbh.auctionapp.repository.UserRepository;
+import com.atlantbh.auctionapp.request.PaymentRequest;
 import com.atlantbh.auctionapp.request.ProductRequest;
+import com.atlantbh.auctionapp.request.UpdateCardRequest;
 import com.atlantbh.auctionapp.response.ProductResponse;
 import com.atlantbh.auctionapp.utilities.CalculateSimilarity;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
+    private final BidRepository bidRepository;
+    private final UserService userService;
+    private final StripeService stripeService;
+    private String secretKey;
+
+    @Value("${stripe.secret_key}")
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    @PostConstruct
+    public void init() {
+        Stripe.apiKey = secretKey;
+    }
 
     @Autowired
-    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, UserRepository userRepository, UserService userService, BidRepository bidRepository, StripeService stripeService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
+        this.userService = userService;
+        this.bidRepository = bidRepository;
+        this.stripeService = stripeService;
     }
 
     Logger logger = LoggerFactory.getLogger(ProductService.class);
@@ -114,6 +148,9 @@ public class ProductService {
             throw new BadRequestException("End date must be after start date");
         }
 
+        UserEntity user = userRepository.findById(productRequest.getUserId()).orElseThrow(() -> new NotFoundException("User with id: " + productRequest.getUserId() + " does not exist"));
+        userService.updateCard(user, productRequest.getCard());
+
         return productRepository.save(product);
     }
 
@@ -146,4 +183,61 @@ public class ProductService {
         }
         return relatedProducts;
     }
+
+    public ProductEntity payForProduct(PaymentRequest paymentRequest) {
+        ProductEntity product = productRepository.findProductById(paymentRequest.getProductId());
+        UserEntity user = userRepository.findById(paymentRequest.getUserId()).orElseThrow(() -> new NotFoundException("User with id: " + paymentRequest.getUserId() + " does not exist"));
+        if (product.isSold()){
+            logger.error("Product is already sold");
+            throw new BadRequestException("Product is already sold");
+        }
+        if (product.getEndDate().isAfter(LocalDateTime.now())){
+            logger.error("Auction hasn't ended for this product");
+            throw new BadRequestException("Auction hasn't ended for this product");
+        }
+        if (paymentRequest.getCard().getExpirationYear() < LocalDateTime.now().getYear() ){
+            logger.error("Card is expired");
+            throw new BadRequestException("Card is expired");
+        }
+        if (paymentRequest.getCard().getExpirationYear() == LocalDateTime.now().getYear() && paymentRequest.getCard().getExpirationMonth() < LocalDateTime.now().getMonthValue()){
+            logger.error("Card is expired");
+            throw new BadRequestException("Card is expired");
+
+        }
+
+
+        UpdateCardRequest cardRequest = paymentRequest.getCard();
+        Double highestBid = bidRepository.getMaxBidFromProduct(paymentRequest.getProductId());
+        if (highestBid == null){
+            logger.error("No bids for this product");
+            throw new BadRequestException("No bids for this product");
+        }
+
+        if (cardRequest != null) {
+            UserEntity seller = userRepository.findById(product.getUserId()).orElseThrow(() -> new NotFoundException("User with id: " + product.getUserId() + " does not exist"));
+            String description = user.getFirstName() + " " + user.getLastName() + " (user id: " + user.getId() + ") "
+                    + "paid for " + product.getProductName() + " (product id: " + product.getId() + ") from " + seller.getFirstName() + " " + seller.getLastName() + " (user id: " + seller.getId() + ")";
+
+
+            CardEntity card = userService.updateCard(user, cardRequest);
+            Integer amount = (int) (highestBid * 100);
+
+            try {
+                stripeService.pay(
+                        amount,
+                        user.getStripeCustomerId(),
+                        card.getStripeCardId(),
+                        description);
+            } catch (StripeException e) {
+                logger.error(e.getMessage());
+                throw new BadRequestException(e.getStripeError().getMessage());
+            }
+
+            product.setSold(true);
+            productRepository.save(product);
+        }
+
+        return product;
+    }
+
 }

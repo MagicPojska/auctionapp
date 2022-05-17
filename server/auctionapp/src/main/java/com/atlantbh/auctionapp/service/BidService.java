@@ -3,10 +3,12 @@ package com.atlantbh.auctionapp.service;
 import com.atlantbh.auctionapp.exceptions.BadRequestException;
 import com.atlantbh.auctionapp.exceptions.NotFoundException;
 import com.atlantbh.auctionapp.model.BidsEntity;
+import com.atlantbh.auctionapp.model.NotificationEntity;
 import com.atlantbh.auctionapp.model.ProductEntity;
 import com.atlantbh.auctionapp.model.UserEntity;
 import com.atlantbh.auctionapp.projections.BidProj;
 import com.atlantbh.auctionapp.repository.BidRepository;
+import com.atlantbh.auctionapp.repository.NotificationRepository;
 import com.atlantbh.auctionapp.repository.ProductRepository;
 import com.atlantbh.auctionapp.repository.UserRepository;
 import com.atlantbh.auctionapp.request.BidRequest;
@@ -29,13 +31,17 @@ public class BidService {
     private final BidRepository bidRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final NotificationRepository notificationRepository;
+    private final EmitterService emitterService;
     Logger logger = LoggerFactory.getLogger(BidService.class);
 
     @Autowired
-    public BidService(BidRepository bidRepository, ProductRepository productRepository, UserRepository userRepository) {
+    public BidService(BidRepository bidRepository, ProductRepository productRepository, UserRepository userRepository, NotificationRepository notificationRepository, EmitterService emitterService) {
         this.bidRepository = bidRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.notificationRepository = notificationRepository;
+        this.emitterService = emitterService;
     }
 
     public Page<BidProj> getBidsForProduct(long id, Integer pageNumber){
@@ -70,6 +76,15 @@ public class BidService {
             logger.error("Bid price is lower than current max bid");
             throw new BadRequestException("Price can't be lower than highest bid of $" + maxBid);
         }
+
+        UserEntity highestBidder = userRepository.getById(bidRepository.getHighestBidderFromProduct(product.getId()));
+        if (highestBidder != null) {
+            NotificationEntity notification = new NotificationEntity("warning", product, highestBidder);
+            notificationRepository.save(notification);
+            emitterService.pushNotification(notificationRepository.countByUserIdAndCheckedFalse(highestBidder.getId()), highestBidder.getId());
+            emitterService.pushProductInfo(bidRequest.getPrice(), product);
+        }
+
         bidRepository.save(new BidsEntity(bidRequest.getPrice(), user, product));
 
         return new BidResponse(bidRequest.getPrice(), product.getNumberOfBids() + 1);

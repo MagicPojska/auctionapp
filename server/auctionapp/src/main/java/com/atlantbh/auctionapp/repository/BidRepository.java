@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface BidRepository extends JpaRepository<BidsEntity, Long> {
@@ -19,4 +18,9 @@ public interface BidRepository extends JpaRepository<BidsEntity, Long> {
     @Query(value = "SELECT MAX(price) FROM auction.bids b " +
             "WHERE b.product_id = :product_id", nativeQuery = true)
     Double getMaxBidFromProduct(@Param("product_id") Long productId);
+
+    @Query(value = "(SELECT b.user_id FROM auction.bids b " +
+            "INNER JOIN auction.product p on p.id = b.product_id " +
+            "WHERE b.product_id = :product_id ORDER BY b.price DESC LIMIT 1)", nativeQuery = true)
+    Long getHighestBidderFromProduct(Long product_id);
 }

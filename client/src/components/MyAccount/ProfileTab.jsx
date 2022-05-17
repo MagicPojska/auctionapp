@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import { countryList } from "../../utilities/countryList";
 import { customStyles } from "../../utilities/selectStyle";
-import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { useUserContext } from "../../contexts/UserContextProvider";
 import {
+  generateCardExpiryYears,
   generateDays,
   generateMonths,
   generateYears,
@@ -16,16 +16,21 @@ import { updateUser } from "../../utilities/userApi";
 import {
   getUserFromSession,
   getUserFromStorage,
+  setCardInSession,
+  setCardInStorage,
   updateUserInSession,
   updateUserInStorage,
 } from "../../utilities/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingSpinner from "../LoadingSpinner";
+import { getUserCard } from "../../utilities/cardApi";
+import ShowChevron from "../ShowChevron";
 
 const ProfileTab = () => {
-  const { user } = useUserContext();
-  const [isOpened, setIsOpened] = useState(false);
+  const { user, card } = useUserContext();
+  const [isShippingTabOpened, setIsShippingTabOpened] = useState(false);
+  const [isCardTabOpened, setIsCardTabOpened] = useState(false);
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [files, setFiles] = useState(null);
   const [image, setImage] = useState(null);
@@ -35,35 +40,45 @@ const ProfileTab = () => {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    dateOfBirth:
-      user.dateOfBirth === null
-        ? ""
-        : moment(user.dateOfBirth).format("YYYY-MM-DD"),
-    address: user.address === null ? "" : user.address,
-    city: user.city === null ? "" : user.city,
-    zipCode: user.zipCode === null ? "" : user.zipCode,
-    country: user.country === null ? "" : user.country,
-    state: user.state === null ? "" : user.state,
-    phone: user.phone === null ? "" : user.phone,
-    profileImage: user.profileImage === null ? "" : user.profileImage,
+    dateOfBirth: !!user.dateOfBirth
+      ? moment(user.dateOfBirth).format("YYYY-MM-DD")
+      : "",
+    address: !!user.address ? user.address : "",
+    city: !!user.city ? user.city : "",
+    zipCode: !!user.zipCode ? user.zipCode : "",
+    country: !!user.country ? user.country : "",
+    state: !!user.state ? user.state : "",
+    phone: !!user.phone ? user.phone : "",
+    profileImage: !!user.profileImage ? user.profileImage : "",
   });
+
+  const [cardDetails, setCardDetails] = useState({
+    cardHolderName: !!card?.cardHolderName ? card.cardHolderName : "",
+    cardNumber: !!card?.cardNumber ? card.cardNumber : "",
+    expirationYear: "",
+    expirationMonth: "",
+    cvc: "",
+  });
+
   const [birthDate, setBirthDate] = useState({
-    day: user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("DD"),
-    month:
-      user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("MM"),
-    year:
-      user.dateOfBirth === null ? "" : moment(user.dateOfBirth).format("YYYY"),
+    day: !!user.dateOfBirth ? moment(user.dateOfBirth).format("DD") : "",
+    month: !!user.dateOfBirth ? moment(user.dateOfBirth).format("MM") : "",
+    year: !!user.dateOfBirth ? moment(user.dateOfBirth).format("YYYY") : "",
   });
 
   useEffect(() => {
     setDaysInMonth(generateDays(birthDate.year, birthDate.month));
   }, [birthDate.year, birthDate.month]);
 
-  const toggleTabOpened = () => {
-    setIsOpened(!isOpened);
+  const toggleShippingTabOpened = () => {
+    setIsShippingTabOpened(!isShippingTabOpened);
   };
 
-  const handleInputData = (input) => (e) => {
+  const toggleCardTabOpened = () => {
+    setIsCardTabOpened(!isCardTabOpened);
+  };
+
+  const handleShippingDataInput = (input) => (e) => {
     const { value } = e.target;
 
     setUserDetails((prevState) => ({
@@ -106,28 +121,61 @@ const ProfileTab = () => {
         userInfo.profileImage = imageResponse.data.url;
       }
 
-      userInfo.dateOfBirth = moment(
-        `${birthDate.year}-${birthDate.month}-${birthDate.day}`
-      ).format(DATETIME_FORMAT);
+      if (birthDate.day && birthDate.month && birthDate.year) {
+        userInfo.dateOfBirth = moment(
+          `${birthDate.year}-${birthDate.month}-${birthDate.day}`
+        ).format(DATETIME_FORMAT);
+      }
+
+      if (
+        cardDetails.cardHolderName &&
+        cardDetails.cardNumber &&
+        cardDetails.expirationYear &&
+        cardDetails.expirationMonth &&
+        cardDetails.cvc
+      ) {
+        if (
+          cardDetails.expirationYear === moment().year() &&
+          cardDetails.expirationMonth <= moment().month() + 1
+        ) {
+          toast.error("Please enter an unexpired card", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          return;
+        }
+
+        userInfo.card = cardDetails;
+      }
 
       const responseData = await updateUser(userInfo);
 
       if (getUserFromStorage() !== null) {
         updateUserInStorage(responseData.data);
+        setCardInStorage({
+          cardHolderName: cardDetails.cardHolderName,
+          cardNumber: cardDetails.cardNumber,
+          userId: user.id,
+        });
       } else if (getUserFromSession() !== null) {
         updateUserInSession(responseData.data);
+        setCardInSession({
+          cardHolderName: cardDetails.cardHolderName,
+          cardNumber: cardDetails.cardNumber,
+          userId: user.id,
+        });
       }
 
       toast.success("Your info has been saved", {
         position: toast.POSITION.TOP_CENTER,
       });
-      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       toast.error("Something went wrong!", {
         position: toast.POSITION.TOP_CENTER,
       });
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -164,7 +212,7 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="John"
-                onChange={handleInputData("firstName")}
+                onChange={handleShippingDataInput("firstName")}
                 value={userDetails.firstName}
               />
             </div>
@@ -175,7 +223,7 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="Doe"
-                onChange={handleInputData("lastName")}
+                onChange={handleShippingDataInput("lastName")}
                 value={userDetails.lastName}
               />
             </div>
@@ -258,7 +306,7 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="+32534231564"
-                onChange={handleInputData("phone")}
+                onChange={handleShippingDataInput("phone")}
                 value={userDetails.phone}
               />
             </div>
@@ -266,20 +314,141 @@ const ProfileTab = () => {
         </div>
       </div>
 
+      {/*Card details form */}
       <div className="w-full border-2 mt-6 font-normal">
         <h2
           className="px-8 py-4 text-lg font-normal leading-7 bg-bgWhite cursor-pointer flex items-center"
-          onClick={toggleTabOpened}
+          onClick={toggleCardTabOpened}
         >
-          <span className="mr-4">
-            {isOpened ? <BsChevronUp /> : <BsChevronDown />}
-          </span>{" "}
-          Shipping Address (Optional)
+          <ShowChevron isChevronOpened={isCardTabOpened} /> Card Information
+          (Optional)
         </h2>
 
         <div
           className={`${
-            !isOpened && "hidden"
+            !isCardTabOpened && "hidden"
+          } pt-5 pl-5 2xl:pl-20 pr-24 2xl:pr-36 flex`}
+        >
+          <div className="mr-28 min-w-fit w-80">
+            <div className="w-80"></div>
+          </div>
+
+          <div className="flex flex-col w-full">
+            <label className="text-lg leading-7">Name on Card</label>
+            <div className="border-2 h-16 mb-8 mt-4">
+              <input
+                type="text"
+                className="w-full h-full outline-none px-6 bg-bgWhite"
+                placeholder="John Doe"
+                onChange={(e) =>
+                  setCardDetails({
+                    ...cardDetails,
+                    cardHolderName: e.target.value,
+                  })
+                }
+                value={cardDetails.cardHolderName}
+              />
+            </div>
+
+            <label className="text-lg leading-7">Card Number</label>
+            <div className="border-2 h-16 mb-8 mt-4">
+              <input
+                type="text"
+                maxLength={16}
+                className="w-full h-full outline-none px-6 bg-bgWhite"
+                placeholder="XXXX-XXXX-XXXX-XXXX"
+                onChange={(e) => {
+                  if (e.target.value.match("^[0-9]*$") != null) {
+                    setCardDetails({
+                      ...cardDetails,
+                      cardNumber: e.target.value,
+                    });
+                  }
+                }}
+                value={cardDetails.cardNumber}
+              />
+            </div>
+
+            <div className="flex space-x-6 mb-8 mt-4">
+              <div className="flex flex-col flex-1">
+                <label className="text-lg leading-7 font-normal mb-4">
+                  Expiration Date
+                </label>
+                <Select
+                  options={generateCardExpiryYears()}
+                  placeholder="YYYY"
+                  styles={customStyles}
+                  isSearchable={false}
+                  components={{
+                    IndicatorSeparator: () => null,
+                  }}
+                  onChange={(selectedOption) => {
+                    setCardDetails({
+                      ...cardDetails,
+                      expirationYear: selectedOption.value,
+                    });
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-col flex-1 justify-end">
+                <Select
+                  options={generateMonths()}
+                  placeholder="MM"
+                  styles={customStyles}
+                  isSearchable={false}
+                  components={{
+                    IndicatorSeparator: () => null,
+                  }}
+                  onChange={(selectedOption) => {
+                    setCardDetails({
+                      ...cardDetails,
+                      expirationMonth: selectedOption.value,
+                    });
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-col flex-1">
+                <label className="text-lg leading-7 font-normal  mb-4">
+                  CVC/CVV
+                </label>
+                <div className="border-2 h-12">
+                  <input
+                    type="password"
+                    maxLength={4}
+                    className="w-full h-full outline-none px-6 bg-bgWhite"
+                    placeholder="***"
+                    onChange={(e) => {
+                      if (e.target.value.match("^[0-9]*$") != null) {
+                        setCardDetails({
+                          ...cardDetails,
+                          cvc: e.target.value,
+                        });
+                      }
+                    }}
+                    value={cardDetails.cvc}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/*Shipping address form */}
+      <div className="w-full border-2 mt-6 font-normal">
+        <h2
+          className="px-8 py-4 text-lg font-normal leading-7 bg-bgWhite cursor-pointer flex items-center"
+          onClick={toggleShippingTabOpened}
+        >
+          <ShowChevron isChevronOpened={isShippingTabOpened} /> Shipping Address
+          (Optional)
+        </h2>
+
+        <div
+          className={`${
+            !isShippingTabOpened && "hidden"
           } pt-5 pl-5 2xl:pl-20 pr-24 2xl:pr-36 flex`}
         >
           <div className="mr-28 min-w-fit w-80">
@@ -293,7 +462,7 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="123 Main Street"
-                onChange={handleInputData("address")}
+                onChange={handleShippingDataInput("address")}
                 value={userDetails.address}
               />
             </div>
@@ -305,7 +474,7 @@ const ProfileTab = () => {
                   type="text"
                   placeholder="eg. Madrid"
                   className="w-full border-2 h-16 p-6 mt-4 bg-bgWhite outline-none"
-                  onChange={handleInputData("city")}
+                  onChange={handleShippingDataInput("city")}
                   value={userDetails.city}
                 />
               </div>
@@ -316,7 +485,7 @@ const ProfileTab = () => {
                   type="text"
                   placeholder="XXXXXX"
                   className="w-full border-2 h-16 p-6 mt-4 bg-bgWhite outline-none"
-                  onChange={handleInputData("zipCode")}
+                  onChange={handleShippingDataInput("zipCode")}
                   value={userDetails.zipCode}
                 />
               </div>
@@ -328,7 +497,7 @@ const ProfileTab = () => {
                 type="text"
                 className="w-full h-full outline-none px-6 bg-bgWhite"
                 placeholder="eg. Asturias"
-                onChange={handleInputData("state")}
+                onChange={handleShippingDataInput("state")}
                 value={userDetails.state}
               />
             </div>

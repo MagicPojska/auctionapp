@@ -16,6 +16,7 @@ import {
 } from "../utilities/paths";
 import SocialMedia from "../components/SocialMedia";
 import {
+  getCardFromStorage,
   getTokenFromSession,
   getTokenFromStorage,
   getUserFromSession,
@@ -23,25 +24,75 @@ import {
 } from "../utilities/auth";
 import { useUserContext } from "../contexts/UserContextProvider";
 import { GrFormClose } from "react-icons/gr";
+import { countNotifications } from "../utilities/notificationApi";
+import NotificationBadge from "../components/NotificationBadge";
+import { EventSourcePolyfill } from "event-source-polyfill";
 
 const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [numberOfNotifications, setNumberOfNotifications] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout, user, setUser, setToken } = useUserContext();
+  const { logout, user, setUser, setToken, setCard } = useUserContext();
 
   useEffect(() => {
-    if (getUserFromStorage() !== null) {
-      setUser(getUserFromStorage());
-      setToken(getTokenFromStorage());
-    } else if (getUserFromSession() !== null) {
-      setUser(getUserFromSession());
-      setToken(getTokenFromSession());
+    (async () => {
+      try {
+        const response = await countNotifications();
+        setNumberOfNotifications(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) {
+      if (getUserFromStorage() !== null) {
+        setUser(getUserFromStorage());
+        setToken(getTokenFromStorage());
+        setCard(getCardFromStorage());
+      } else if (getUserFromSession() !== null) {
+        setUser(getUserFromSession());
+        setToken(getTokenFromSession());
+        setCard(getTokenFromSession());
+      }
     }
     if (!location.pathname.includes(shopPath)) {
       setSearchTerm("");
     }
   }, [location]);
+
+  useEffect(() => {
+    let eventSource;
+    if (user) {
+      const token =
+        getTokenFromStorage() !== null
+          ? getTokenFromStorage()
+          : getTokenFromSession();
+
+      eventSource = new EventSourcePolyfill(
+        `${process.env.REACT_APP_API_URL}/notifications/subscribe`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      eventSource.addEventListener(user.id, handleServerEvent, false);
+    }
+
+    return () => {
+      if (user) {
+        eventSource.close();
+      }
+    };
+  }, [user]);
+
+  const handleServerEvent = (e) => {
+    setNumberOfNotifications(e.data);
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -51,6 +102,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     await logout();
   };
+
   return (
     <header>
       <div className="bg-blackPrimary text-white h-10 flex items-center justify-between 2xl:px-72 lg:pl-44 lg:pr-40 md:px-24 sm:px-10 px-4 text-sm">
@@ -60,9 +112,17 @@ const Navbar = () => {
 
         {user ? (
           <div className="text-[14px] leading-[17px] flex space-x-10">
-            <p>
-              Hi, {user.firstName} {user.lastName}
-            </p>
+            <button>
+              <Link to={myAccountPath + profilePath} className="font-bold">
+                Hi, {user.firstName} {user.lastName}
+              </Link>
+            </button>
+
+            <NotificationBadge
+              numberOfNotifications={numberOfNotifications}
+              setNumberOfNotifications={setNumberOfNotifications}
+            />
+
             <button
               onClick={handleLogout}
               className="text-[14px] leading-[17px] font-bold hover:text-gray-400"

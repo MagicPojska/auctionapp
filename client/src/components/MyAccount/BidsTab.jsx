@@ -5,6 +5,7 @@ import { getHoursDiff } from "../../utilities/helperFunctions";
 import { categoriesPath, shopProductPath } from "../../utilities/paths";
 import { RiAuctionFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 const BidsTab = () => {
   const { user } = useUserContext();
@@ -15,6 +16,7 @@ const BidsTab = () => {
       try {
         const response = await getBidsForUser(user.id);
         setBids(response.data);
+        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -53,7 +55,7 @@ const BidsTab = () => {
                     <div className="flex flex-col">
                       <span>{bid.product.productName}</span>
                       <span className="text-sm font-normal text-purple">
-                        #{bid.id}
+                        #{bid.product.id}
                       </span>
                     </div>
                   </th>
@@ -76,9 +78,21 @@ const BidsTab = () => {
                   <td className="pl-6 pr-8 py-4 text-right">
                     <Link
                       to={shopProductPath + "/" + bid.product.id}
-                      className="font-bold px-8 py-3 border-4"
+                      className={`font-bold px-8 py-3 ${
+                        moment(bid.product.endDate).isBefore(new Date()) &&
+                        bid.product.highestBid === bid.price
+                          ? bid.product.sold
+                            ? "bg-purple text-white"
+                            : "border-4 border-purple"
+                          : "border-4"
+                      }`}
                     >
-                      VIEW
+                      {moment(bid.product.endDate).isBefore(new Date()) &&
+                      bid.product.highestBid === bid.price
+                        ? bid.product.sold
+                          ? "BOUGHT"
+                          : "PAY"
+                        : "VIEW"}
                     </Link>
                   </td>
                 </tr>

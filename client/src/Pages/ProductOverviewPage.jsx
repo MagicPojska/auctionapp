@@ -15,6 +15,11 @@ import { BsChevronRight } from "react-icons/bs";
 import LoadingSpinner from "../components/LoadingSpinner";
 import BidsTable from "../components/ProductOverviewPage/BidsTable";
 import RecomendedProducts from "../components/ProductOverviewPage/RecomendedProducts";
+import { BiChevronRight } from "react-icons/bi";
+import PaymentModal from "../components/PaymentModal";
+import { ToastContainer } from "react-toastify";
+import { getTokenFromSession, getTokenFromStorage } from "../utilities/auth";
+import { EventSourcePolyfill } from "event-source-polyfill";
 
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState("");
@@ -23,12 +28,33 @@ const ProductOverviewPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [notification, setNotification] = useState("");
   const [bid, setBid] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const { id } = useParams();
-  const { user, token } = useUserContext();
+  const { user } = useUserContext();
 
   useEffect(() => {
     getProductInfo();
   }, []);
+
+  useEffect(() => {
+    const eventSource = new EventSourcePolyfill(
+      `${process.env.REACT_APP_API_URL}/notifications/subscribe/product`
+    );
+
+    eventSource.addEventListener(
+      product.id + " " + product.productName,
+      handleServerEvent,
+      false
+    );
+
+    return () => {
+      eventSource.close();
+    };
+  }, [product]);
+
+  const handleServerEvent = (e) => {
+    setProduct(JSON.parse(e.data));
+  };
 
   const getProductInfo = async () => {
     try {
@@ -61,7 +87,7 @@ const ProductOverviewPage = () => {
         userId: user.id,
         productId: product.id,
       };
-      const res = await postBid(bidDetails, token);
+      const res = await postBid(bidDetails);
 
       setProduct({
         ...product,
@@ -80,6 +106,7 @@ const ProductOverviewPage = () => {
 
   return (
     <>
+      <ToastContainer />
       {isLoading ? (
         <div className="flex justify-center my-44 text-2xl font-bold">
           <LoadingSpinner />
@@ -129,7 +156,21 @@ const ProductOverviewPage = () => {
               </div>
 
               {timeLeft.minutes < 0 ? (
-                <></>
+                user &&
+                user.id === product.highestBidder && (
+                  <div className="w-full flex justify-end">
+                    <button
+                      className={`flex space-x-4 border-4 border-purple px-8 h-14 justify-center items-center leading-7 text-base font-bold ${
+                        product.sold && "opacity-30"
+                      }`}
+                      onClick={() => setShowModal(true)}
+                      disabled={product.sold}
+                    >
+                      <p>{product.sold ? "BOUGHT" : "PAY"}</p>
+                      <BiChevronRight className="text-2xl" />
+                    </button>
+                  </div>
+                )
               ) : (
                 <div className="flex">
                   <input
@@ -196,6 +237,14 @@ const ProductOverviewPage = () => {
           <RecomendedProducts />
         )}
       </div>
+
+      {showModal && (
+        <PaymentModal
+          setShowModal={setShowModal}
+          product={product}
+          setProduct={setProduct}
+        />
+      )}
     </>
   );
 };

@@ -52,4 +52,7 @@ public class ProductRequest {
 
     @NotEmpty
     private long categoryId;
+
+    @NotNull
+    private UpdateCardRequest card;
 }

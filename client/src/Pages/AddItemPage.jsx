@@ -11,9 +11,15 @@ import { DATETIME_FORMAT } from "../utilities/constants";
 import { uploadImage } from "../utilities/imageApi";
 import { useUserContext } from "../contexts/UserContextProvider";
 import { shopProductPath } from "../utilities/paths";
+import {
+  getUserFromSession,
+  getUserFromStorage,
+  setCardInSession,
+  setCardInStorage,
+} from "../utilities/auth";
 
 const AddItemPage = () => {
-  const { user } = useUserContext();
+  const { user, card } = useUserContext();
   const [step, setStep] = useState(1);
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,6 +38,14 @@ const AddItemPage = () => {
     phone: "",
     userId: "",
     categoryId: "",
+  });
+
+  const [cardDetails, setCardDetails] = useState({
+    cardHolderName: !!card?.cardHolderName ? card.cardHolderName : "",
+    cardNumber: !!card?.cardNumber ? card.cardNumber : "",
+    expirationYear: "",
+    expirationMonth: "",
+    cvc: "",
   });
 
   const navigate = useNavigate();
@@ -82,15 +96,71 @@ const AddItemPage = () => {
         imageUrls.push(response.data.url);
       }
 
-      const formData = productDetails;
-      formData.images = imageUrls.join();
-      formData.startDate = moment(productDetails.startDate).format(
-        DATETIME_FORMAT
-      );
-      formData.endDate = moment(productDetails.endDate).format(DATETIME_FORMAT);
-      formData.userId = user.id;
+      let formData;
+      if (
+        productDetails.address &&
+        productDetails.city &&
+        productDetails.zipCode &&
+        productDetails.country &&
+        productDetails.phone &&
+        productDetails.email
+      ) {
+        formData = productDetails;
+        formData.images = imageUrls.join();
+        formData.startDate = moment(productDetails.startDate).format(
+          DATETIME_FORMAT
+        );
+        formData.endDate = moment(productDetails.endDate).format(
+          DATETIME_FORMAT
+        );
+        formData.userId = user.id;
+      } else {
+        toast.error("Please fill in all the required fields", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return;
+      }
+
+      if (
+        cardDetails.cardHolderName &&
+        cardDetails.cardNumber &&
+        cardDetails.expirationYear &&
+        cardDetails.expirationMonth &&
+        cardDetails.cvc
+      ) {
+        if (
+          cardDetails.expirationYear === moment().year() &&
+          cardDetails.expirationMonth <= moment().month() + 1
+        ) {
+          toast.error("Please enter an unexpired card", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          return;
+        }
+        formData.card = cardDetails;
+      } else {
+        toast.error("Please all card details", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return;
+      }
 
       const res = await addProduct(formData);
+
+      if (getUserFromStorage() !== null) {
+        setCardInStorage({
+          cardHolderName: cardDetails.cardHolderName,
+          cardNumber: cardDetails.cardNumber,
+          userId: user.id,
+        });
+      } else if (getUserFromSession() !== null) {
+        setCardInSession({
+          cardHolderName: cardDetails.cardHolderName,
+          cardNumber: cardDetails.cardNumber,
+          userId: user.id,
+        });
+      }
+
       navigate(`${shopProductPath}/${res.data.id}`);
     } catch (error) {
       setIsLoading(false);
@@ -98,6 +168,8 @@ const AddItemPage = () => {
         position: toast.POSITION.TOP_CENTER,
       });
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -131,6 +203,8 @@ const AddItemPage = () => {
             handleInputData={handleInputData}
             productDetails={productDetails}
             setProductDetails={setProductDetails}
+            cardDetails={cardDetails}
+            setCardDetails={setCardDetails}
             handlePostItem={handlePostItem}
             isLoading={isLoading}
           />

@@ -8,6 +8,10 @@ import LoadingSpinner from "../../LoadingSpinner";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUserContext } from "../../../contexts/UserContextProvider";
+import {
+  generateCardExpiryYears,
+  generateMonths,
+} from "../../../utilities/helperFunctions";
 
 const StepThree = ({
   prevStep,
@@ -15,6 +19,8 @@ const StepThree = ({
   setProductDetails,
   handleInputData,
   handlePostItem,
+  cardDetails,
+  setCardDetails,
   isLoading,
 }) => {
   const { user } = useUserContext();
@@ -22,12 +28,12 @@ const StepThree = ({
   useEffect(() => {
     setProductDetails({
       ...productDetails,
-      address: user.address === null ? "" : user.address,
+      address: !!user.address ? user.address : "",
       email: user.email,
-      phone: user.phone === null ? "" : user.phone,
-      city: user.city === null ? "" : user.city,
-      country: user.country === null ? "" : user.country,
-      zipCode: user.zipCode === null ? "" : user.zipCode,
+      phone: !!user.phone ? user.phone : "",
+      city: !!user.city ? user.city : "",
+      country: !!user.country ? user.country : "",
+      zipCode: !!user.zipCode ? user.zipCode : "",
     });
   }, [user]);
 
@@ -116,6 +122,138 @@ const StepThree = ({
           />
         </div>
 
+        <label className="text-lg leading-7">Payment details</label>
+        <hr className="mb-8 mt-4" />
+
+        <div className="flex items-center space-x-4 w-full mb-6">
+          <p className="text-textTetriary text-sm flex-1">
+            We accept the following credit cards
+          </p>
+          <div className="flex justify-between flex-1">
+            <img
+              className="w-10 h-6 object-contain"
+              src="/images/visa.png"
+              alt="visa"
+            />
+            <img
+              className="w-10 h-6 object-contain"
+              src="/images/mastercard.png"
+              alt="mastercard"
+            />
+            <img
+              className="w-10 h-6 object-contain"
+              src="/images/americanexpress.jpg"
+              alt="american express"
+            />
+            <img
+              className="w-10 h-6 object-contain"
+              src="/images/maestro.png"
+              alt="maestro"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col w-full mb-8">
+          <label className="text-lg leading-7">Name on Card</label>
+          <div className="border-2 h-16 mb-8 mt-4">
+            <input
+              type="text"
+              className="w-full h-full outline-none px-6 bg-bgWhite"
+              placeholder="John Doe"
+              onChange={(e) =>
+                setCardDetails({
+                  ...cardDetails,
+                  cardHolderName: e.target.value,
+                })
+              }
+              value={cardDetails.cardHolderName}
+            />
+          </div>
+
+          <label className="text-lg leading-7">Card Number</label>
+          <div className="border-2 h-16 mb-8 mt-4">
+            <input
+              type="text"
+              maxLength={16}
+              className="w-full h-full outline-none px-6 bg-bgWhite"
+              placeholder="XXXX-XXXX-XXXX-XXXX"
+              onChange={(e) => {
+                if (e.target.value.match("^[0-9]*$") != null) {
+                  setCardDetails({
+                    ...cardDetails,
+                    cardNumber: e.target.value,
+                  });
+                }
+              }}
+              value={cardDetails.cardNumber}
+            />
+          </div>
+
+          <div className="flex space-x-6 mb-8 mt-4">
+            <div className="flex flex-col flex-1">
+              <label className="text-lg leading-7 font-normal mb-4">
+                Expiration Date
+              </label>
+              <Select
+                options={generateCardExpiryYears()}
+                placeholder="YYYY"
+                styles={customStyles}
+                isSearchable={false}
+                components={{
+                  IndicatorSeparator: () => null,
+                }}
+                onChange={(selectedOption) => {
+                  setCardDetails({
+                    ...cardDetails,
+                    expirationYear: selectedOption.value,
+                  });
+                }}
+              />
+            </div>
+
+            <div className="flex flex-col flex-1 justify-end">
+              <Select
+                options={generateMonths()}
+                placeholder="MM"
+                styles={customStyles}
+                isSearchable={false}
+                components={{
+                  IndicatorSeparator: () => null,
+                }}
+                onChange={(selectedOption) => {
+                  setCardDetails({
+                    ...cardDetails,
+                    expirationMonth: selectedOption.value,
+                  });
+                }}
+              />
+            </div>
+
+            <div className="flex flex-col flex-1">
+              <label className="text-lg leading-7 font-normal  mb-4">
+                CVC/CVV
+              </label>
+              <div className="border-2 h-12">
+                <input
+                  type="password"
+                  maxLength={4}
+                  className="w-full h-full outline-none px-6 bg-bgWhite"
+                  placeholder="***"
+                  onChange={(e) => {
+                    if (e.target.value.match("^[0-9]*$") != null) {
+                      setCardDetails({
+                        ...cardDetails,
+                        cvc: e.target.value,
+                      });
+                    }
+                  }}
+                  value={cardDetails.cvc}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="flex space-x-6 text-lg font-bold leading-7 items-center">
           <div className="flex-1">
             <Link
@@ -130,7 +268,7 @@ const StepThree = ({
           ) : (
             <div className="flex-1 flex space-x-6">
               <button
-                className="flex-1 bg-purple py-3 text-white"
+                className="flex-1 outline outline-4 outline-purple outline-offset-[-4px] py-3 text-black"
                 onClick={prevStep}
               >
                 Back

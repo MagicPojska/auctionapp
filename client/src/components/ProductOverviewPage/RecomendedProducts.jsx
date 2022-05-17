@@ -9,8 +9,12 @@ const RecomendedProducts = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getRelatedProducts(id);
-      setRelatedProducts(response.data);
+      try {
+        const response = await getRelatedProducts(id);
+        setRelatedProducts(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     })();
   }, []);
   return (

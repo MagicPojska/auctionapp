@@ -60,6 +60,8 @@ public class UserEntity {
 
     private String profileImage;
 
+    private String stripeCustomerId;
+
     @javax.validation.constraints.Size(max = 32)
     private String resetPasswordToken;
 
