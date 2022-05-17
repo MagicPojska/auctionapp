@@ -57,5 +57,7 @@ public class EmitterService {
             }
         });
 
+        emitters.removeAll(deadEmitters);
+
     }
 }
