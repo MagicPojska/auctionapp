@@ -32,17 +32,17 @@ public class ScheduleService {
         this.emitterService = emitterService;
     }
 
-    @Scheduled(fixedRate = 30 * 60000)
+    @Scheduled(fixedRate = 10 * 60000)
     public void notifyHighestBidder() {
         logger.info("Scheduled task started");
         LocalDateTime now = LocalDateTime.now();
-        List<ProductEntity> expiredProducts = productRepository.findAllByEndDateBeforeAndEndDateAfterAndSoldFalse(now, now.minusMinutes(30));
+        List<ProductEntity> expiredProducts = productRepository.findAllByEndDateBeforeAndEndDateAfterAndSoldFalse(now, now.minusMinutes(10));
         for (ProductEntity product : expiredProducts) {
             if (product.getHighestBidder() != null) {
                 UserEntity user = userRepository.getById(product.getHighestBidder());
                 notificationRepository.save(new NotificationEntity("success", product, user));
 
-                emitterService.pushNotification(notificationRepository.countByUserIdAndCheckedFalse(product.getHighestBidder()), user.getId());
+                emitterService.pushNotification(notificationRepository.countByUserIdAndCheckedFalse(user.getId()), user.getId());
             }
         }
     }
